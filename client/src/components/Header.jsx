@@ -1,5 +1,5 @@
 import React from "react";
-import tranparentLogo from "../assets/transparentLogo.png";
+import tranparentLogo from "../assets/transparentlogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { RxCross2 } from "react-icons/rx";
@@ -121,6 +121,16 @@ const Header = () => {
             >
               Contact
             </Link>
+             <Link
+              to="/userDashboard"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowHeader(!showHeader);
+              }}
+            >
+              User Dashboard
+            </Link>
+            
             {isLogin ? (
               ""
             ) : (
