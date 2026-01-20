@@ -21,11 +21,11 @@ const Footer = () => {
               alt=""
               className="h-12  w-20 object-cover invert-100"
             />
-            <p className="text-sm w-40 ">
-              Your one-stop destination for quality Meal at affordable prices.{" "}
+            <p className="text-sm md:w-40 w-full ">
+              Your one-stop destination for quality Meal at affordable prices.
               <br />
             </p>
-            <p className="text-sm w-40 mt-1 ">
+            <p className="text-sm md:w-40 w-full mt-1 ">
               Diet starts tomorrow. Craving made sure of it.
             </p>
           </div>
