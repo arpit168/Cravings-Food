@@ -121,7 +121,7 @@ const Header = () => {
             >
               Contact
             </Link>
-             <Link
+            {!isLogin?"":( <Link
               to="/userDashboard"
               onClick={(e) => {
                 e.stopPropagation();
@@ -129,7 +129,7 @@ const Header = () => {
               }}
             >
               User Dashboard
-            </Link>
+            </Link>)}
             
             {isLogin ? (
               ""
