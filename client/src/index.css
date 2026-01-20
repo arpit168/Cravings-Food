@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+:root {
+  font-family: serif;
+  
+  /* Primary */
+  --color-primary: #161E54;
+  --color-primary-hover: #0F163F;
+
+  /* Secondary */
+  --color-secondary: #F16D34;
+  --color-secondary-hover: #D85F2E;
+
+  /* Background & Text */
+  --color-background: #BBE0EF;
+  --color-text: #161E54;
+
+  /* Accent */
+  --color-accent: #FF986A;
+
+}
+
+
+
