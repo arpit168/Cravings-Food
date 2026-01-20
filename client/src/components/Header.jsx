@@ -20,7 +20,7 @@ const Header = () => {
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className="bg-(--color-primary) px-8 py-4 flex justify-between items-center sticky top-0 z-99"
+        className="bg-(--color-primary) px-8 py-4 flex justify-between items-center sticky top-0 z-50"
       >
         <Link to="/">
           <img

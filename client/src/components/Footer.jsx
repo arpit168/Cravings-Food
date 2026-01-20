@@ -6,11 +6,13 @@ import { FaInstagram } from "react-icons/fa";
 import { FaWhatsapp } from "react-icons/fa";
 import { FaTwitter } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
+import { useAuth } from "../context/AuthContext";
 
 const Footer = () => {
+   const { user, isLogin } = useAuth();
   return (
     <footer
-      className="bg-(--color-primary) text-gray-300 z-50"
+      className="bg-(--color-primary) text-gray-300 z-99 md:absolute md:w-full"
       data-aos="fade-up"
     >
       <div className="max-w-7xl mx-auto px-6 py-12">
@@ -55,11 +57,11 @@ const Footer = () => {
                   Contact
                 </Link>
               </li>
-               <li>
+              {isLogin?( <li>
                 <Link to="/userDashboard" className="hover:text-white">
                   User Dashboard
                 </Link>
-              </li>
+              </li>):""}
             </ul>
           </div>
 

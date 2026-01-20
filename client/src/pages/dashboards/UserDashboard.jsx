@@ -24,7 +24,7 @@ const UserDashboard = () => {
     <>
       <div className="w-full md:h-[90vh] md:flex md:overflow-hidden">
         <div
-          className={`bg-blue-950 text-white duration-300 md:absolute h-full   ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60  "}  `}
+          className={`bg-blue-950 text-white duration-300 md:absolute md:h-screen   ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60 z-10  "}  `}
         >
           {size.width < 645 ? (
             <UserBottombar
@@ -43,7 +43,7 @@ const UserDashboard = () => {
           )}
         </div>
         {/* Main content */}
-        <div className={`w-57/60 ml-auto ms-2 overflow-auto duration-300`}>
+        <div className={`w-57/60 ml-auto ms-2 overflow-auto duration-300 ${isCollapsed?"":"overflow-hidden  opacity-50"}`} >
           {active === "overview" && <UserOverview />}
           {active === "profile" && <UserProfile />}
           {active === "orders" && <UserOrders />}
