@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { act, useState,useEffect} from "react";
 import UserSideBar from "../../components/userDashboard/UserSidebar";
 import UserOverview from "../../components/userDashboard/userOverview";
 import UserProfile from "../../components/userDashboard/UserProfile";
@@ -9,9 +9,14 @@ import UserBottombar from "../../components/userDashboard/UserBottombar";
 import useWindowSize from "../../hooks/useWindowSize";
 
 const UserDashboard = () => {
-  const [active, setActive] = useState("overview");
+  const [active, setActive] = useState(
+    JSON.parse(localStorage.getItem("UserDashboard-active")) || "overview",
+  );
   const [isCollapsed, setIsCollapsed] = useState(true);
   const size = useWindowSize();
+  useEffect(() => {
+    localStorage.setItem("UserDashboard-active", JSON.stringify(active));
+  }, [active]);
 
   return (
     <>
@@ -19,12 +24,13 @@ const UserDashboard = () => {
         <div
           className={`bg-blue-950 text-white duration-300 md:absolute h-full   ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60  "}  `}
         >
-          {size.width< 645 ? (
+          {size.width < 645 ? (
             <UserBottombar
-             active={active}
+              active={active}
               setActive={setActive}
               isCollapsed={isCollapsed}
-              setIsCollapsed={setIsCollapsed} />
+              setIsCollapsed={setIsCollapsed}
+            />
           ) : (
             <UserSideBar
               active={active}
@@ -35,9 +41,7 @@ const UserDashboard = () => {
           )}
         </div>
         {/* Main content */}
-        <div
-          className={`w-57/60 ml-auto ms-2 overflow-auto duration-300`}
-        >
+        <div className={`w-57/60 ml-auto ms-2 overflow-auto duration-300`}>
           {active === "overview" && <UserOverview />}
           {active === "profile" && <UserProfile />}
           {active === "orders" && <UserOrders />}

@@ -8,16 +8,20 @@ import { motion } from "motion/react";
 import { useAuth } from "../context/AuthContext";
 import { HiOutlineUserCircle } from "react-icons/hi";
 
-
 const Header = () => {
-  const {user,isLogin} = useAuth();
+  const { user, isLogin } = useAuth();
   const navigate = useNavigate();
 
   const { showHeader, setShowHeader } = useUiStore();
 
   return (
     <>
-      <div className="bg-(--color-primary) px-8 py-4 flex justify-between items-center sticky top-0 z-99">
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        className="bg-(--color-primary) px-8 py-4 flex justify-between items-center sticky top-0 z-99"
+      >
         <Link to="/">
           <img
             src={tranparentLogo}
@@ -44,19 +48,29 @@ const Header = () => {
 
         {/* DESKTOP AUTH */}
         <div className="hidden md:flex gap-3">
-         {isLogin? <span className="text-white font-bold text-3xl hover:text-indigo-700 hover:scale-105 duration-300  "><Link to={"/userDashboard"}><HiOutlineUserCircle/></Link></span>:(<> <button
-         
-            onClick={() => navigate("/login")}
-            className="bg-blue-800 py-2 px-4 text-white font-bold rounded"
-          >
-            Login
-          </button>
-          <button
-            onClick={() => navigate("/register")}
-            className="bg-blue-800 py-2 px-4 text-white font-bold rounded"
-          >
-            Register
-          </button></>)}
+          {isLogin ? (
+            <span className="text-white font-bold text-3xl hover:text-indigo-700 hover:scale-105 duration-300  ">
+              <Link to={"/userDashboard"}>
+                <HiOutlineUserCircle />
+              </Link>
+            </span>
+          ) : (
+            <>
+             
+              <button
+                onClick={() => navigate("/login")}
+                className="bg-blue-800 py-2 px-4 text-white font-bold rounded"
+              >
+                Login
+              </button>
+              <button
+                onClick={() => navigate("/register")}
+                className="bg-blue-800 py-2 px-4 text-white font-bold rounded"
+              >
+                Register
+              </button>
+            </>
+          )}
         </div>
 
         {/* MOBILE TOGGLE */}
@@ -102,25 +116,31 @@ const Header = () => {
             >
               Contact
             </Link>
-             {isLogin?"":(<> <Link
-              to="/login"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowHeader(!showHeader);
-              }}
-            >
-              Login
-            </Link>
-            <Link
-              to="/register"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowHeader(!showHeader);
-              }}
-            >
-              Register
-            </Link></>)}
-            
+            {isLogin ? (
+              ""
+            ) : (
+              <>
+                {" "}
+                <Link
+                  to="/login"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowHeader(!showHeader);
+                  }}
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowHeader(!showHeader);
+                  }}
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </div>
       )}

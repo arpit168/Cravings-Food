@@ -9,11 +9,14 @@ import Register from "./pages/Register";
 import Footer from "./components/Footer";
 import { Toaster } from "react-hot-toast";
 import UserDashboard from "./pages/dashboards/UserDashboard";
+import useUiStore from "./stores/useUiStore";
+
   
 
-const App = () => {
+const App = () => { 
+  const {setShowHeader} = useUiStore();
   return (
-    <>
+    <div onClick={()=>setShowHeader(false)}>
       <BrowserRouter>
       <Toaster/>
         <Header />
@@ -27,7 +30,7 @@ const App = () => {
         </Routes>
         <Footer />
       </BrowserRouter>
-    </>
+    </div>
   );
 };
 
