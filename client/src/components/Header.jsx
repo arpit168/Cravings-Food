@@ -38,19 +38,24 @@ const Header = () => {
           <Link to="/about" className="text-white hover:text-(--color-accent)">
             About
           </Link>
-          <Link
+         {!isLogin?( <Link
             to="/contact"
             className="text-white hover:text-(--color-accent)"
           >
             Contact
-          </Link>
+          </Link>):( <Link
+            to="/userDashboard"
+            className="text-white hover:text-(--color-accent)"
+          >
+            User Dashboard
+          </Link>)}
         </div>
 
         {/* DESKTOP AUTH */}
         <div className="hidden md:flex gap-3">
           {isLogin ? (
             <span className="text-white font-bold text-3xl hover:text-indigo-700 hover:scale-105 duration-300  ">
-              <Link to={"/userDashboard"}>
+              <Link to={"/contact"}>
                 <HiOutlineUserCircle />
               </Link>
             </span>
