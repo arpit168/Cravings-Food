@@ -20,6 +20,7 @@ function Error() {
         Home
       </button>
     </>
+    
   );
 }
 
