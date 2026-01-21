@@ -54,7 +54,7 @@ const Header = () => {
         {/* DESKTOP AUTH */}
         <div className="hidden md:flex gap-3">
           {isLogin ? (
-            <span className="text-white font-bold text-3xl hover:text-indigo-700 hover:scale-105 duration-300  ">
+            <span className="text-white font-bold text-3xl hover:text-orange-400 hover:scale-105 duration-300  ">
               <Link to={"/contact"}>
                 <HiOutlineUserCircle />
               </Link>

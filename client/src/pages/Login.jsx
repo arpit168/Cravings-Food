@@ -5,6 +5,8 @@ import api from "../config/Api";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { TbRuler2Off } from "react-icons/tb";
+import Lottie from "lottie-react";
+import loadingicon from "../assets/animation/loginning.json";
 
 const Login = () => {
   const { setUser, setIsLogin } = useAuth();
@@ -139,7 +141,7 @@ const Login = () => {
                       <button
                         type="submit"
                         disabled={isLoading}
-                        className="flex-1 bg-indigo-700 text-white font-bold py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition duration-300 transform hover:scale-105 shadow-lg disabled:cursor-not-allowed disabled:scale-100 disabled:bg-gray-300"
+                        className="flex-1 bg-indigo-700 text-white font-bold py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-indigo-800 transition duration-300 transform hover:scale-105 shadow-lg disabled:cursor-not-allowed disabled:scale-100 disabled:bg-gray-300 disabled:text-indigo-700"
                       >
                         {isLoading ? "Login..." : "Login"}
                       </button>
