@@ -12,7 +12,7 @@ const Footer = () => {
    const { user, isLogin } = useAuth();
   return (
     <footer
-      className="bg-(--color-primary) text-gray-300 z-99 md:absolute md:w-full"
+      className="bg-(--color-primary) text-gray-300 z-50 md:absolute md:w-full"
       data-aos="fade-up"
     >
       <div className="max-w-7xl mx-auto px-6 py-12">
