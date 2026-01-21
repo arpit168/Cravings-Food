@@ -38,6 +38,9 @@ const Header = () => {
           <Link to="/about" className="text-white hover:text-(--color-accent)">
             About
           </Link>
+           <Link to="/menu" className="text-white hover:text-(--color-accent)">
+            Menu
+          </Link>
          {!isLogin?( <Link
             to="/contact"
             className="text-white hover:text-(--color-accent)"
@@ -111,6 +114,15 @@ const Header = () => {
               }}
             >
               About
+            </Link>
+             <Link
+              to="/menu"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowHeader(!showHeader);
+              }}
+            >
+              Menu
             </Link>
             <Link
               to="/contact"

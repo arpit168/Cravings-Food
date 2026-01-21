@@ -7,6 +7,7 @@ import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Footer from "./components/Footer";
+import Menu from "./pages/Menu";
 import NotFound from "./pages/Error";
 import { Toaster } from "react-hot-toast";
 import UserDashboard from "./pages/dashboards/UserDashboard";
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/userDashboard" element={<UserDashboard />} />
+          <Route path="/menu" element={<Menu />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <Footer />
