@@ -5,7 +5,7 @@ const Home = () => {
   return (
     <div className="bg-white text-slate-800">
       {/* HERO SECTION */}
-      <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+      <section className="max-w-7xl md:mx-auto px-6  md:py-20 py-10 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <span className="inline-block mb-4 px-4 py-1 text-sm rounded-full bg-emerald-50 text-emerald-600">
             Premium Food Experience

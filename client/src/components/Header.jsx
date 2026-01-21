@@ -93,7 +93,7 @@ const Header = () => {
       {/* MOBILE MENU */}
       {showHeader && (
         <div className="bg-blue-950 ">
-          <div className="md:hidden absolute z-99 w-full text-white bg-blue-950   flex flex-col gap-4 p-6 ">
+          <div className="md:hidden fixed top-18  z-99 w-full text-white bg-blue-950   flex flex-col gap-4 p-6 ">
             <Link
               to="/"
               onClick={(e) => {
@@ -135,7 +135,7 @@ const Header = () => {
               ""
             ) : (
               <>
-                {" "}
+                
                 <Link
                   to="/login"
                   onClick={(e) => {
