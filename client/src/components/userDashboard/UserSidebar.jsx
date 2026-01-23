@@ -46,7 +46,6 @@ const UserSideBar = ({ active, setActive, isCollapsed, setIsCollapsed }) => {
               onClick={() => setActive(item.key)}
               key={idx}
             >
-              {" "}
               {item.icon}
               {!isCollapsed && item.title}
             </button>

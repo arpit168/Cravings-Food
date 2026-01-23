@@ -1,4 +1,4 @@
-import React, { useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import UserSideBar from "../../components/userDashboard/UserSidebar";
 // import UserOverview from "../../components/userDashboard/userOverview";
 import UserOverview from "../../components/userDashboard/UserOverview";
@@ -24,10 +24,10 @@ const UserDashboard = () => {
     <>
       <div className="w-full md:h-[90vh] md:flex md:overflow-hidden">
         <div
-          className={`bg-blue-950 text-white duration-300 absolute md:h-screen   ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60 z-10  "}  `}
+          className={`bg-blue-950 text-white duration-300 absolute md:h-screen lg:h-screen ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60 z-10  "}  `}
         >
           {size.width < 645 ? (
-            <UserBottombar
+            <UserBottombar 
               active={active}
               setActive={setActive}
               isCollapsed={isCollapsed}
@@ -43,7 +43,9 @@ const UserDashboard = () => {
           )}
         </div>
         {/* Main content */}
-        <div className={`w-57/60 ms-auto  overflow-auto duration-300 ${isCollapsed?"":"overflow-hidden  opacity-50"}`} >
+        <div
+          className={`w-57/60 ms-auto  overflow-auto duration-300 ${isCollapsed ? "" : "overflow-hidden  opacity-50"}`}
+        >
           {active === "overview" && <UserOverview />}
           {active === "profile" && <UserProfile />}
           {active === "orders" && <UserOrders />}
