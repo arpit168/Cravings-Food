@@ -1,9 +1,8 @@
 import axios from "axios";
 
 const axiosInstance = axios.create({
-    // baseURL:"http://localhost:4500",
-    baseURL:"https://cravings-food.onrender.com",
-    withCredentials:true,
-})
+  baseURL: import.meta.env.VITE_BACKEND_BASE_URL,
+  withCredentials: true,
+});
 
 export default axiosInstance;

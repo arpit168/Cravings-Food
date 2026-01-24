@@ -16,9 +16,8 @@ export const genToken = (user, res) => {
     res.cookie("parleG", token, {
       maxAge: 1000 * 60 * 60 * 24,
       httpOnly: true,
-      secure: false,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: process.env.NODE_ENV !== "development" ? "lax" : "None",
     });
   } catch (error) {
     throw error;
