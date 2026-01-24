@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import EditProfileModal from "./modals/EditProfileModal";
 
-
 const UserProfile = () => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
-  const { user, setUser } = useAuth();
+  const { user } = useAuth();
 
   return (
     <>
@@ -20,7 +19,7 @@ const UserProfile = () => {
           {/* Profile Card */}
           <div className="bg-white rounded-xl shadow-sm border p-6 flex flex-col items-center text-center">
             <div className="md:w-28 w-14 md:h-28 h-14 rounded-full bg-[#161E54] text-white flex items-center justify-center  text-2xl font-semibold">
-             {user.fullName}
+              AG
             </div>
 
             <h2 className="mt-4 text-xl font-semibold text-gray-800">
@@ -29,9 +28,10 @@ const UserProfile = () => {
 
             <p className="text-gray-500 text-sm">{user.email}</p>
 
-            <input type="file" className="mt-4 text-sm text-[#F16D34] ms-20 hover:underline"/>
-             
-            
+            <input
+              type="file"
+              className="mt-4 text-sm text-[#F16D34] ms-20 hover:underline"
+            />
           </div>
 
           {/* Profile Form */}
@@ -41,69 +41,51 @@ const UserProfile = () => {
             </h2>
 
             <form className="space-y-4">
-              <div className="grid grid-cols-1 gap-6">
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">
+              <div className="grid grid-cols-1 gap-6 border-t pt-6">
+                <div className="flex flex-col ">
+                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase ">
                     Full Name
                   </label>
-                  <input
-                  onClick={() => setIsEditProfileModalOpen(true)}
-                    type="text"
-                    name="name"
-                    value={user.fullName}
-                    disabled
-                    className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#161E54] outline-none cursor-not-allowed"
-                  />
+                  <span className="text-lg text-gray-800 font-medium border p-2 rounded">
+                    {user.fullName}
+                  </span>
                 </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">
-                    Email Address
+                <div className="flex flex-col ">
+                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase ">
+                    Email
                   </label>
-                  <input
-                  onClick={() => setIsEditProfileModalOpen(true)}
-                    type="email"
-                    name="email"
-                    value={user.email}
-                    disabled
-                    className="w-full border rounded-lg px-4 py-2 bg-gray-100 cursor-not-allowed"
-                  />
+                  <span className="text-lg text-gray-800 font-medium break-all border p-2 rounded">
+                    {user.email}
+                  </span>
                 </div>
 
-                <div>
-                  <label className="block text-sm text-gray-600 mb-1">
+                <div className="flex flex-col">
+                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
                     Phone Number
                   </label>
-                  <input
-                  onClick={() => setIsEditProfileModalOpen(true)}
-                    type="text"
-                    name="phone"
-                    value={user.mobileNumber}
-
-                    disabled
-                    className="w-full border rounded-lg px-4 py-2 focus:ring-2 focus:ring-[#161E54] outline-none cursor-not-allowed"
-                  />
+                  <span className="text-lg text-gray-800 font-medium border p-2 rounded">
+                    {user.mobileNumber}
+                  </span>
                 </div>
               </div>
 
-             
-                <button
+              <button
                 type="button"
-                  className="border px-4 py-2 bg-indigo-700  text-white"
-                  onClick={() => setIsEditProfileModalOpen(true)}
-                >
-                  Edit Profile
-                </button>
-              
+                className="border px-4 py-2 bg-indigo-700  text-white hover:outline-red-400"
+                onClick={() => setIsEditProfileModalOpen(true)}
+              >
+                Edit Profile
+              </button>
             </form>
           </div>
-           {isEditProfileModalOpen && (
-        <EditProfileModal onClose={() => setIsEditProfileModalOpen(false)} />
-      )}
+          {isEditProfileModalOpen && (
+            <EditProfileModal
+              onClose={() => setIsEditProfileModalOpen(false)}
+            />
+          )}
         </div>
       </div>
-
-
     </>
   );
 };

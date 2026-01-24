@@ -11,17 +11,7 @@ export const UserUpdate = async (req, res, next) => {
       return next(error);
     }
 
-    console.log("OldData: ", currentUser); //old user data in JSON format
-
-    //first Way
-    // currentUser.fullName = fullName;
-    // currentUser.email = email;
-    // currentUser.mobileNumber = mobileNumber;
-    // await currentUser.save();
-
-    // console.log("NewData:", currentUser);
-
-    //Second Way
+    console.log("OldData: ", currentUser); 
 
     const updateUser = await User.findByIdAndUpdate(
       { _id: currentUser._id },

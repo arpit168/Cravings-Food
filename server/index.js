@@ -14,6 +14,7 @@ const app = express();
 
 app.use(cors({ origin: ["http://localhost:5173","http://192.168.0.141:5173","https://cravings-food-by-arpit.netlify.app"], credentials:true}));
 app.use(express.json());
+app.use(cookieParser())
 app.use(morgan("dev"));
 
 app.use("/auth", AuthRouter);

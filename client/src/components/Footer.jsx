@@ -93,7 +93,7 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t  border-gray-700 mt-10 pt-6 flex justify-between text-sm">
+        <div className="border-t  border-gray-700 md:mb-1 mb-5 mt-10 pt-6 flex justify-between text-sm">
           <span>
             © {new Date().getFullYear()} Craving.com. All rights reserved.
           </span>
