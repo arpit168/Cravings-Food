@@ -6,7 +6,7 @@ import Lottie from "lottie-react";
 import api from "../../../config/Api";
 
 const EditProfileModal = ({ onClose }) => {
-  const { user, setUser } = useAuth();
+  const { user, setUser,setIsLogin} = useAuth();
   const [formData,setFormData]=useState({
     fullName:user.fullName,
     email:user.email,
@@ -109,6 +109,7 @@ const EditProfileModal = ({ onClose }) => {
                 <button
                   type="submit"
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+                  
                 >
                   Save Changes
                 </button>
