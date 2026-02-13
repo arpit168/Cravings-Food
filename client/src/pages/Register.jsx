@@ -198,14 +198,14 @@ const Register = () => {
                       disabled={isLoading}
                       className="w-full h-fit px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500 transition  disabled:cursor-not-allowed disabled:bg-gray-200"
                     />
-                    {validationError.ConfirmPassword && (
+                    {validationError.confirmPassword && (
                       <span className="text-xs text-red-500 float-end">
                         {validationError.confirmPassword}
                       </span>
                     )}
                   </div>
                 </div>
-                '{/* Submit Button */}
+                {/* Submit Button */}
                 <div className="flex gap-4 pt-8 border-t-2 border-gray-200">
                   <button
                     disabled={isLoading}
