@@ -24,7 +24,7 @@ const UserDashboard = () => {
     <>
       <div className="w-full md:h-[90vh] md:flex md:overflow-hidden">
         <div
-          className={`bg-blue-950 text-white duration-300 absolute md:h-screen lg:h-screen ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60 z-10  "}  `}
+          className={`bg-blue-950 text-white duration-300  md:h-screen lg:h-screen ${isCollapsed ? "w-3/60   overflow-hidden" : "w-10/60 z-10  "}  `}
         >
           {size.width < 645 ? (
             <UserBottombar 

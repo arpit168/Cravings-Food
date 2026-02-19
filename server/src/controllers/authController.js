@@ -51,10 +51,7 @@ export const UserRegister = async (req, res, next) => {
   }
 };
 
-
-
 // ---------------------------------Login----------------------------
-
 
 export const UserLogin = async (req, res, next) => {
   try {
@@ -94,6 +91,8 @@ export const UserLogin = async (req, res, next) => {
     next(error);
   }
 };
+
+// ---------------------Logout-------------------
 
 export const UserLogout = async (req, res, next) => {
   try {

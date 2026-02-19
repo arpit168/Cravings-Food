@@ -7,7 +7,7 @@ export const Protect = async (req, res, next) => {
     console.log("Token recived in Cookies:", biscut);
 
     const tea = jwt.verify(biscut, process.env.JWT_SECRET);
-    
+
     console.log(tea);
     if (!tea) {
       const error = new Error("Unauthorized! Please Login Again");
@@ -23,7 +23,7 @@ export const Protect = async (req, res, next) => {
     }
 
     req.user = verifiedUser;
-   
+
     next();
   } catch (error) {
     next(error);

@@ -15,7 +15,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "http://192.168.0.141:5173",
+      "http://192.168.137.1:5173",
       "https://cravings-food-by-arpit.netlify.app",
     ],
     credentials: true,
