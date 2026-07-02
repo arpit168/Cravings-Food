@@ -4,99 +4,105 @@ import { genToken } from "../utils/authToken.js";
 
 export const UserRegister = async (req, res, next) => {
   try {
-    // accept all from frontend
-    const { fullName, email, mobileNumber, password } = req.body;
+    const { fullName, email, mobileNumber, password, role } = req.body;
 
     if (!fullName || !email || !mobileNumber || !password) {
-      const error = new Error("All fields required");
+      const error = new Error("All required fields must be provided.");
       error.statusCode = 400;
       return next(error);
     }
 
-    console.log({ fullName, email, mobileNumber, password });
-
-    // check for duplicate user before registration
-
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (existingUser) {
-      const error = new Error("Email already registered");
+      const error = new Error("An account with this email already exists.");
       error.statusCode = 409;
       return next(error);
     }
 
-    // encrypt the password
-
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
-    // save data to database
+    const validRoles = ["customer", "restaurant_owner", "delivery_partner", "admin"];
+    const userRole = validRoles.includes(role) ? role : "customer";
 
     const newUser = await User.create({
-      fullName,
-      email,
-      mobileNumber,
+      fullName: fullName.trim(),
+      email: email.toLowerCase().trim(),
+      mobileNumber: mobileNumber.trim(),
       password: hashPassword,
+      role: userRole,
     });
 
-    // Send response to frontend
-    console.log(newUser);
+    const token = genToken(newUser, res);
 
-    res.status(201).json({ message: "Registration Successful" });
+    const userResponse = newUser.toObject();
+    delete userResponse.password;
 
-    // End
+    res.status(201).json({
+      message: "Registration successful! Welcome to Cravings.",
+      data: userResponse,
+      token,
+    });
   } catch (error) {
-    console.log(error);
-
     next(error);
   }
 };
 
-// ---------------------------------Login----------------------------
-
 export const UserLogin = async (req, res, next) => {
   try {
-    // Fetch data from frontend
     const { email, password } = req.body;
 
     if (!email || !password) {
-      const error = new Error("All fields required");
+      const error = new Error("Email and password are required.");
       error.statusCode = 400;
       return next(error);
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
     if (!existingUser) {
-      const error = new Error("Email not registered");
+      const error = new Error("Invalid email or password.");
       error.statusCode = 401;
       return next(error);
-      console.log(existingUser);
     }
-
-    // verify the password
 
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
-      const error = new Error("Password didn't match");
+      const error = new Error("Invalid email or password.");
       error.statusCode = 401;
       return next(error);
-      console.log(isVerified);
     }
 
-    // Token Generation will be done here
-    genToken(existingUser, res);
+    const token = genToken(existingUser, res);
 
-    // send message to frontend
-    res.status(200).json({ message: "Login Successful", data: existingUser });
+    const userResponse = existingUser.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({
+      message: "Login successful!",
+      data: userResponse,
+      token,
+    });
   } catch (error) {
     next(error);
   }
 };
 
-// ---------------------Logout-------------------
-
 export const UserLogout = async (req, res, next) => {
   try {
-    res.status(200).json({ message: "Logout Successful" });
+    res.clearCookie("parleG", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    });
+    res.status(200).json({ message: "Logged out successfully." });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const GetMe = async (req, res, next) => {
+  try {
+    res.status(200).json({ data: req.user });
   } catch (error) {
     next(error);
   }

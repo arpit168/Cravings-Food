@@ -1,25 +1,80 @@
 @import "tailwindcss";
 
-:root {
- font-family: serif;
+@layer base {
+  :root {
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    
+    /* Light Theme Tokens */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #f1f5f9;
+    
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    
+    --border-color: #e2e8f0;
+    
+    --brand-primary: #fc8019; /* Swiggy / Gourmet Orange */
+    --brand-primary-hover: #e66e0a;
+    --brand-light: #fff7ed;
+    
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+    --info: #3b82f6;
+  }
 
-  
-  /* Primary */
-  --color-primary: #161E54;
-  --color-primary-hover: #0F163F;
-
-  /* Secondary */
-  --color-secondary: #F16D34;
-  --color-secondary-hover: #D85F2E;
-
-  /* Background & Text */
-  --color-background: #BBE0EF;
-  --color-text: #161E54;
-
-  /* Accent */
-  --color-accent: #FF986A;
-
+  .dark {
+    /* Dark Theme Tokens */
+    --bg-primary: #090d16;
+    --bg-secondary: #0f172a;
+    --bg-surface: #131c31;
+    --bg-card: #1e293b;
+    --bg-hover: #334155;
+    
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #64748b;
+    
+    --border-color: #334155;
+    
+    --brand-primary: #ff8c33;
+    --brand-primary-hover: #fc8019;
+    --brand-light: #2b1a12;
+    
+    --success: #34d399;
+    --warning: #fbbf24;
+    --danger: #f87171;
+    --info: #60a5fa;
+  }
 }
 
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
+}
 
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
 
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-muted);
+}
