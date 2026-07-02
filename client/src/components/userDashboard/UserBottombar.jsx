@@ -1,43 +1,34 @@
 import React from "react";
-import { TbChartTreemap } from "react-icons/tb";
-import { ImProfile } from "react-icons/im";
-import { TiShoppingCart } from "react-icons/ti";
-import { TbTransactionRupee } from "react-icons/tb";
-import { RiCustomerService2Fill } from "react-icons/ri";
-import { GiHamburgerMenu } from "react-icons/gi";
-import { RxCross2 } from "react-icons/rx";
+import { LayoutDashboard, User, ShoppingBag, CreditCard, LifeBuoy } from "lucide-react";
 
-const UserBottombar = ({ active, setActive, isCollapsed, setIsCollapsed }) => {
+const UserBottombar = ({ active, setActive }) => {
   const menuItems = [
-    { key: "overview", title: "Overview", icon: <TbChartTreemap /> },
-    { key: "profile", title: "Profiles", icon: <ImProfile /> },
-    { key: "orders", title: "Order", icon: <TiShoppingCart /> },
-    { key: "transactions", title: "Transaction", icon: <TbTransactionRupee /> },
-    { key: "helpdesk", title: "Help Desk", icon: <RiCustomerService2Fill /> },
+    { key: "overview", title: "Overview", icon: LayoutDashboard },
+    { key: "profile", title: "Profile", icon: User },
+    { key: "orders", title: "Orders", icon: ShoppingBag },
+    { key: "transactions", title: "Wallet", icon: CreditCard },
+    { key: "helpdesk", title: "Support", icon: LifeBuoy },
   ];
 
   return (
-    <>
-      <div className=" fixed bottom-0 bg-(--color-primary) w-full  flex z-99 py-3">
-        <div className="py-1 space-y-3  w-full flex ">
-          {menuItems.map((item, idx) => (
-            <button
-              className={`flex justify-center m-auto gap-3 items-center  text-lg  rounded-xl h-10 w-full  overflow-hidden duration-300
-                ${
-                  active === item.key
-                    ? "bg-blue-800 text-white "
-                    : " "
-                } 
-              `}
-              onClick={() => setActive(item.key)}
-              key={idx}
-            >
-              {item.icon}
-            </button>
-          ))}
-        </div>
-      </div>
-    </>
+    <div className="flex items-center justify-around py-3 px-2 bg-surface border-b border-border">
+      {menuItems.map((item) => {
+        const Icon = item.icon;
+        const isSelected = active === item.key;
+        return (
+          <button
+            key={item.key}
+            onClick={() => setActive(item.key)}
+            className={`flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition cursor-pointer ${
+              isSelected ? "bg-primary text-white shadow-md" : "text-text-secondary hover:text-primary"
+            }`}
+          >
+            <Icon size={18} />
+            <span className="text-[10px] font-black uppercase tracking-wider">{item.title}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 };
 

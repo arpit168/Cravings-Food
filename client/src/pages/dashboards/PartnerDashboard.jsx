@@ -65,16 +65,18 @@ const PartnerDashboard = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-background transition-colors duration-300">
+      {/* Banner */}
+      <div className="bg-surface p-8 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-xs">
         <div className="space-y-1">
-          <span className="px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider">
-            Delivery Partner Portal
+          <span className="px-3.5 py-1 rounded-full bg-success/10 text-success font-bold text-xs uppercase tracking-wider">
+            Rider Telemetry Console
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black">Rider {user?.fullName || "Express"}</h1>
-          <p className="text-sm text-white/90">
-            Earn ₹40 per delivery + 100% customer tips deposited instantly to your wallet.
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            Delivery Fleet Terminal
+          </h1>
+          <p className="text-sm text-text-secondary">
+            Rider <strong className="text-primary">{user?.fullName}</strong> • Active Zone: Bandra West GPS
           </p>
         </div>
 
@@ -82,146 +84,157 @@ const PartnerDashboard = () => {
           <button
             onClick={() => {
               setIsOnline(!isOnline);
-              toast.success(`You are now ${!isOnline ? "ONLINE" : "OFFLINE"}`);
+              toast.success(`Status shifted to ${!isOnline ? "ONLINE" : "OFFLINE"}`);
             }}
-            className={`px-5 py-2.5 rounded-2xl font-black text-xs uppercase tracking-wider shadow transition ${
-              isOnline ? "bg-green-500 text-white animate-pulse" : "bg-slate-700 text-slate-300"
+            className={`px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer ${
+              isOnline
+                ? "bg-success text-white shadow-success/30"
+                : "bg-muted text-text-muted border border-border"
             }`}
           >
-            {isOnline ? "🟢 ON DUTY" : "🔴 OFF DUTY"}
+            {isOnline ? "● Online & Ready" : "○ Offline"}
           </button>
+
           <button
             onClick={fetchPartnerData}
-            className="p-2.5 rounded-xl bg-white/20 hover:bg-white/30 transition"
+            className="p-2.5 rounded-xl bg-muted border border-border text-text-secondary hover:text-primary transition cursor-pointer"
           >
-            <RefreshCw size={18} />
+            <RefreshCw size={16} className={loading ? "animate-spin text-primary" : ""} />
           </button>
         </div>
       </div>
 
-      {/* Earnings Stats */}
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center font-bold">
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <DollarSign size={20} />
           </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Available Wallet Balance</p>
-          <p className="text-2xl font-black text-green-600">₹{user?.walletBalance || 1200}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Completed Earnings</p>
+          <p className="text-2xl font-black text-text-primary">₹1,840</p>
         </div>
 
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold">
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
             <Bike size={20} />
           </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Completed Deliveries</p>
-          <p className="text-2xl font-black">{myDeliveries.filter((d) => d.orderStatus === "Delivered").length || 18}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Available Broadcasts</p>
+          <p className="text-2xl font-black text-text-primary">{availableOrders.length} Orders</p>
         </div>
 
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-purple-500/10 text-purple-500 flex items-center justify-center font-bold">
-            <ShieldCheck size={20} />
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
+            <CheckCircle2 size={20} />
           </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Rider Rating</p>
-          <p className="text-2xl font-black">4.9 ⭐</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Active Deliveries</p>
+          <p className="text-2xl font-black text-text-primary">{myDeliveries.length} Ongoing</p>
         </div>
       </div>
 
-      {/* Available Orders Broadcast */}
-      <div className="space-y-6">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <Navigation className="text-blue-500" /> Available Delivery Broadcast Queue
-        </h2>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Available Orders */}
+        <div className="space-y-4">
+          <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
+            <Navigation className="text-primary" /> Live Pickup Requests ({availableOrders.length})
+          </h2>
 
-        {availableOrders.length === 0 ? (
-          <div className="bg-(--bg-surface) p-8 rounded-3xl border border-(--border-color) text-center space-y-2">
-            <p className="font-bold">No new broadcast orders ready right now</p>
-            <p className="text-xs text-(--text-muted)">Orders will appear automatically when restaurants finish cooking.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {availableOrders.map((ord) => (
-              <div key={ord._id} className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-4 shadow-sm">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <span className="px-2.5 py-0.5 rounded bg-blue-500/10 text-blue-600 font-bold text-xs">
-                      #{ord.orderId}
+          {availableOrders.length === 0 ? (
+            <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
+              <p className="font-bold text-text-primary">No nearby orders currently waiting for rider</p>
+              <p className="text-xs text-text-muted">Stay online in peak areas (Linking Road, Pali Hill) to receive broadcast dispatches.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {availableOrders.map((ord) => (
+                <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="font-black text-xs text-primary">#{ord.orderId || ord._id}</span>
+                      <h4 className="font-bold text-base text-text-primary mt-1">{ord.restaurantId?.name || "Kitchen"}</h4>
+                    </div>
+                    <span className="px-3 py-1 rounded-lg bg-success/10 text-success font-black text-sm">
+                      Earn ₹80
                     </span>
-                    <h3 className="font-bold text-base mt-2">{ord.restaurantId?.name}</h3>
-                    <p className="text-xs text-(--text-muted) flex items-center gap-1 mt-0.5">
-                      <MapPin size={12} /> {ord.restaurantId?.address?.street || "Bandra West"}
+                  </div>
+
+                  <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
+                    <p className="flex items-center gap-2">
+                      <MapPin size={14} className="text-primary" /> Pickup: {ord.restaurantId?.name}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <CheckCircle2 size={14} className="text-success" /> Dropoff: {ord.deliveryAddress?.street}
                     </p>
                   </div>
-                  <span className="font-black text-green-600 text-base">Earn ₹40</span>
-                </div>
 
-                <div className="pt-3 border-t border-(--border-color) flex items-center justify-between">
-                  <span className="text-xs font-semibold text-(--text-secondary)">
-                    Customer: {ord.customerId?.fullName || "Rohan Sharma"}
-                  </span>
                   <button
                     onClick={() => handleAcceptOrder(ord._id)}
-                    className="px-5 py-2 rounded-xl bg-blue-600 text-white font-bold text-xs shadow hover:bg-blue-700 transition"
+                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
                   >
-                    Accept Delivery Job
+                    Accept Delivery Request
                   </button>
                 </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+              ))}
+            </div>
+          )}
+        </div>
 
-      {/* Active Deliveries */}
-      <div className="space-y-6 pt-4">
-        <h2 className="text-xl font-bold flex items-center gap-2">
-          <CheckCircle2 className="text-green-500" /> My Assigned Delivery Jobs
-        </h2>
+        {/* My Deliveries */}
+        <div className="space-y-4">
+          <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
+            <Bike className="text-success" /> My Assigned Deliveries ({myDeliveries.length})
+          </h2>
 
-        {myDeliveries.length === 0 ? (
-          <div className="bg-(--bg-surface) p-8 rounded-3xl border border-(--border-color) text-center space-y-2">
-            <p className="font-bold">You currently have no active deliveries</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {myDeliveries.map((ord) => (
-              <div key={ord._id} className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-4 shadow-sm">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-sm">Order #{ord.orderId}</span>
-                  <span className="px-3 py-1 rounded-full bg-orange-500/10 text-orange-600 font-bold text-xs">
-                    {ord.orderStatus}
-                  </span>
-                </div>
+          {myDeliveries.length === 0 ? (
+            <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
+              <p className="font-bold text-text-primary">You have no active deliveries</p>
+              <p className="text-xs text-text-muted">Accept incoming pickup requests from the left column to begin navigation.</p>
+            </div>
+          ) : (
+            <div className="space-y-4">
+              {myDeliveries.map((ord) => (
+                <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="font-black text-xs text-success">Active Run</span>
+                      <h4 className="font-bold text-base text-text-primary mt-1">Order #{ord.orderId || ord._id}</h4>
+                    </div>
+                    <span className="px-3 py-1 rounded-full bg-info/10 text-info font-bold text-xs uppercase">
+                      {ord.orderStatus}
+                    </span>
+                  </div>
 
-                <div className="space-y-1 text-xs">
-                  <p><strong className="text-(--text-primary)">Pickup:</strong> {ord.restaurantId?.name}</p>
-                  <p><strong className="text-(--text-primary)">Drop:</strong> {ord.deliveryAddress?.street}</p>
-                  <p><strong className="text-(--text-primary)">Amount:</strong> ₹{ord.pricing?.totalAmount} ({ord.paymentMethod})</p>
-                </div>
+                  <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
+                    <p className="flex items-center gap-2">
+                      <MapPin size={14} className="text-primary" /> Dropoff: {ord.deliveryAddress?.street}
+                    </p>
+                    <p className="flex items-center gap-2">
+                      <Clock size={14} className="text-info" /> Total Bill: ₹{ord.pricing?.totalAmount} ({ord.paymentMethod})
+                    </p>
+                  </div>
 
-                {ord.orderStatus !== "Delivered" && (
-                  <div className="pt-3 border-t border-(--border-color) flex gap-2">
-                    {ord.orderStatus === "Ready for Pickup" && (
+                  <div className="flex gap-3">
+                    {ord.orderStatus !== "Out for Delivery" && (
                       <button
                         onClick={() => handleUpdateDeliveryStatus(ord._id, "Out for Delivery")}
-                        className="flex-1 py-2 rounded-xl bg-orange-600 text-white font-bold text-xs"
+                        className="flex-1 py-3 rounded-xl bg-info text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
                       >
-                        Picked Up (Out for Delivery)
+                        Picked Up
                       </button>
                     )}
-                    {ord.orderStatus === "Out for Delivery" && (
+                    {ord.orderStatus !== "Delivered" && (
                       <button
                         onClick={() => handleUpdateDeliveryStatus(ord._id, "Delivered")}
-                        className="flex-1 py-2 rounded-xl bg-green-600 text-white font-bold text-xs"
+                        className="flex-1 py-3 rounded-xl bg-success text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
                       >
-                        Complete Delivery (+₹40)
+                        Mark Delivered
                       </button>
                     )}
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        )}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,92 +1,89 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import EditProfileModal from "./modals/EditProfileModal";
+import { User, Mail, Phone, Edit3, ShieldCheck } from "lucide-react";
 
 const UserProfile = () => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const { user } = useAuth();
 
   return (
-    <>
-      <div className="min-h-screen bg-gray-50 p-6">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#161E54]">My Profile</h1>
-          <p className="text-gray-500 mt-1">Manage your personal information</p>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="bg-surface p-8 rounded-3xl border border-border flex justify-between items-center shadow-xs">
+        <div>
+          <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
+            Account Management
+          </span>
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">My Profile & Preferences</h1>
+          <p className="text-sm text-text-secondary">View and customize your personal contact credentials</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Profile Card */}
-          <div className="bg-white rounded-xl shadow-sm border p-6 flex flex-col items-center text-center">
-            <div className="md:w-28 w-14 md:h-28 h-14 rounded-full bg-[#161E54] text-white flex items-center justify-center  text-2xl font-semibold">
-              AG
+        <button
+          onClick={() => setIsEditProfileModalOpen(true)}
+          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider shadow-md transition cursor-pointer"
+        >
+          <Edit3 size={16} /> Edit Profile
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Profile Card */}
+        <div className="bg-surface rounded-3xl border border-border p-8 flex flex-col items-center text-center space-y-4 shadow-xs self-start">
+          <div className="w-28 h-28 rounded-full bg-primary text-white flex items-center justify-center text-4xl font-black shadow-xl shadow-primary/25 border-4 border-surface">
+            {user?.fullName?.[0]?.toUpperCase() || "U"}
+          </div>
+
+          <div className="space-y-1">
+            <h2 className="text-xl font-black text-text-primary">{user?.fullName}</h2>
+            <p className="text-xs font-semibold text-text-muted">{user?.email}</p>
+          </div>
+
+          <div className="w-full pt-4 border-t border-border flex items-center justify-between text-xs font-bold text-text-secondary">
+            <span>Account Role</span>
+            <span className="px-2.5 py-1 rounded-md bg-muted text-primary uppercase font-black">{user?.role}</span>
+          </div>
+        </div>
+
+        {/* Profile Form / Details */}
+        <div className="lg:col-span-2 bg-surface rounded-3xl border border-border p-8 space-y-6 shadow-xs">
+          <h2 className="text-lg font-black text-text-primary border-b border-border pb-4">Personal Information</h2>
+
+          <div className="space-y-6">
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase text-text-muted flex items-center gap-1.5">
+                <User size={14} className="text-primary" /> Full Name
+              </label>
+              <div className="p-4 rounded-2xl bg-background border border-border text-text-primary font-bold text-base">
+                {user?.fullName || "Not Specified"}
+              </div>
             </div>
 
-            <h2 className="mt-4 text-xl font-semibold text-gray-800">
-              {user.fullName}
-            </h2>
-
-            <p className="text-gray-500 text-sm">{user.email}</p>
-
-            <input
-              type="file"
-              className="mt-4 text-sm text-[#F16D34] ms-20 hover:underline"
-            />
-          </div>
-
-          {/* Profile Form */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-sm border p-6">
-            <h2 className="text-xl font-semibold text-[#161E54] mb-6">
-              Personal Details
-            </h2>
-
-            <form className="space-y-4">
-              <div className="grid grid-cols-1 gap-6 border-t pt-6">
-                <div className="flex flex-col ">
-                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase ">
-                    Full Name
-                  </label>
-                  <span className="text-lg text-gray-800 font-medium border p-2 rounded">
-                    {user.fullName}
-                  </span>
-                </div>
-
-                <div className="flex flex-col ">
-                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase ">
-                    Email
-                  </label>
-                  <span className="text-lg text-gray-800 font-medium break-all border p-2 rounded">
-                    {user.email}
-                  </span>
-                </div>
-
-                <div className="flex flex-col">
-                  <label className="text-sm font-semibold text-gray-600 mb-2 uppercase tracking-wide">
-                    Phone Number
-                  </label>
-                  <span className="text-lg text-gray-800 font-medium border p-2 rounded">
-                    {user.mobileNumber}
-                  </span>
-                </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase text-text-muted flex items-center gap-1.5">
+                <Mail size={14} className="text-primary" /> Email Address
+              </label>
+              <div className="p-4 rounded-2xl bg-background border border-border text-text-primary font-bold text-base break-all">
+                {user?.email || "Not Specified"}
               </div>
+            </div>
 
-              <button
-                type="button"
-                className="border px-4 py-2 bg-indigo-700  text-white hover:outline-red-400"
-                onClick={() => setIsEditProfileModalOpen(true)}
-              >
-                Edit Profile
-              </button>
-            </form>
+            <div className="space-y-1.5">
+              <label className="text-xs font-bold uppercase text-text-muted flex items-center gap-1.5">
+                <Phone size={14} className="text-primary" /> Mobile Number
+              </label>
+              <div className="p-4 rounded-2xl bg-background border border-border text-text-primary font-bold text-base">
+                {user?.mobileNumber || "+91 9876543210"}
+              </div>
+            </div>
           </div>
-          {isEditProfileModalOpen && (
-            <EditProfileModal
-              onClose={() => setIsEditProfileModalOpen(false)}
-            />
-          )}
         </div>
       </div>
-    </>
+
+      {isEditProfileModalOpen && (
+        <EditProfileModal onClose={() => setIsEditProfileModalOpen(false)} />
+      )}
+    </div>
   );
 };
 
