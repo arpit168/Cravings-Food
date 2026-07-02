@@ -61,6 +61,7 @@ const OwnerDashboard = () => {
   };
 
   const [isStoreOpen, setIsStoreOpen] = useState(true);
+  const [payoutAmount, setPayoutAmount] = useState("");
 
   const handleToggleStore = async () => {
     try {
@@ -83,6 +84,36 @@ const OwnerDashboard = () => {
       }
     } catch (error) {
       toast.error("Failed to update order status");
+    }
+  };
+
+  const handleToggleItemAvailability = async (itemId) => {
+    try {
+      const res = await api.put(`/restaurants/owner/menu/${itemId}/availability`);
+      if (res.data && res.data.success) {
+        toast.success(res.data.message);
+        fetchOwnerData();
+      }
+    } catch (error) {
+      toast.error("Failed to update dish availability");
+    }
+  };
+
+  const handleRequestPayout = async (e) => {
+    e.preventDefault();
+    if (!payoutAmount || Number(payoutAmount) <= 0) {
+      toast.error("Enter a valid payout amount");
+      return;
+    }
+    try {
+      const res = await api.post("/restaurants/owner/payout", { amount: Number(payoutAmount) });
+      if (res.data && res.data.success) {
+        toast.success(res.data.message);
+        setPayoutAmount("");
+        fetchOwnerData();
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.message || "Error requesting payout");
     }
   };
 
@@ -184,26 +215,36 @@ const OwnerDashboard = () => {
       </div>
 
       {/* Navigation Tabs */}
-      <div className="flex gap-3 border-b border-border pb-3">
+      <div className="flex gap-3 border-b border-border pb-3 overflow-x-auto">
         <button
           onClick={() => setActiveTab("orders")}
-          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             activeTab === "orders"
               ? "bg-primary text-white shadow-md"
               : "bg-surface border border-border text-text-secondary hover:border-primary/50"
           }`}
         >
-          Kitchen Orders Queue
+          Kitchen Orders Queue ({kitchenOrders.length})
         </button>
         <button
           onClick={() => setActiveTab("menu")}
-          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             activeTab === "menu"
               ? "bg-primary text-white shadow-md"
               : "bg-surface border border-border text-text-secondary hover:border-primary/50"
           }`}
         >
           Menu & Dish Management ({menuItems.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("payouts")}
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+            activeTab === "payouts"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
+          }`}
+        >
+          Financial Ledger & Payouts
         </button>
       </div>
 
@@ -234,9 +275,14 @@ const OwnerDashboard = () => {
                       {ord.items?.map((i) => `${i.quantity}x ${i.name}`).join(", ") || "Custom Order"}
                     </h3>
                     <p className="font-black text-primary">₹{ord.pricing?.totalAmount || 0}</p>
+                    {ord.specialInstructions && (
+                      <p className="text-xs bg-amber-500/10 text-amber-500 p-2 rounded-lg font-semibold mt-1">
+                        Note: {ord.specialInstructions}
+                      </p>
+                    )}
                   </div>
 
-                  <div className="flex items-center gap-3 self-end sm:self-center">
+                  <div className="flex flex-wrap items-center gap-3 self-end sm:self-center">
                     <span
                       className={`px-3 py-1 rounded-full font-black text-xs uppercase tracking-wider ${
                         ord.orderStatus === "Preparing" || ord.orderStatus === "Placed"
@@ -249,12 +295,29 @@ const OwnerDashboard = () => {
                       {ord.orderStatus}
                     </span>
 
-                    {(ord.orderStatus === "Placed" || ord.orderStatus === "Preparing") && (
+                    {ord.orderStatus === "Placed" && (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => handleUpdateOrderStatus(ord._id, "Preparing")}
+                          className="px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-hover transition cursor-pointer"
+                        >
+                          Accept & Prepare
+                        </button>
+                        <button
+                          onClick={() => handleUpdateOrderStatus(ord._id, "Cancelled")}
+                          className="px-4 py-2 rounded-xl bg-danger/10 text-danger border border-danger/20 font-bold text-xs hover:bg-danger/20 transition cursor-pointer"
+                        >
+                          Reject
+                        </button>
+                      </div>
+                    )}
+
+                    {ord.orderStatus === "Preparing" && (
                       <button
                         onClick={() => handleUpdateOrderStatus(ord._id, "Ready for Pickup")}
                         className="px-4 py-2 rounded-xl bg-success text-white font-bold text-xs hover:bg-success/90 transition cursor-pointer"
                       >
-                        Mark Ready
+                        Mark Ready for Pickup
                       </button>
                     )}
                   </div>
@@ -263,26 +326,41 @@ const OwnerDashboard = () => {
             )}
           </div>
         </div>
-      ) : (
+      ) : activeTab === "menu" ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Menu List */}
           <div className="lg:col-span-2 bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xs">
             <h2 className="text-lg font-black text-text-primary">Published Kitchen Dishes</h2>
             <div className="divide-y divide-border">
               {menuItems.map((item) => (
-                <div key={item._id} className="py-4 flex justify-between items-center gap-4">
+                <div key={item._id} className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0 border border-border" />
                     <div className="min-w-0">
-                      <h4 className="font-bold text-sm text-text-primary truncate">{item.name}</h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="font-bold text-sm text-text-primary truncate">{item.name}</h4>
+                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                          item.isVeg ? "bg-success/10 text-success" : "bg-danger/10 text-danger"
+                        }`}>
+                          {item.isVeg ? "Veg" : "Non-Veg"}
+                        </span>
+                      </div>
                       <p className="font-black text-primary text-xs">₹{item.price}</p>
                     </div>
                   </div>
-                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                    item.isVeg ? "bg-success/10 text-success" : "bg-danger/10 text-danger"
-                  }`}>
-                    {item.isVeg ? "Veg" : "Non-Veg"}
-                  </span>
+                  <div className="flex items-center gap-3 self-end sm:self-center">
+                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                      item.isAvailable !== false ? "bg-success/10 text-success" : "bg-muted text-text-muted"
+                    }`}>
+                      {item.isAvailable !== false ? "In Stock" : "Sold Out"}
+                    </span>
+                    <button
+                      onClick={() => handleToggleItemAvailability(item._id)}
+                      className="px-3 py-1.5 rounded-xl border border-border text-xs font-bold hover:bg-muted transition cursor-pointer"
+                    >
+                      Toggle Stock
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -350,6 +428,59 @@ const OwnerDashboard = () => {
               className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider shadow-md transition cursor-pointer"
             >
               Add Dish to Kitchen
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
+            <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
+              <DollarSign className="text-success" /> Financial Payout Ledger
+            </h2>
+            <div className="p-6 rounded-2xl bg-primary/10 border border-primary/20 space-y-2">
+              <span className="text-xs font-bold uppercase text-primary">Available Settlement Balance</span>
+              <p className="text-3xl sm:text-4xl font-black text-primary">
+                ₹{myRestaurants[0]?.walletBalance || 0}
+              </p>
+              <p className="text-xs text-text-secondary">
+                Standard platform commission is deducted automatically upon order completion.
+              </p>
+            </div>
+            <div className="space-y-3 pt-2">
+              <div className="flex justify-between text-sm font-semibold">
+                <span className="text-text-secondary">Commission Tier</span>
+                <span className="text-text-primary font-bold">{myRestaurants[0]?.commissionPercentage || 15}%</span>
+              </div>
+              <div className="flex justify-between text-sm font-semibold">
+                <span className="text-text-secondary">Settlement Cycle</span>
+                <span className="text-text-primary font-bold">24 Hours (NEFT / UPI)</span>
+              </div>
+            </div>
+          </div>
+
+          <form onSubmit={handleRequestPayout} className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl">
+            <h3 className="font-black text-lg text-text-primary">Request Fund Transfer</h3>
+            <p className="text-xs text-text-secondary">
+              Transfer verified earnings directly to your registered business bank account.
+            </p>
+            <div>
+              <label className="text-xs font-bold uppercase text-text-muted">Withdrawal Amount (₹)</label>
+              <input
+                type="number"
+                required
+                min="1"
+                max={myRestaurants[0]?.walletBalance || 0}
+                value={payoutAmount}
+                onChange={(e) => setPayoutAmount(e.target.value)}
+                placeholder="Enter amount to withdraw"
+                className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-sm text-text-primary outline-none focus:border-primary transition font-bold"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-4 rounded-xl bg-success hover:bg-success/90 text-white font-black text-xs uppercase tracking-wider shadow-lg transition cursor-pointer"
+            >
+              Submit Payout Request
             </button>
           </form>
         </div>

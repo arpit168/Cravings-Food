@@ -12,7 +12,17 @@ export const createOrder = async (req, res, next) => {
       return next(error);
     }
 
-    let itemTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const formattedItems = items.map((i) => ({
+      menuItemId: i.menuItemId || i.menuItem || i._id,
+      name: i.name || "Gourmet Dish",
+      price: Number(i.price) || 0,
+      quantity: Number(i.quantity) || 1,
+      isVeg: i.isVeg !== undefined ? i.isVeg : true,
+      selectedVariant: i.selectedVariant || {},
+      selectedAddOns: i.selectedAddOns || [],
+    }));
+
+    let itemTotal = formattedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
     let deliveryFee = itemTotal > 499 ? 0 : 40;
     let packagingFee = 20;
     let gst = Math.round(itemTotal * 0.05); // 5% GST
@@ -48,7 +58,7 @@ export const createOrder = async (req, res, next) => {
       orderId,
       customerId: req.user._id,
       restaurantId,
-      items,
+      items: formattedItems,
       pricing: {
         itemTotal,
         deliveryFee,

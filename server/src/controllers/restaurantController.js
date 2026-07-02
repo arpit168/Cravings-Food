@@ -195,6 +195,27 @@ export const updateStoreTiming = async (req, res, next) => {
   }
 };
 
+export const toggleMenuItemAvailability = async (req, res, next) => {
+  try {
+    const { itemId } = req.params;
+    const item = await MenuItem.findById(itemId);
+    if (!item) {
+      const error = new Error("Menu item not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+    item.isAvailable = !item.isAvailable;
+    await item.save();
+    res.status(200).json({
+      success: true,
+      message: `${item.name} is now ${item.isAvailable ? "Available" : "Sold Out"}`,
+      data: item,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const requestOwnerPayout = async (req, res, next) => {
   try {
     const { amount } = req.body;

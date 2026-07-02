@@ -56,19 +56,19 @@ const useCartStore = create((set, get) => ({
     toast.success(`${item.name} added to cart!`);
   },
 
-  updateQuantity: (menuItemId, change) => {
+  updateQuantity: (menuItemId, newQuantity) => {
     const currentItems = get().items;
     const item = currentItems.find((i) => i.menuItemId === menuItemId || i._id === menuItemId);
     if (!item) return;
 
     let newItems;
-    if (item.quantity + change <= 0) {
+    if (newQuantity <= 0) {
       newItems = currentItems.filter((i) => i.menuItemId !== menuItemId && i._id !== menuItemId);
       toast.success("Item removed from cart");
     } else {
       newItems = currentItems.map((i) =>
         i.menuItemId === menuItemId || i._id === menuItemId
-          ? { ...i, quantity: i.quantity + change }
+          ? { ...i, quantity: newQuantity }
           : i
       );
     }
@@ -76,6 +76,20 @@ const useCartStore = create((set, get) => ({
     const newRestaurant = newItems.length === 0 ? null : get().restaurant;
     set({ items: newItems, restaurant: newRestaurant });
     saveCartToStorage({ items: newItems, restaurant: newRestaurant, coupon: get().coupon });
+  },
+
+  incrementItem: (menuItemId) => {
+    const currentItems = get().items;
+    const item = currentItems.find((i) => i.menuItemId === menuItemId || i._id === menuItemId);
+    if (!item) return;
+    get().updateQuantity(menuItemId, item.quantity + 1);
+  },
+
+  decrementItem: (menuItemId) => {
+    const currentItems = get().items;
+    const item = currentItems.find((i) => i.menuItemId === menuItemId || i._id === menuItemId);
+    if (!item) return;
+    get().updateQuantity(menuItemId, item.quantity - 1);
   },
 
   removeItem: (menuItemId) => {
@@ -130,7 +144,9 @@ const useCartStore = create((set, get) => ({
       packagingFee,
       gst,
       discount,
+      discountAmount: discount,
       totalAmount,
+      finalTotal: totalAmount,
       totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
     };
   },

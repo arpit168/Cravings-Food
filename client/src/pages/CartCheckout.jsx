@@ -104,12 +104,16 @@ const CartCheckout = () => {
       const payload = {
         restaurantId: restaurant._id,
         items: items.map((i) => ({
-          menuItem: i._id,
-          quantity: i.quantity,
-          price: i.price,
+          menuItemId: i.menuItemId || i._id,
+          name: i.name || "Delicious Dish",
+          price: Number(i.price) || 0,
+          quantity: Number(i.quantity) || 1,
+          isVeg: i.isVeg !== undefined ? i.isVeg : true,
+          selectedVariant: i.selectedVariant || {},
+          selectedAddOns: i.selectedAddOns || [],
         })),
         deliveryAddress: selectedAddress,
-        paymentMethod,
+        paymentMethod: paymentMethod === "Card" ? "Stripe" : paymentMethod,
         couponCode: coupon?.code || null,
         specialInstructions,
       };

@@ -10,6 +10,7 @@ import {
   toggleStoreStatus,
   updateStoreTiming,
   requestOwnerPayout,
+  toggleMenuItemAvailability,
 } from "../controllers/restaurantController.js";
 import { Protect, AuthorizeRoles } from "../middlewares/authMiddleware.js";
 
@@ -22,6 +23,7 @@ router.put("/owner/orders/:orderId/status", Protect, AuthorizeRoles("restaurant_
 router.put("/owner/toggle-status", Protect, AuthorizeRoles("restaurant_owner", "admin"), toggleStoreStatus);
 router.put("/owner/timing", Protect, AuthorizeRoles("restaurant_owner", "admin"), updateStoreTiming);
 router.post("/owner/payout", Protect, AuthorizeRoles("restaurant_owner", "admin"), requestOwnerPayout);
+router.put("/owner/menu/:itemId/availability", Protect, AuthorizeRoles("restaurant_owner", "admin"), toggleMenuItemAvailability);
 
 router.get("/:id", getRestaurantById);
 router.post("/", Protect, AuthorizeRoles("restaurant_owner", "admin"), createRestaurant);

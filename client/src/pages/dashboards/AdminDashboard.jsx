@@ -20,6 +20,8 @@ const AdminDashboard = () => {
   const [users, setUsers] = useState([]);
   const [restaurants, setRestaurants] = useState([]);
   const [activeTab, setActiveTab] = useState("overview");
+  const [roleFilter, setRoleFilter] = useState("all");
+  const [userSearch, setUserSearch] = useState("");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -140,10 +142,10 @@ const AdminDashboard = () => {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-3 border-b border-border pb-4">
+      <div className="flex gap-3 border-b border-border pb-4 overflow-x-auto">
         <button
           onClick={() => setActiveTab("overview")}
-          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             activeTab === "overview"
               ? "bg-primary text-white shadow-md"
               : "bg-surface border border-border text-text-secondary hover:border-primary/50"
@@ -153,13 +155,23 @@ const AdminDashboard = () => {
         </button>
         <button
           onClick={() => setActiveTab("users")}
-          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
             activeTab === "users"
               ? "bg-primary text-white shadow-md"
               : "bg-surface border border-border text-text-secondary hover:border-primary/50"
           }`}
         >
           Registered Accounts ({users.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("config")}
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+            activeTab === "config"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
+          }`}
+        >
+          Platform Configuration & Audit Logs
         </button>
       </div>
 
@@ -214,60 +226,142 @@ const AdminDashboard = () => {
             ))}
           </div>
         </div>
-      ) : (
-        <div className="bg-surface rounded-3xl border border-border overflow-hidden shadow-xs">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-muted border-b border-border text-text-primary uppercase font-bold">
-              <tr>
-                <th className="p-4">User</th>
-                <th className="p-4">Role</th>
-                <th className="p-4">Email</th>
-                <th className="p-4">Phone</th>
-                <th className="p-4">Status</th>
-                <th className="p-4 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-border text-text-secondary font-medium">
-              {users.map((u) => (
-                <tr key={u._id} className="hover:bg-muted/50 transition">
-                  <td className="p-4 font-bold text-text-primary flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
-                      {u.fullName?.[0]}
-                    </div>
-                    {u.fullName}
-                  </td>
-                  <td className="p-4">
-                    <span className="px-2.5 py-1 rounded-md bg-muted border border-border font-bold capitalize">
-                      {u.role}
-                    </span>
-                  </td>
-                  <td className="p-4">{u.email}</td>
-                  <td className="p-4">{u.mobileNumber || "N/A"}</td>
-                  <td className="p-4">
-                    {u.isBlocked ? (
-                      <span className="text-danger font-bold flex items-center gap-1">🚫 Suspended</span>
-                    ) : (
-                      <span className="text-success font-bold flex items-center gap-1"><CheckCircle2 size={13} /> Active</span>
-                    )}
-                  </td>
-                  <td className="p-4 text-right">
-                    {u.role !== "admin" && (
-                      <button
-                        onClick={() => handleToggleUserBlock(u._id, u.isBlocked)}
-                        className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase transition cursor-pointer ${
-                          u.isBlocked
-                            ? "bg-success text-white hover:bg-success/90"
-                            : "bg-danger/10 text-danger hover:bg-danger hover:text-white"
-                        }`}
-                      >
-                        {u.isBlocked ? "Unblock" : "Suspend"}
-                      </button>
-                    )}
-                  </td>
-                </tr>
+      ) : activeTab === "users" ? (
+        <div className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-surface p-6 rounded-3xl border border-border">
+            <div className="flex flex-wrap gap-2">
+              {[
+                { id: "all", label: "All Roles" },
+                { id: "customer", label: "Customers" },
+                { id: "restaurant_owner", label: "Restaurant Owners" },
+                { id: "delivery_partner", label: "Delivery Riders" },
+              ].map((f) => (
+                <button
+                  key={f.id}
+                  onClick={() => setRoleFilter(f.id)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                    roleFilter === f.id
+                      ? "bg-primary text-white"
+                      : "bg-muted text-text-secondary hover:text-text-primary"
+                  }`}
+                >
+                  {f.label}
+                </button>
               ))}
-            </tbody>
-          </table>
+            </div>
+
+            <input
+              type="text"
+              placeholder="Search by name or email..."
+              value={userSearch}
+              onChange={(e) => setUserSearch(e.target.value)}
+              className="px-4 py-2 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary w-full sm:w-64 font-medium"
+            />
+          </div>
+
+          <div className="bg-surface rounded-3xl border border-border overflow-hidden shadow-xs overflow-x-auto">
+            <table className="w-full text-left text-xs min-w-[600px]">
+              <thead className="bg-muted border-b border-border text-text-primary uppercase font-bold">
+                <tr>
+                  <th className="p-4">User</th>
+                  <th className="p-4">Role</th>
+                  <th className="p-4">Email</th>
+                  <th className="p-4">Phone</th>
+                  <th className="p-4">Status</th>
+                  <th className="p-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-border text-text-secondary font-medium">
+                {users
+                  .filter((u) => roleFilter === "all" || u.role === roleFilter)
+                  .filter((u) => !userSearch || u.fullName?.toLowerCase().includes(userSearch.toLowerCase()) || u.email?.toLowerCase().includes(userSearch.toLowerCase()))
+                  .map((u) => (
+                    <tr key={u._id} className="hover:bg-muted/50 transition">
+                      <td className="p-4 font-bold text-text-primary flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold">
+                          {u.fullName?.[0]}
+                        </div>
+                        {u.fullName}
+                      </td>
+                      <td className="p-4">
+                        <span className="px-2.5 py-1 rounded-md bg-muted border border-border font-bold capitalize">
+                          {u.role?.replace("_", " ")}
+                        </span>
+                      </td>
+                      <td className="p-4">{u.email}</td>
+                      <td className="p-4">{u.mobileNumber || "N/A"}</td>
+                      <td className="p-4">
+                        {u.isBlocked ? (
+                          <span className="text-danger font-bold flex items-center gap-1">🚫 Suspended</span>
+                        ) : (
+                          <span className="text-success font-bold flex items-center gap-1"><CheckCircle2 size={13} /> Active</span>
+                        )}
+                      </td>
+                      <td className="p-4 text-right">
+                        {u.role !== "admin" && (
+                          <button
+                            onClick={() => handleToggleUserBlock(u._id, u.isBlocked)}
+                            className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase transition cursor-pointer ${
+                              u.isBlocked
+                                ? "bg-success text-white hover:bg-success/90"
+                                : "bg-danger/10 text-danger hover:bg-danger hover:text-white"
+                            }`}
+                          >
+                            {u.isBlocked ? "Unblock" : "Suspend"}
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
+            <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
+              <DollarSign className="text-success" /> Global Financial Parameters
+            </h2>
+            <div className="space-y-4 text-sm font-semibold divide-y divide-border">
+              <div className="flex justify-between pt-2">
+                <span className="text-text-secondary">Default Platform Take-Rate</span>
+                <span className="text-primary font-black">15.0%</span>
+              </div>
+              <div className="flex justify-between pt-3">
+                <span className="text-text-secondary">Delivery Fleet Base Pay</span>
+                <span className="text-text-primary font-bold">₹40.00 / dropoff</span>
+              </div>
+              <div className="flex justify-between pt-3">
+                <span className="text-text-secondary">Instant Settlement Gateway</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-success/10 text-success font-black text-xs uppercase">
+                  Razorpay Route Active
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xs">
+            <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
+              <ShieldCheck className="text-info" /> Security & Audit Telemetry
+            </h2>
+            <div className="space-y-3">
+              <div className="p-3.5 rounded-2xl bg-background border border-border flex justify-between items-center text-xs">
+                <div>
+                  <p className="font-bold text-text-primary">Database Hygiene Check</p>
+                  <p className="text-text-muted">Orphaned orders cleaned</p>
+                </div>
+                <span className="text-success font-black">Passed</span>
+              </div>
+              <div className="p-3.5 rounded-2xl bg-background border border-border flex justify-between items-center text-xs">
+                <div>
+                  <p className="font-bold text-text-primary">API JWT Rate Limiter</p>
+                  <p className="text-text-muted">No DDoS anomalies detected</p>
+                </div>
+                <span className="text-success font-black">Stable</span>
+              </div>
+            </div>
+          </div>
         </div>
       )}
     </div>

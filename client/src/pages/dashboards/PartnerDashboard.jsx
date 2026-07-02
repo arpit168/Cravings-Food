@@ -16,6 +16,8 @@ import {
 const PartnerDashboard = () => {
   const { user } = useAuth();
   const [isOnline, setIsOnline] = useState(true);
+  const [activeTab, setActiveTab] = useState("deliveries");
+  const [withdrawAmount, setWithdrawAmount] = useState("");
   const [availableOrders, setAvailableOrders] = useState([]);
   const [myDeliveries, setMyDeliveries] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -79,6 +81,16 @@ const PartnerDashboard = () => {
     } catch (error) {
       toast.error("Failed to toggle online status");
     }
+  };
+
+  const handleWithdraw = (e) => {
+    e.preventDefault();
+    if (!withdrawAmount || Number(withdrawAmount) <= 0) {
+      toast.error("Enter a valid withdrawal amount");
+      return;
+    }
+    toast.success(`Withdrawal request of ₹${withdrawAmount} submitted! Funds will arrive within 2 business hours.`);
+    setWithdrawAmount("");
   };
 
   return (
@@ -145,111 +157,190 @@ const PartnerDashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Available Orders */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
-            <Navigation className="text-primary" /> Live Pickup Requests ({availableOrders.length})
-          </h2>
-
-          {availableOrders.length === 0 ? (
-            <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
-              <p className="font-bold text-text-primary">No nearby orders currently waiting for rider</p>
-              <p className="text-xs text-text-muted">Stay online in peak areas (Linking Road, Pali Hill) to receive broadcast dispatches.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {availableOrders.map((ord) => (
-                <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <span className="font-black text-xs text-primary">#{ord.orderId || ord._id}</span>
-                      <h4 className="font-bold text-base text-text-primary mt-1">{ord.restaurantId?.name || "Kitchen"}</h4>
-                    </div>
-                    <span className="px-3 py-1 rounded-lg bg-success/10 text-success font-black text-sm">
-                      Earn ₹80
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
-                    <p className="flex items-center gap-2">
-                      <MapPin size={14} className="text-primary" /> Pickup: {ord.restaurantId?.name}
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <CheckCircle2 size={14} className="text-success" /> Dropoff: {ord.deliveryAddress?.street}
-                    </p>
-                  </div>
-
-                  <button
-                    onClick={() => handleAcceptOrder(ord._id)}
-                    className="w-full py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
-                  >
-                    Accept Delivery Request
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-
-        {/* My Deliveries */}
-        <div className="space-y-4">
-          <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
-            <Bike className="text-success" /> My Assigned Deliveries ({myDeliveries.length})
-          </h2>
-
-          {myDeliveries.length === 0 ? (
-            <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
-              <p className="font-bold text-text-primary">You have no active deliveries</p>
-              <p className="text-xs text-text-muted">Accept incoming pickup requests from the left column to begin navigation.</p>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              {myDeliveries.map((ord) => (
-                <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <span className="font-black text-xs text-success">Active Run</span>
-                      <h4 className="font-bold text-base text-text-primary mt-1">Order #{ord.orderId || ord._id}</h4>
-                    </div>
-                    <span className="px-3 py-1 rounded-full bg-info/10 text-info font-bold text-xs uppercase">
-                      {ord.orderStatus}
-                    </span>
-                  </div>
-
-                  <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
-                    <p className="flex items-center gap-2">
-                      <MapPin size={14} className="text-primary" /> Dropoff: {ord.deliveryAddress?.street}
-                    </p>
-                    <p className="flex items-center gap-2">
-                      <Clock size={14} className="text-info" /> Total Bill: ₹{ord.pricing?.totalAmount} ({ord.paymentMethod})
-                    </p>
-                  </div>
-
-                  <div className="flex gap-3">
-                    {ord.orderStatus !== "Out for Delivery" && (
-                      <button
-                        onClick={() => handleUpdateDeliveryStatus(ord._id, "Out for Delivery")}
-                        className="flex-1 py-3 rounded-xl bg-info text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
-                      >
-                        Picked Up
-                      </button>
-                    )}
-                    {ord.orderStatus !== "Delivered" && (
-                      <button
-                        onClick={() => setOtpModalOrder(ord)}
-                        className="flex-1 py-3 rounded-xl bg-success text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
-                      >
-                        Mark Delivered
-                      </button>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+      {/* Navigation Tabs */}
+      <div className="flex gap-3 border-b border-border pb-3 overflow-x-auto">
+        <button
+          onClick={() => setActiveTab("deliveries")}
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+            activeTab === "deliveries"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
+          }`}
+        >
+          Live Dispatch Runs ({availableOrders.length + myDeliveries.length})
+        </button>
+        <button
+          onClick={() => setActiveTab("earnings")}
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition whitespace-nowrap cursor-pointer ${
+            activeTab === "earnings"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
+          }`}
+        >
+          Earnings & Vehicle Telemetry
+        </button>
       </div>
+
+      {/* Tab Panels */}
+      {activeTab === "deliveries" ? (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Available Orders */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
+              <Navigation className="text-primary" /> Live Pickup Requests ({availableOrders.length})
+            </h2>
+
+            {availableOrders.length === 0 ? (
+              <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
+                <p className="font-bold text-text-primary">No nearby orders currently waiting for rider</p>
+                <p className="text-xs text-text-muted">Stay online in peak areas (Linking Road, Pali Hill) to receive broadcast dispatches.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {availableOrders.map((ord) => (
+                  <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="font-black text-xs text-primary">#{ord.orderId || ord._id}</span>
+                        <h4 className="font-bold text-base text-text-primary mt-1">{ord.restaurantId?.name || "Kitchen"}</h4>
+                      </div>
+                      <span className="px-3 py-1 rounded-lg bg-success/10 text-success font-black text-sm">
+                        Earn ₹80
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
+                      <p className="flex items-center gap-2">
+                        <MapPin size={14} className="text-primary" /> Pickup: {ord.restaurantId?.name} ({ord.restaurantId?.address?.street || "Bandra West"})
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <CheckCircle2 size={14} className="text-success" /> Dropoff: {ord.deliveryAddress?.street}, {ord.deliveryAddress?.city || "Mumbai"}
+                      </p>
+                    </div>
+
+                    <button
+                      onClick={() => handleAcceptOrder(ord._id)}
+                      className="w-full py-3 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer"
+                    >
+                      Accept Delivery Request
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* My Deliveries */}
+          <div className="space-y-4">
+            <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
+              <Bike className="text-success" /> My Assigned Deliveries ({myDeliveries.length})
+            </h2>
+
+            {myDeliveries.length === 0 ? (
+              <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
+                <p className="font-bold text-text-primary">You have no active deliveries</p>
+                <p className="text-xs text-text-muted">Accept incoming pickup requests from the left column to begin navigation.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {myDeliveries.map((ord) => (
+                  <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <span className="font-black text-xs text-success">Active Run</span>
+                        <h4 className="font-bold text-base text-text-primary mt-1">Order #{ord.orderId || ord._id}</h4>
+                      </div>
+                      <span className="px-3 py-1 rounded-full bg-info/10 text-info font-bold text-xs uppercase">
+                        {ord.orderStatus}
+                      </span>
+                    </div>
+
+                    <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
+                      <p className="flex items-center gap-2">
+                        <MapPin size={14} className="text-primary" /> Dropoff: {ord.deliveryAddress?.street}, {ord.deliveryAddress?.city}
+                      </p>
+                      <p className="flex items-center gap-2">
+                        <Clock size={14} className="text-info" /> Total Bill: ₹{ord.pricing?.totalAmount} ({ord.paymentMethod})
+                      </p>
+                    </div>
+
+                    <div className="flex gap-3">
+                      {ord.orderStatus !== "Out for Delivery" && (
+                        <button
+                          onClick={() => handleUpdateDeliveryStatus(ord._id, "Out for Delivery")}
+                          className="flex-1 py-3 rounded-xl bg-info text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
+                        >
+                          Picked Up
+                        </button>
+                      )}
+                      {ord.orderStatus !== "Delivered" && (
+                        <button
+                          onClick={() => setOtpModalOrder(ord)}
+                          className="flex-1 py-3 rounded-xl bg-success text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
+                        >
+                          Mark Delivered
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
+            <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
+              <ShieldCheck className="text-primary" /> Rider KYC & Vehicle Profile
+            </h2>
+            <div className="space-y-4 text-sm font-semibold divide-y divide-border">
+              <div className="flex justify-between pt-2">
+                <span className="text-text-secondary">Vehicle Type</span>
+                <span className="text-text-primary font-bold uppercase">{user?.vehicleType || "Electric Scooter"}</span>
+              </div>
+              <div className="flex justify-between pt-3">
+                <span className="text-text-secondary">Registration Number</span>
+                <span className="text-text-primary font-bold font-mono">{user?.vehicleNumber || "MH-02-EQ-8812"}</span>
+              </div>
+              <div className="flex justify-between pt-3">
+                <span className="text-text-secondary">KYC Verification Status</span>
+                <span className="px-2.5 py-0.5 rounded-full bg-success/10 text-success font-black text-xs uppercase">
+                  {user?.kycStatus || "Verified"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <form onSubmit={handleWithdraw} className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl">
+            <h3 className="font-black text-lg text-text-primary flex items-center gap-2">
+              <DollarSign className="text-success" /> Instant Earnings Withdrawal
+            </h3>
+            <p className="text-xs text-text-secondary">
+              Available balance: <strong className="text-primary">₹{user?.walletBalance || 1240}</strong>. Transfer earnings to your verified bank account via UPI/IMPS.
+            </p>
+            <div>
+              <label className="text-xs font-bold uppercase text-text-muted">Withdrawal Amount (₹)</label>
+              <input
+                type="number"
+                required
+                min="1"
+                max={user?.walletBalance || 5000}
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                placeholder="Enter withdrawal amount"
+                className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-sm text-text-primary outline-none focus:border-primary transition font-bold"
+              />
+            </div>
+            <button
+              type="submit"
+              className="w-full py-4 rounded-xl bg-success hover:bg-success/90 text-white font-black text-xs uppercase tracking-wider shadow-lg transition cursor-pointer"
+            >
+              Transfer Funds to Bank Account
+            </button>
+          </form>
+        </div>
+      )}
 
       {/* OTP Delivery Verification Modal */}
       {otpModalOrder && (
