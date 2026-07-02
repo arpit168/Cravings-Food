@@ -63,8 +63,8 @@
     --color-background: #090d16;
     --color-surface: #131c31;
     --color-card: #1e293b;
-    --color-muted: #334155;
-    --color-border: #334155;
+    --color-muted: #1e293b;
+    --color-border: #2e3c54;
     
     --color-text-primary: #f8fafc;
     --color-text-secondary: #cbd5e1;
@@ -78,6 +78,15 @@ body {
   font-family: var(--font-family);
   transition: background-color 0.3s ease, color 0.3s ease;
   overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom Glassmorphism & UI Utilities */
+.glass-panel {
+  background: rgba(var(--color-surface), 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Custom Scrollbar */

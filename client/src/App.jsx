@@ -24,6 +24,11 @@ import OwnerDashboard from "./pages/dashboards/OwnerDashboard";
 import PartnerDashboard from "./pages/dashboards/PartnerDashboard";
 import AdminDashboard from "./pages/dashboards/AdminDashboard";
 
+// Route Security Guards
+import ProtectedRoute from "./components/ProtectedRoute";
+import RoleRoute from "./components/RoleRoute";
+import AuthRedirectRoute from "./components/AuthRedirectRoute";
+
 const App = () => {
   const { initTheme } = useThemeStore();
 
@@ -55,24 +60,87 @@ const App = () => {
             {/* Core Customer Flow */}
             <Route path="/" element={<Home />} />
             <Route path="/restaurant/:id" element={<RestaurantDetails />} />
-            <Route path="/checkout" element={<CartCheckout />} />
-            <Route path="/order-tracking/:id" element={<OrderTracking />} />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <CartCheckout />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/order-tracking/:id"
+              element={
+                <ProtectedRoute>
+                  <OrderTracking />
+                </ProtectedRoute>
+              }
+            />
 
             {/* Static & Explore Pages */}
             <Route path="/menu" element={<MenuPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
 
-            {/* Authentication */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
+            {/* Authentication (Redirect away if already logged in) */}
+            <Route
+              path="/login"
+              element={
+                <AuthRedirectRoute>
+                  <Login />
+                </AuthRedirectRoute>
+              }
+            />
+            <Route
+              path="/register"
+              element={
+                <AuthRedirectRoute>
+                  <Register />
+                </AuthRedirectRoute>
+              }
+            />
+            <Route
+              path="/forgot-password"
+              element={
+                <AuthRedirectRoute>
+                  <ForgotPassword />
+                </AuthRedirectRoute>
+              }
+            />
 
-            {/* Dashboards */}
-            <Route path="/userDashboard" element={<UserDashboard />} />
-            <Route path="/owner-dashboard" element={<OwnerDashboard />} />
-            <Route path="/partner-dashboard" element={<PartnerDashboard />} />
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            {/* Role-Protected Dashboards */}
+            <Route
+              path="/userDashboard"
+              element={
+                <ProtectedRoute>
+                  <UserDashboard />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/owner-dashboard"
+              element={
+                <RoleRoute allowedRoles={["restaurant_owner", "admin"]}>
+                  <OwnerDashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="/partner-dashboard"
+              element={
+                <RoleRoute allowedRoles={["delivery_partner", "admin"]}>
+                  <PartnerDashboard />
+                </RoleRoute>
+              }
+            />
+            <Route
+              path="/admin-dashboard"
+              element={
+                <RoleRoute allowedRoles={["admin"]}>
+                  <AdminDashboard />
+                </RoleRoute>
+              }
+            />
 
             {/* 404 Error Page */}
             <Route path="/404" element={<ErrorPage />} />

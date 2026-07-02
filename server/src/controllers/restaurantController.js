@@ -1,6 +1,7 @@
 import Restaurant from "../models/restaurantModel.js";
 import MenuItem from "../models/menuItemModel.js";
 import Review from "../models/reviewModel.js";
+import Order from "../models/orderModel.js";
 
 export const getAllRestaurants = async (req, res, next) => {
   try {
@@ -103,3 +104,56 @@ export const getOwnerRestaurants = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getOwnerOrders = async (req, res, next) => {
+  try {
+    const restaurants = await Restaurant.find({ ownerId: req.user._id });
+    const restaurantIds = restaurants.map((r) => r._id);
+
+    const orders = await Order.find({ restaurantId: { $in: restaurantIds } })
+      .populate("customerId", "fullName mobileNumber email avatar")
+      .populate("restaurantId", "name address")
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: orders,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateOwnerOrderStatus = async (req, res, next) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+
+    if (!status) {
+      const error = new Error("Status is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      orderId,
+      { orderStatus: status },
+      { new: true }
+    );
+
+    if (!order) {
+      const error = new Error("Order not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Order status updated to ${status}`,
+      data: order,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

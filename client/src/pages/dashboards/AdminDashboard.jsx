@@ -86,7 +86,7 @@ const AdminDashboard = () => {
             <DollarSign size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Platform Revenue</p>
-          <p className="text-2xl font-black text-text-primary">₹{stats?.totalRevenue || 124500}</p>
+          <p className="text-2xl font-black text-text-primary">₹{stats?.totalRevenue || 0}</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
@@ -94,7 +94,7 @@ const AdminDashboard = () => {
             <Users size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Total Users</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.usersCount || users.length || 142}</p>
+          <p className="text-2xl font-black text-text-primary">{stats?.totalUsers || users.length || 0}</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
@@ -102,7 +102,7 @@ const AdminDashboard = () => {
             <UtensilsCrossed size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Partner Kitchens</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.restaurantsCount || restaurants.length || 18}</p>
+          <p className="text-2xl font-black text-text-primary">{stats?.totalRestaurants || restaurants.length || 0}</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
@@ -110,7 +110,7 @@ const AdminDashboard = () => {
             <ShoppingBag size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Orders Processed</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.ordersCount || 890}</p>
+          <p className="text-2xl font-black text-text-primary">{stats?.totalOrders || 0}</p>
         </div>
       </div>
 

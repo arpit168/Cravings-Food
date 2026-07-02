@@ -19,6 +19,7 @@ const OwnerDashboard = () => {
   const [activeTab, setActiveTab] = useState("orders");
   const [myRestaurants, setMyRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [kitchenOrders, setKitchenOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // New Item Form
@@ -38,15 +39,34 @@ const OwnerDashboard = () => {
   const fetchOwnerData = async () => {
     try {
       setLoading(true);
-      const res = await api.get("/restaurants/owner/my-restaurants");
-      if (res.data && res.data.data) {
-        setMyRestaurants(res.data.data.restaurants || []);
-        setMenuItems(res.data.data.menuItems || []);
+      const [resRest, resOrd] = await Promise.all([
+        api.get("/restaurants/owner/my-restaurants").catch(() => ({ data: { data: {} } })),
+        api.get("/restaurants/owner/orders").catch(() => ({ data: { data: [] } })),
+      ]);
+
+      if (resRest.data && resRest.data.data) {
+        setMyRestaurants(resRest.data.data.restaurants || []);
+        setMenuItems(resRest.data.data.menuItems || []);
+      }
+      if (resOrd.data && resOrd.data.data) {
+        setKitchenOrders(resOrd.data.data || []);
       }
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const res = await api.put(`/restaurants/owner/orders/${orderId}/status`, { status: newStatus });
+      if (res.data && res.data.success) {
+        toast.success(`Order marked as ${newStatus}!`);
+        fetchOwnerData();
+      }
+    } catch (error) {
+      toast.error("Failed to update order status");
     }
   };
 
@@ -82,12 +102,7 @@ const OwnerDashboard = () => {
     }
   };
 
-  // Mock incoming kitchen orders for illustration + live feedback
-  const kitchenOrders = [
-    { _id: "ORD-901", dish: "Butter Chicken & 2 Butter Naan", amount: 480, status: "Preparing", time: "2 mins ago" },
-    { _id: "ORD-882", dish: "Paneer Tikka Masala Bowl", amount: 320, status: "Ready for Pickup", time: "12 mins ago" },
-    { _id: "ORD-871", dish: "Truffle Cheese Gourmet Burger", amount: 290, status: "Delivered", time: "28 mins ago" },
-  ];
+  const totalEarnings = kitchenOrders.reduce((sum, ord) => sum + (ord.pricing?.totalAmount || 0), 0);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-background transition-colors duration-300">
@@ -119,8 +134,8 @@ const OwnerDashboard = () => {
           <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <DollarSign size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Today's Earnings</p>
-          <p className="text-2xl font-black text-text-primary">₹14,850</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Total Kitchen Revenue</p>
+          <p className="text-2xl font-black text-text-primary">₹{totalEarnings}</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
@@ -128,7 +143,7 @@ const OwnerDashboard = () => {
             <ListOrdered size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Kitchen Queue</p>
-          <p className="text-2xl font-black text-text-primary">12 Orders</p>
+          <p className="text-2xl font-black text-text-primary">{kitchenOrders.length} Orders</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
@@ -172,44 +187,52 @@ const OwnerDashboard = () => {
           </h2>
 
           <div className="space-y-4">
-            {kitchenOrders.map((ord) => (
-              <div
-                key={ord._id}
-                className="bg-background p-6 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="font-black text-xs text-primary">{ord._id}</span>
-                    <span className="text-[11px] text-text-muted">• {ord.time}</span>
-                  </div>
-                  <h3 className="font-bold text-base text-text-primary">{ord.dish}</h3>
-                  <p className="font-black text-primary">₹{ord.amount}</p>
-                </div>
-
-                <div className="flex items-center gap-3 self-end sm:self-center">
-                  <span
-                    className={`px-3 py-1 rounded-full font-black text-xs uppercase tracking-wider ${
-                      ord.status === "Preparing"
-                        ? "bg-primary/10 text-primary border border-primary/20"
-                        : ord.status === "Ready for Pickup"
-                        ? "bg-info/10 text-info border border-info/20"
-                        : "bg-success/10 text-success border border-success/20"
-                    }`}
-                  >
-                    {ord.status}
-                  </span>
-
-                  {ord.status === "Preparing" && (
-                    <button
-                      onClick={() => toast.success(`Order ${ord._id} marked Ready for Pickup!`)}
-                      className="px-4 py-2 rounded-xl bg-success text-white font-bold text-xs hover:bg-success/90 transition cursor-pointer"
-                    >
-                      Mark Ready
-                    </button>
-                  )}
-                </div>
+            {kitchenOrders.length === 0 ? (
+              <div className="text-center py-12 bg-background rounded-3xl border border-dashed border-border p-6">
+                <p className="text-text-muted font-semibold text-sm">No live tickets in the kitchen right now. Ready for orders!</p>
               </div>
-            ))}
+            ) : (
+              kitchenOrders.map((ord) => (
+                <div
+                  key={ord._id}
+                  className="bg-background p-6 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="font-black text-xs text-primary">{ord.orderId || ord._id}</span>
+                      <span className="text-[11px] text-text-muted">• {new Date(ord.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                    </div>
+                    <h3 className="font-bold text-base text-text-primary">
+                      {ord.items?.map((i) => `${i.quantity}x ${i.name}`).join(", ") || "Custom Order"}
+                    </h3>
+                    <p className="font-black text-primary">₹{ord.pricing?.totalAmount || 0}</p>
+                  </div>
+
+                  <div className="flex items-center gap-3 self-end sm:self-center">
+                    <span
+                      className={`px-3 py-1 rounded-full font-black text-xs uppercase tracking-wider ${
+                        ord.orderStatus === "Preparing" || ord.orderStatus === "Placed"
+                          ? "bg-primary/10 text-primary border border-primary/20"
+                          : ord.orderStatus === "Ready for Pickup"
+                          ? "bg-info/10 text-info border border-info/20"
+                          : "bg-success/10 text-success border border-success/20"
+                      }`}
+                    >
+                      {ord.orderStatus}
+                    </span>
+
+                    {(ord.orderStatus === "Placed" || ord.orderStatus === "Preparing") && (
+                      <button
+                        onClick={() => handleUpdateOrderStatus(ord._id, "Ready for Pickup")}
+                        className="px-4 py-2 rounded-xl bg-success text-white font-bold text-xs hover:bg-success/90 transition cursor-pointer"
+                      >
+                        Mark Ready
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))
+            )}
           </div>
         </div>
       ) : (

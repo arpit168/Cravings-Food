@@ -111,7 +111,7 @@ const PartnerDashboard = () => {
             <DollarSign size={20} />
           </div>
           <p className="text-xs font-bold uppercase text-text-muted">Completed Earnings</p>
-          <p className="text-2xl font-black text-text-primary">₹1,840</p>
+          <p className="text-2xl font-black text-text-primary">₹{(user?.walletBalance || 0) + myDeliveries.filter(d => d.orderStatus === "Delivered").length * 40}</p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
