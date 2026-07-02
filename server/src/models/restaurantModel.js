@@ -59,6 +59,30 @@ const restaurantSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    openTime: {
+      type: String,
+      default: "09:00 AM",
+    },
+    closeTime: {
+      type: String,
+      default: "11:00 PM",
+    },
+    isApproved: {
+      type: Boolean,
+      default: true,
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    commissionPercentage: {
+      type: Number,
+      default: 15, // 15% platform fee
+    },
+    walletBalance: {
+      type: Number,
+      default: 12450,
+    },
     offers: [
       {
         type: String,

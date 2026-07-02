@@ -56,9 +56,58 @@ export const toggleRestaurantFeatured = async (req, res, next) => {
     }
     restaurant.isFeatured = !restaurant.isFeatured;
     await restaurant.save();
-
     res.status(200).json({ success: true, message: "Featured status updated", data: restaurant });
   } catch (error) {
     next(error);
   }
 };
+
+export const updateUserStatus = async (req, res, next) => {
+  try {
+    const { isApproved, isBlocked, kycStatus } = req.body;
+    const user = await User.findById(req.params.id).select("-password");
+    if (!user) {
+      const error = new Error("User not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (isApproved !== undefined) user.isApproved = isApproved;
+    if (isBlocked !== undefined) user.isBlocked = isBlocked;
+    if (kycStatus !== undefined) user.kycStatus = kycStatus;
+
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message: `User status updated successfully`,
+      data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateRestaurantStatus = async (req, res, next) => {
+  try {
+    const { isApproved, isBlocked } = req.body;
+    const restaurant = await Restaurant.findById(req.params.id);
+    if (!restaurant) {
+      const error = new Error("Restaurant not found");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (isApproved !== undefined) restaurant.isApproved = isApproved;
+    if (isBlocked !== undefined) restaurant.isBlocked = isBlocked;
+
+    await restaurant.save();
+    res.status(200).json({
+      success: true,
+      message: `Restaurant status updated successfully`,
+      data: restaurant,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+

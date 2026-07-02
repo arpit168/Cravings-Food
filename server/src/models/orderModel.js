@@ -10,6 +10,16 @@ const orderItemSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   quantity: { type: Number, required: true, min: 1 },
   isVeg: { type: Boolean, default: true },
+  selectedVariant: {
+    name: { type: String },
+    price: { type: Number },
+  },
+  selectedAddOns: [
+    {
+      name: { type: String },
+      price: { type: Number },
+    },
+  ],
 });
 
 const orderSchema = new mongoose.Schema(
@@ -72,6 +82,10 @@ const orderSchema = new mongoose.Schema(
       ],
       default: "Placed",
     },
+    deliveryOtp: {
+      type: String,
+      default: () => Math.floor(1000 + Math.random() * 9000).toString(),
+    },
     specialInstructions: {
       type: String,
       default: "",
@@ -83,6 +97,20 @@ const orderSchema = new mongoose.Schema(
     estimatedDeliveryTime: {
       type: String,
       default: "30-35 min",
+    },
+    refundStatus: {
+      type: String,
+      enum: ["None", "Requested", "Approved", "Rejected"],
+      default: "None",
+    },
+    restaurantRating: {
+      type: Number,
+    },
+    riderRating: {
+      type: Number,
+    },
+    reviewText: {
+      type: String,
     },
   },
   { timestamps: true }

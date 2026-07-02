@@ -132,6 +132,21 @@ const OrderTracking = () => {
         </div>
       </div>
 
+      {/* DELIVERY SECURITY OTP BADGE */}
+      <div className="bg-primary/10 border-2 border-primary/30 p-6 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 shadow-sm">
+        <div className="space-y-1 text-center sm:text-left">
+          <span className="px-3 py-1 rounded-full bg-primary text-white text-[11px] font-black uppercase tracking-wider">
+            Secure Delivery Verification
+          </span>
+          <h3 className="text-lg font-black text-text-primary mt-1">Provide this PIN to your delivery rider</h3>
+          <p className="text-xs text-text-secondary">The rider will verify this 4-digit code upon arrival before releasing your food package.</p>
+        </div>
+        <div className="bg-surface px-6 py-3 rounded-2xl border border-primary/40 shadow-inner flex items-center gap-2">
+          <span className="text-xs font-bold text-text-muted uppercase">PIN Code:</span>
+          <span className="text-2xl sm:text-3xl font-black tracking-widest text-primary font-mono">{order.deliveryOtp || "1234"}</span>
+        </div>
+      </div>
+
       {/* STEPPER */}
       <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-6 shadow-xs">
         <h2 className="text-lg font-black text-text-primary">Order Progress Tracker</h2>
@@ -175,10 +190,20 @@ const OrderTracking = () => {
           </h3>
           <div className="divide-y divide-border text-sm">
             {order.items?.map((item, idx) => (
-              <div key={idx} className="py-3 flex justify-between items-center">
-                <span className="font-bold text-text-primary">
-                  {item.quantity}x {item.menuItem?.name || "Gourmet Dish"}
-                </span>
+              <div key={idx} className="py-3 flex justify-between items-start">
+                <div className="space-y-0.5">
+                  <span className="font-bold text-text-primary block">
+                    {item.quantity}x {item.name || item.menuItem?.name || "Gourmet Dish"}
+                  </span>
+                  {item.selectedVariant?.name && (
+                    <span className="text-xs text-primary font-semibold block">• Variant: {item.selectedVariant.name}</span>
+                  )}
+                  {item.selectedAddOns?.length > 0 && (
+                    <span className="text-[11px] text-text-muted block">
+                      + Add-ons: {item.selectedAddOns.map((a) => a.name).join(", ")}
+                    </span>
+                  )}
+                </div>
                 <span className="font-black text-text-primary">₹{item.price * item.quantity}</span>
               </div>
             ))}

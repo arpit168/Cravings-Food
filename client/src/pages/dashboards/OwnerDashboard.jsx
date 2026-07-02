@@ -45,7 +45,9 @@ const OwnerDashboard = () => {
       ]);
 
       if (resRest.data && resRest.data.data) {
-        setMyRestaurants(resRest.data.data.restaurants || []);
+        const rests = resRest.data.data.restaurants || [];
+        setMyRestaurants(rests);
+        if (rests[0]) setIsStoreOpen(rests[0].isOpen !== false);
         setMenuItems(resRest.data.data.menuItems || []);
       }
       if (resOrd.data && resOrd.data.data) {
@@ -55,6 +57,20 @@ const OwnerDashboard = () => {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const [isStoreOpen, setIsStoreOpen] = useState(true);
+
+  const handleToggleStore = async () => {
+    try {
+      const res = await api.put("/restaurants/owner/toggle-status");
+      if (res.data && res.data.success) {
+        setIsStoreOpen(res.data.isOpen);
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to toggle store status");
     }
   };
 
@@ -120,12 +136,24 @@ const OwnerDashboard = () => {
           </p>
         </div>
 
-        <button
-          onClick={fetchOwnerData}
-          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 transition cursor-pointer"
-        >
-          <RefreshCw size={14} className={loading ? "animate-spin text-primary" : ""} /> Sync Kitchen
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={handleToggleStore}
+            className={`px-5 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer ${
+              isStoreOpen
+                ? "bg-success text-white shadow-success/30"
+                : "bg-danger/80 text-white shadow-danger/20"
+            }`}
+          >
+            {isStoreOpen ? "● Store Open" : "○ Store Closed"}
+          </button>
+          <button
+            onClick={fetchOwnerData}
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 transition cursor-pointer"
+          >
+            <RefreshCw size={14} className={loading ? "animate-spin text-primary" : ""} /> Sync Kitchen
+          </button>
+        </div>
       </div>
 
       {/* KPI Cards */}

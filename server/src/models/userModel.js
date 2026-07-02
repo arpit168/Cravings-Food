@@ -14,15 +14,19 @@ const userSchema = mongoose.Schema(
     fullName: {
       type: String,
       required: true,
+      trim: true,
     },
     email: {
       type: String,
       required: true,
       unique: true,
+      trim: true,
+      lowercase: true,
     },
     mobileNumber: {
       type: String,
       required: true,
+      trim: true,
     },
     password: {
       type: String,
@@ -38,6 +42,12 @@ const userSchema = mongoose.Schema(
       default: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
     },
     addresses: [addressSchema],
+    wishlist: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "MenuItem",
+      },
+    ],
     walletBalance: {
       type: Number,
       default: 500, // ₹500 welcome bonus
@@ -49,6 +59,36 @@ const userSchema = mongoose.Schema(
     isOnline: {
       type: Boolean,
       default: true, // For delivery partners
+    },
+    isApproved: {
+      type: Boolean,
+      default: true, // Customers automatically approved; partners & restaurants can be moderated by admin
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
+    // Rider specific KYC & Vehicle Telemetry
+    kycStatus: {
+      type: String,
+      enum: ["Not Submitted", "Pending", "Approved", "Rejected"],
+      default: "Not Submitted",
+    },
+    vehicleType: {
+      type: String,
+      default: "Motorcycle",
+    },
+    vehicleNumber: {
+      type: String,
+      default: "MH-02-EE-9821",
+    },
+    drivingLicense: {
+      type: String,
+      default: "DL-MH-2022-90182",
+    },
+    aadharNumber: {
+      type: String,
+      default: "XXXX-XXXX-8921",
     },
   },
   { timestamps: true }

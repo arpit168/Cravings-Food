@@ -1,5 +1,15 @@
 import mongoose from "mongoose";
 
+const variantSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+});
+
+const addOnSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  price: { type: Number, required: true },
+});
+
 const menuItemSchema = new mongoose.Schema(
   {
     restaurantId: {
@@ -26,7 +36,7 @@ const menuItemSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      required: true, // Recommended, Starters, Main Course, Biryani, Desserts, Beverages
+      required: true,
     },
     isVeg: {
       type: Boolean,
@@ -40,6 +50,12 @@ const menuItemSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    stockCount: {
+      type: Number,
+      default: 50,
+    },
+    variants: [variantSchema],
+    addOns: [addOnSchema],
     rating: {
       type: Number,
       default: 4.4,

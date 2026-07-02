@@ -113,3 +113,47 @@ export const DeleteUserAddress = async (req, res, next) => {
     next(error);
   }
 };
+
+export const ToggleWishlist = async (req, res, next) => {
+  try {
+    const { itemId } = req.body;
+    if (!itemId) {
+      const error = new Error("Item ID is required");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const user = await User.findById(req.user._id);
+    const index = user.wishlist.indexOf(itemId);
+
+    let message = "";
+    if (index === -1) {
+      user.wishlist.push(itemId);
+      message = "Added to wishlist!";
+    } else {
+      user.wishlist.splice(index, 1);
+      message = "Removed from wishlist!";
+    }
+
+    await user.save();
+    res.status(200).json({
+      success: true,
+      message,
+      wishlist: user.wishlist,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const GetWishlist = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user._id).populate("wishlist");
+    res.status(200).json({
+      success: true,
+      data: user?.wishlist || [],
+    });
+  } catch (error) {
+    next(error);
+  }
+};

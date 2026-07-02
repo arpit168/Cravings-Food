@@ -65,6 +65,12 @@ export const UserLogin = async (req, res, next) => {
       return next(error);
     }
 
+    if (existingUser.isBlocked) {
+      const error = new Error("Your account has been suspended by an Administrator. Contact support@cravings.com.");
+      error.statusCode = 403;
+      return next(error);
+    }
+
     const isVerified = await bcrypt.compare(password, existingUser.password);
     if (!isVerified) {
       const error = new Error("Invalid email or password.");
@@ -79,6 +85,49 @@ export const UserLogin = async (req, res, next) => {
 
     res.status(200).json({
       message: "Login successful!",
+      data: userResponse,
+      token,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const VerifyOtp = async (req, res, next) => {
+  try {
+    const { mobileNumber, otp } = req.body;
+    if (!mobileNumber || !otp) {
+      const error = new Error("Mobile number and OTP are required.");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    // In demo/test mode, any 4-digit code like 1234 or matching 8888 succeeds
+    if (otp !== "1234" && otp !== "8888") {
+      const error = new Error("Invalid OTP code provided.");
+      error.statusCode = 400;
+      return next(error);
+    }
+
+    const existingUser = await User.findOne({ mobileNumber: mobileNumber.trim() });
+    if (!existingUser) {
+      const error = new Error("No account registered with this mobile number.");
+      error.statusCode = 404;
+      return next(error);
+    }
+
+    if (existingUser.isBlocked) {
+      const error = new Error("Your account has been suspended.");
+      error.statusCode = 403;
+      return next(error);
+    }
+
+    const token = genToken(existingUser, res);
+    const userResponse = existingUser.toObject();
+    delete userResponse.password;
+
+    res.status(200).json({
+      message: "OTP Verification successful!",
       data: userResponse,
       token,
     });
@@ -107,3 +156,4 @@ export const GetMe = async (req, res, next) => {
     next(error);
   }
 };
+

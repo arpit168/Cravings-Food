@@ -157,3 +157,63 @@ export const updateOwnerOrderStatus = async (req, res, next) => {
   }
 };
 
+export const toggleStoreStatus = async (req, res, next) => {
+  try {
+    const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
+    if (!restaurant) {
+      const error = new Error("No restaurant found for this owner");
+      error.statusCode = 404;
+      return next(error);
+    }
+    restaurant.isOpen = !restaurant.isOpen;
+    await restaurant.save();
+    res.status(200).json({
+      success: true,
+      message: `Store is now ${restaurant.isOpen ? "OPEN" : "CLOSED"}`,
+      isOpen: restaurant.isOpen,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateStoreTiming = async (req, res, next) => {
+  try {
+    const { openTime, closeTime } = req.body;
+    const restaurant = await Restaurant.findOneAndUpdate(
+      { ownerId: req.user._id },
+      { openTime, closeTime },
+      { new: true }
+    );
+    res.status(200).json({
+      success: true,
+      message: "Store timings updated",
+      data: restaurant,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const requestOwnerPayout = async (req, res, next) => {
+  try {
+    const { amount } = req.body;
+    const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
+    if (!restaurant || restaurant.walletBalance < amount) {
+      const error = new Error("Insufficient wallet balance for payout request");
+      error.statusCode = 400;
+      return next(error);
+    }
+    restaurant.walletBalance -= amount;
+    await restaurant.save();
+    res.status(200).json({
+      success: true,
+      message: `Payout request for ₹${amount} submitted successfully! Funds will be transferred within 24 hours.`,
+      walletBalance: restaurant.walletBalance,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+

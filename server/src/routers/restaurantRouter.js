@@ -7,6 +7,9 @@ import {
   getOwnerRestaurants,
   getOwnerOrders,
   updateOwnerOrderStatus,
+  toggleStoreStatus,
+  updateStoreTiming,
+  requestOwnerPayout,
 } from "../controllers/restaurantController.js";
 import { Protect, AuthorizeRoles } from "../middlewares/authMiddleware.js";
 
@@ -16,6 +19,9 @@ router.get("/", getAllRestaurants);
 router.get("/owner/my-restaurants", Protect, AuthorizeRoles("restaurant_owner", "admin"), getOwnerRestaurants);
 router.get("/owner/orders", Protect, AuthorizeRoles("restaurant_owner", "admin"), getOwnerOrders);
 router.put("/owner/orders/:orderId/status", Protect, AuthorizeRoles("restaurant_owner", "admin"), updateOwnerOrderStatus);
+router.put("/owner/toggle-status", Protect, AuthorizeRoles("restaurant_owner", "admin"), toggleStoreStatus);
+router.put("/owner/timing", Protect, AuthorizeRoles("restaurant_owner", "admin"), updateStoreTiming);
+router.post("/owner/payout", Protect, AuthorizeRoles("restaurant_owner", "admin"), requestOwnerPayout);
 
 router.get("/:id", getRestaurantById);
 router.post("/", Protect, AuthorizeRoles("restaurant_owner", "admin"), createRestaurant);

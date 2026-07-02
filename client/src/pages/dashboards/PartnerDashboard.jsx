@@ -52,15 +52,32 @@ const PartnerDashboard = () => {
     }
   };
 
-  const handleUpdateDeliveryStatus = async (orderId, newStatus) => {
+  const [otpModalOrder, setOtpModalOrder] = useState(null);
+  const [enteredOtp, setEnteredOtp] = useState("");
+
+  const handleUpdateDeliveryStatus = async (orderId, newStatus, otp = null) => {
     try {
-      const res = await api.put(`/partner/${orderId}/status`, { status: newStatus });
+      const res = await api.put(`/partner/${orderId}/status`, { status: newStatus, otp });
       if (res.data && res.data.success) {
         toast.success(`Order marked as ${newStatus}!`);
+        setOtpModalOrder(null);
+        setEnteredOtp("");
         fetchPartnerData();
       }
     } catch (error) {
-      toast.error("Error updating status");
+      toast.error(error?.response?.data?.message || "Error updating delivery status");
+    }
+  };
+
+  const toggleOnline = async () => {
+    try {
+      const res = await api.put("/partner/toggle-online");
+      if (res.data && res.data.success) {
+        setIsOnline(res.data.isOnline);
+        toast.success(res.data.message);
+      }
+    } catch (error) {
+      toast.error("Failed to toggle online status");
     }
   };
 
@@ -82,14 +99,11 @@ const PartnerDashboard = () => {
 
         <div className="flex items-center gap-4">
           <button
-            onClick={() => {
-              setIsOnline(!isOnline);
-              toast.success(`Status shifted to ${!isOnline ? "ONLINE" : "OFFLINE"}`);
-            }}
+            onClick={toggleOnline}
             className={`px-6 py-2.5 rounded-xl font-black text-xs uppercase tracking-wider transition shadow-md cursor-pointer ${
               isOnline
                 ? "bg-success text-white shadow-success/30"
-                : "bg-muted text-text-muted border border-border"
+                : "bg-danger/80 text-white shadow-danger/20"
             }`}
           >
             {isOnline ? "● Online & Ready" : "○ Offline"}
@@ -223,7 +237,7 @@ const PartnerDashboard = () => {
                     )}
                     {ord.orderStatus !== "Delivered" && (
                       <button
-                        onClick={() => handleUpdateDeliveryStatus(ord._id, "Delivered")}
+                        onClick={() => setOtpModalOrder(ord)}
                         className="flex-1 py-3 rounded-xl bg-success text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
                       >
                         Mark Delivered
@@ -236,6 +250,52 @@ const PartnerDashboard = () => {
           )}
         </div>
       </div>
+
+      {/* OTP Delivery Verification Modal */}
+      {otpModalOrder && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <div className="bg-surface max-w-md w-full p-6 sm:p-8 rounded-3xl border border-border shadow-2xl space-y-6">
+            <div className="text-center space-y-2">
+              <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center font-black text-xl">
+                🔒
+              </div>
+              <h3 className="text-xl font-black text-text-primary">Verify Customer Delivery PIN</h3>
+              <p className="text-xs text-text-secondary">
+                Ask the customer for their 4-digit verification code to confirm package handover for Order #{otpModalOrder.orderId || otpModalOrder._id}.
+              </p>
+            </div>
+
+            <div>
+              <input
+                type="text"
+                maxLength={4}
+                placeholder="Enter 4-digit PIN (e.g. 1234)"
+                value={enteredOtp}
+                onChange={(e) => setEnteredOtp(e.target.value)}
+                className="w-full text-center tracking-[0.5em] font-mono font-black text-2xl py-3.5 rounded-2xl bg-background border-2 border-border focus:border-primary text-text-primary outline-none"
+              />
+            </div>
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => {
+                  setOtpModalOrder(null);
+                  setEnteredOtp("");
+                }}
+                className="flex-1 py-3 rounded-xl bg-muted text-text-secondary font-bold text-xs uppercase cursor-pointer hover:bg-muted/80"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => handleUpdateDeliveryStatus(otpModalOrder._id, "Delivered", enteredOtp)}
+                className="flex-1 py-3 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-wider cursor-pointer hover:bg-primary-hover shadow-lg shadow-primary/20"
+              >
+                Confirm Delivery
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
