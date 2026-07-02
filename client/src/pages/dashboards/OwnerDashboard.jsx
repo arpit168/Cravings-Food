@@ -58,14 +58,15 @@ const OwnerDashboard = () => {
     }
 
     try {
-      const res = await api.post("/restaurants/menu-item", {
+      const payload = {
         ...newItemForm,
-        restaurantId: myRestaurants[0]._id,
         price: Number(newItemForm.price),
-      });
+        restaurantId: myRestaurants[0]._id,
+      };
+
+      const res = await api.post("/restaurants/menu", payload);
       if (res.data && res.data.success) {
-        toast.success("Dish added to your menu!");
-        setMenuItems([res.data.data, ...menuItems]);
+        toast.success("New dish published to kitchen!");
         setNewItemForm({
           name: "",
           price: "",
@@ -74,235 +75,232 @@ const OwnerDashboard = () => {
           image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600",
           isVeg: true,
         });
+        fetchOwnerData();
       }
     } catch (error) {
-      toast.error("Error adding dish");
+      toast.error(error?.response?.data?.message || "Error adding menu item");
     }
   };
 
+  // Mock incoming kitchen orders for illustration + live feedback
+  const kitchenOrders = [
+    { _id: "ORD-901", dish: "Butter Chicken & 2 Butter Naan", amount: 480, status: "Preparing", time: "2 mins ago" },
+    { _id: "ORD-882", dish: "Paneer Tikka Masala Bowl", amount: 320, status: "Ready for Pickup", time: "12 mins ago" },
+    { _id: "ORD-871", dish: "Truffle Cheese Gourmet Burger", amount: 290, status: "Delivered", time: "28 mins ago" },
+  ];
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header Banner */}
-      <div className="bg-gradient-to-r from-orange-600 to-amber-600 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-background transition-colors duration-300">
+      {/* Banner */}
+      <div className="bg-surface p-8 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-xs">
         <div className="space-y-1">
-          <span className="px-3 py-1 rounded-full bg-white/20 text-xs font-bold uppercase tracking-wider">
-            Restaurant Owner Portal
+          <span className="px-3.5 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
+            Partner Portal
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black">Welcome back, Chef {user?.fullName.split(" ")[0]}!</h1>
-          <p className="text-sm text-white/90">
-            {myRestaurants.length > 0 ? myRestaurants[0].name : "Manage your restaurant kitchen and orders"}
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            Restaurant Owner Control Deck
+          </h1>
+          <p className="text-sm text-text-secondary">
+            Managing <strong className="text-primary">{myRestaurants[0]?.name || "Gourmet Kitchen"}</strong> • Real-time kitchen terminal
           </p>
         </div>
 
         <button
           onClick={fetchOwnerData}
-          className="self-start sm:self-auto flex items-center gap-2 px-4 py-2 rounded-xl bg-white text-orange-600 font-bold text-xs shadow hover:bg-orange-50 transition"
+          className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 transition cursor-pointer"
         >
-          <RefreshCw size={14} /> Refresh Live Data
+          <RefreshCw size={14} className={loading ? "animate-spin text-primary" : ""} /> Sync Kitchen
         </button>
       </div>
 
-      {/* Stats Cards */}
+      {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-orange-500/10 text-orange-500 flex items-center justify-center font-bold">
-            <ChefHat size={20} />
-          </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Active Dishes</p>
-          <p className="text-2xl font-black">{menuItems.length}</p>
-        </div>
-
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-green-500/10 text-green-500 flex items-center justify-center font-bold">
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <DollarSign size={20} />
           </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Estimated Revenue</p>
-          <p className="text-2xl font-black text-green-600">₹{user?.walletBalance || 2500}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Today's Earnings</p>
+          <p className="text-2xl font-black text-text-primary">₹14,850</p>
         </div>
 
-        <div className="bg-(--bg-surface) p-6 rounded-3xl border border-(--border-color) space-y-2 shadow-sm">
-          <div className="w-10 h-10 rounded-2xl bg-blue-500/10 text-blue-500 flex items-center justify-center font-bold">
-            <TrendingUp size={20} />
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <ListOrdered size={20} />
           </div>
-          <p className="text-xs text-(--text-muted) font-bold uppercase tracking-wider">Kitchen Rating</p>
-          <p className="text-2xl font-black">{myRestaurants[0]?.rating || 4.8} ⭐</p>
+          <p className="text-xs font-bold uppercase text-text-muted">Kitchen Queue</p>
+          <p className="text-2xl font-black text-text-primary">12 Orders</p>
+        </div>
+
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
+            <ChefHat size={20} />
+          </div>
+          <p className="text-xs font-bold uppercase text-text-muted">Active Menu Dishes</p>
+          <p className="text-2xl font-black text-text-primary">{menuItems.length} Dishes</p>
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="flex border-b border-(--border-color) gap-6">
+      {/* Navigation Tabs */}
+      <div className="flex gap-3 border-b border-border pb-3">
         <button
           onClick={() => setActiveTab("orders")}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
             activeTab === "orders"
-              ? "border-orange-500 text-orange-500"
-              : "border-transparent text-(--text-muted) hover:text-(--text-primary)"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
           }`}
         >
-          <ListOrdered size={16} /> Kitchen Queue
+          Kitchen Orders Queue
         </button>
         <button
           onClick={() => setActiveTab("menu")}
-          className={`pb-3 font-bold text-sm flex items-center gap-2 border-b-2 transition ${
+          className={`px-5 py-2.5 rounded-xl text-xs font-bold transition cursor-pointer ${
             activeTab === "menu"
-              ? "border-orange-500 text-orange-500"
-              : "border-transparent text-(--text-muted) hover:text-(--text-primary)"
+              ? "bg-primary text-white shadow-md"
+              : "bg-surface border border-border text-text-secondary hover:border-primary/50"
           }`}
         >
-          <UtensilsCrossed size={16} /> Manage Menu
+          Menu & Dish Management ({menuItems.length})
         </button>
       </div>
 
-      {/* Content */}
+      {/* Tab Panels */}
       {activeTab === "orders" ? (
-        <div className="bg-(--bg-surface) p-6 sm:p-8 rounded-3xl border border-(--border-color) space-y-6 shadow-sm">
-          <h2 className="text-xl font-bold flex items-center gap-2">
-            <Clock className="text-orange-500" /> Incoming Live Kitchen Orders
+        <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-6 shadow-xs">
+          <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
+            <Clock className="text-primary" /> Live Ticket Terminal
           </h2>
-          <p className="text-sm text-(--text-muted)">
-            Orders placed by customers will stream here in real-time. When an order is accepted, mark it as 'Preparing' and then 'Ready for Pickup'.
-          </p>
 
-          <div className="p-6 rounded-2xl bg-(--bg-secondary) border border-(--border-color) flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div>
-              <span className="px-2.5 py-1 rounded bg-orange-500/10 text-orange-600 font-bold text-xs uppercase">
-                Demo Order #CRV-893201
-              </span>
-              <p className="font-bold text-base mt-2">2x Ultimate Truffle Cheeseburger</p>
-              <p className="text-xs text-(--text-muted)">Customer: Rohan Sharma • Amount: ₹653</p>
-            </div>
+          <div className="space-y-4">
+            {kitchenOrders.map((ord) => (
+              <div
+                key={ord._id}
+                className="bg-background p-6 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-xs"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="font-black text-xs text-primary">{ord._id}</span>
+                    <span className="text-[11px] text-text-muted">• {ord.time}</span>
+                  </div>
+                  <h3 className="font-bold text-base text-text-primary">{ord.dish}</h3>
+                  <p className="font-black text-primary">₹{ord.amount}</p>
+                </div>
 
-            <div className="flex gap-2">
-              <button
-                onClick={() => toast.success("Order status updated to Preparing!")}
-                className="px-4 py-2 rounded-xl bg-orange-600 text-white font-bold text-xs shadow hover:bg-orange-700 transition"
-              >
-                Mark Preparing
-              </button>
-              <button
-                onClick={() => toast.success("Order marked Ready for Pickup!")}
-                className="px-4 py-2 rounded-xl bg-green-600 text-white font-bold text-xs shadow hover:bg-green-700 transition"
-              >
-                Ready for Pickup
-              </button>
-            </div>
+                <div className="flex items-center gap-3 self-end sm:self-center">
+                  <span
+                    className={`px-3 py-1 rounded-full font-black text-xs uppercase tracking-wider ${
+                      ord.status === "Preparing"
+                        ? "bg-primary/10 text-primary border border-primary/20"
+                        : ord.status === "Ready for Pickup"
+                        ? "bg-info/10 text-info border border-info/20"
+                        : "bg-success/10 text-success border border-success/20"
+                    }`}
+                  >
+                    {ord.status}
+                  </span>
+
+                  {ord.status === "Preparing" && (
+                    <button
+                      onClick={() => toast.success(`Order ${ord._id} marked Ready for Pickup!`)}
+                      className="px-4 py-2 rounded-xl bg-success text-white font-bold text-xs hover:bg-success/90 transition cursor-pointer"
+                    >
+                      Mark Ready
+                    </button>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Menu List */}
+          <div className="lg:col-span-2 bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xs">
+            <h2 className="text-lg font-black text-text-primary">Published Kitchen Dishes</h2>
+            <div className="divide-y divide-border">
+              {menuItems.map((item) => (
+                <div key={item._id} className="py-4 flex justify-between items-center gap-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0 border border-border" />
+                    <div className="min-w-0">
+                      <h4 className="font-bold text-sm text-text-primary truncate">{item.name}</h4>
+                      <p className="font-black text-primary text-xs">₹{item.price}</p>
+                    </div>
+                  </div>
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                    item.isVeg ? "bg-success/10 text-success" : "bg-danger/10 text-danger"
+                  }`}>
+                    {item.isVeg ? "Veg" : "Non-Veg"}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
           {/* Add New Dish Form */}
-          <form
-            onSubmit={handleAddItem}
-            className="bg-(--bg-surface) p-6 sm:p-8 rounded-3xl border border-(--border-color) space-y-4 shadow-sm"
-          >
-            <h3 className="font-bold text-lg flex items-center gap-2">
-              <PlusCircle className="text-orange-500" /> Add New Dish
+          <form onSubmit={handleAddItem} className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xl self-start">
+            <h3 className="font-black text-base text-text-primary flex items-center gap-2">
+              <PlusCircle className="text-primary" /> Publish New Dish
             </h3>
 
             <div>
-              <label className="text-xs font-bold uppercase text-(--text-muted)">Dish Name</label>
+              <label className="text-xs font-bold uppercase text-text-muted">Dish Name</label>
               <input
                 type="text"
                 required
-                placeholder="E.g. Loaded Nacho Supreme"
                 value={newItemForm.name}
                 onChange={(e) => setNewItemForm({ ...newItemForm, name: e.target.value })}
-                className="w-full mt-1 px-3.5 py-2 rounded-xl bg-(--bg-secondary) border border-(--border-color) text-sm outline-none"
+                placeholder="Truffle Cheese Pizza"
+                className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition"
               />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-xs font-bold uppercase text-(--text-muted)">Price (₹)</label>
-                <input
-                  type="number"
-                  required
-                  placeholder="249"
-                  value={newItemForm.price}
-                  onChange={(e) => setNewItemForm({ ...newItemForm, price: e.target.value })}
-                  className="w-full mt-1 px-3.5 py-2 rounded-xl bg-(--bg-secondary) border border-(--border-color) text-sm outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="text-xs font-bold uppercase text-(--text-muted)">Category</label>
-                <select
-                  value={newItemForm.category}
-                  onChange={(e) => setNewItemForm({ ...newItemForm, category: e.target.value })}
-                  className="w-full mt-1 px-3.5 py-2 rounded-xl bg-(--bg-secondary) border border-(--border-color) text-sm outline-none"
-                >
-                  <option value="Recommended">Recommended</option>
-                  <option value="Burgers">Burgers</option>
-                  <option value="Biryani">Biryani</option>
-                  <option value="Pizza">Pizza</option>
-                  <option value="Starters">Starters</option>
-                  <option value="Desserts">Desserts</option>
-                </select>
-              </div>
             </div>
 
             <div>
-              <label className="text-xs font-bold uppercase text-(--text-muted)">Description</label>
-              <textarea
-                rows={2}
-                placeholder="Brief description of flavors & ingredients..."
-                value={newItemForm.description}
-                onChange={(e) => setNewItemForm({ ...newItemForm, description: e.target.value })}
-                className="w-full mt-1 px-3.5 py-2 rounded-xl bg-(--bg-secondary) border border-(--border-color) text-sm outline-none"
+              <label className="text-xs font-bold uppercase text-text-muted">Price (₹)</label>
+              <input
+                type="number"
+                required
+                value={newItemForm.price}
+                onChange={(e) => setNewItemForm({ ...newItemForm, price: e.target.value })}
+                placeholder="349"
+                className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition"
               />
             </div>
 
-            <div className="flex items-center gap-4 pt-1">
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold">
-                <input
-                  type="radio"
-                  name="veg"
-                  checked={newItemForm.isVeg}
-                  onChange={() => setNewItemForm({ ...newItemForm, isVeg: true })}
-                />{" "}
-                🌱 Pure Veg
-              </label>
-              <label className="flex items-center gap-2 cursor-pointer text-xs font-bold">
-                <input
-                  type="radio"
-                  name="veg"
-                  checked={!newItemForm.isVeg}
-                  onChange={() => setNewItemForm({ ...newItemForm, isVeg: false })}
-                />{" "}
-                🍗 Non-Veg
+            <div>
+              <label className="text-xs font-bold uppercase text-text-muted">Category</label>
+              <select
+                value={newItemForm.category}
+                onChange={(e) => setNewItemForm({ ...newItemForm, category: e.target.value })}
+                className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition font-bold"
+              >
+                <option value="Recommended">Recommended</option>
+                <option value="Starters">Starters</option>
+                <option value="Main Course">Main Course</option>
+                <option value="Desserts">Desserts</option>
+              </select>
+            </div>
+
+            <div className="flex items-center gap-2 pt-1">
+              <input
+                type="checkbox"
+                id="isVeg"
+                checked={newItemForm.isVeg}
+                onChange={(e) => setNewItemForm({ ...newItemForm, isVeg: e.target.checked })}
+                className="w-4 h-4 rounded text-success focus:ring-success"
+              />
+              <label htmlFor="isVeg" className="text-xs font-bold text-text-primary cursor-pointer">
+                Pure Vegetarian Item
               </label>
             </div>
 
             <button
               type="submit"
-              className="w-full py-3 rounded-xl bg-orange-600 text-white font-bold text-sm shadow hover:bg-orange-700 transition"
+              className="w-full py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider shadow-md transition cursor-pointer"
             >
-              Save Dish to Menu
+              Add Dish to Kitchen
             </button>
           </form>
-
-          {/* Existing Dishes List */}
-          <div className="lg:col-span-2 bg-(--bg-surface) p-6 sm:p-8 rounded-3xl border border-(--border-color) space-y-4 shadow-sm">
-            <h3 className="font-bold text-lg">Current Kitchen Menu ({menuItems.length})</h3>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-h-[500px] overflow-y-auto pr-1">
-              {menuItems.map((item) => (
-                <div
-                  key={item._id}
-                  className="p-4 rounded-2xl bg-(--bg-secondary) border border-(--border-color) flex items-center justify-between gap-3"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0" />
-                    <div className="min-w-0">
-                      <p className="font-bold text-sm truncate">{item.name}</p>
-                      <p className="text-xs font-extrabold text-orange-500">₹{item.price}</p>
-                      <span className="text-[10px] uppercase text-(--text-muted)">{item.category}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       )}
     </div>

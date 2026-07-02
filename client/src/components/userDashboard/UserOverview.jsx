@@ -1,87 +1,131 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../context/AuthContext";
+import api from "../../config/Api";
+import { ShoppingBag, CreditCard, LifeBuoy, ArrowRight, Star } from "lucide-react";
 
-const UserOverview = () => {
+const UserOverview = ({ setActive }) => {
+  const { user } = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchMyOrders();
+  }, []);
+
+  const fetchMyOrders = async () => {
+    try {
+      setLoading(true);
+      const res = await api.get("/orders/my-orders");
+      if (res.data && res.data.data) {
+        setOrders(res.data.data);
+      }
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const totalSpent = orders.reduce((acc, curr) => acc + (curr.pricing?.totalAmount || 0), 0);
+
   return (
-    <div className="p-6 bg-gray-50 min-h-full">
-      {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-2xl font-semibold text-slate-800">
-          Dashboard Overview
-        </h1>
-        <p className="text-sm text-slate-500">
-          Welcome back! Here’s a quick summary of your activity.
-        </p>
-      </div>
-
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
-        <OverviewCard title="Total Orders" value="128" />
-        <OverviewCard title="Pending Orders" value="6" />
-        <OverviewCard title="Total Spent" value="₹12,450" />
-        <OverviewCard title="Active Tickets" value="2" />
-      </div>
-
-      {/* Main Sections */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Recent Activity */}
-        <div className="lg:col-span-2 bg-white rounded-xl shadow-sm p-5">
-          <h2 className="text-lg font-medium text-slate-800 mb-4">
-            Recent Activity
-          </h2>
-
-          <ul className="space-y-3 text-sm text-slate-600">
-            <li className="flex justify-between">
-              <span>Order #124 placed</span>
-              <span className="text-slate-400">2 hrs ago</span>
-            </li>
-            <li className="flex justify-between">
-              <span>Payment successful</span>
-              <span className="text-slate-400">Yesterday</span>
-            </li>
-            <li className="flex justify-between">
-              <span>Support ticket created</span>
-              <span className="text-slate-400">2 days ago</span>
-            </li>
-          </ul>
+    <div className="space-y-8">
+      {/* Welcome Banner */}
+      <div className="bg-surface p-8 rounded-3xl border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 shadow-xs">
+        <div className="space-y-1">
+          <span className="px-3.5 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
+            User Hub
+          </span>
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            Welcome, {user?.fullName || "Gourmet Member"}!
+          </h1>
+          <p className="text-sm text-text-secondary">
+            Manage your food orders, saved addresses, and wallet rewards all in one place.
+          </p>
         </div>
 
-        {/* Profile Snapshot */}
-        <div className="bg-white rounded-xl shadow-sm p-5">
-          <h2 className="text-lg font-medium text-slate-800 mb-4">
-            Profile Snapshot
-          </h2>
+        <button
+          onClick={() => setActive && setActive("orders")}
+          className="flex items-center gap-2 px-6 py-3 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-primary/25 hover:bg-primary-hover transition cursor-pointer"
+        >
+          Order History <ArrowRight size={16} />
+        </button>
+      </div>
 
-          <div className="space-y-3 text-sm">
-            <InfoRow label="Name" value="Arpit Gupta" />
-            <InfoRow label="Email" value="arpit@email.com" />
-            <InfoRow label="Status" value="Active" accent />
+      {/* KPI Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+            <ShoppingBag size={20} />
           </div>
+          <p className="text-xs font-bold uppercase text-text-muted">Total Food Orders</p>
+          <p className="text-2xl font-black text-text-primary">{orders.length} Orders</p>
         </div>
+
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
+            <CreditCard size={20} />
+          </div>
+          <p className="text-xs font-bold uppercase text-text-muted">Total Amount Spent</p>
+          <p className="text-2xl font-black text-text-primary">₹{totalSpent}</p>
+        </div>
+
+        <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
+          <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
+            <LifeBuoy size={20} />
+          </div>
+          <p className="text-xs font-bold uppercase text-text-muted">Membership Tier</p>
+          <p className="text-2xl font-black text-text-primary flex items-center gap-1.5">
+            Gold VIP <Star size={18} className="text-primary fill-primary" />
+          </p>
+        </div>
+      </div>
+
+      {/* Recent Orders Preview */}
+      <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-6 shadow-xs">
+        <div className="flex justify-between items-center border-b border-border pb-4">
+          <h2 className="text-lg font-black text-text-primary">Recent Orders Summary</h2>
+          <button
+            onClick={() => setActive && setActive("orders")}
+            className="text-xs font-bold text-primary hover:underline cursor-pointer"
+          >
+            View All Orders →
+          </button>
+        </div>
+
+        {loading ? (
+          <div className="space-y-4 animate-pulse">
+            {[1, 2].map((i) => (
+              <div key={i} className="h-20 bg-muted rounded-2xl"></div>
+            ))}
+          </div>
+        ) : orders.length === 0 ? (
+          <div className="text-center py-12 space-y-2">
+            <p className="font-bold text-text-primary">No food orders placed yet</p>
+            <p className="text-xs text-text-muted">Explore Cravings kitchens to order your first gourmet meal.</p>
+          </div>
+        ) : (
+          <div className="divide-y divide-border">
+            {orders.slice(0, 3).map((ord) => (
+              <div key={ord._id} className="py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div>
+                  <span className="font-black text-xs text-primary">#{ord.orderId || ord._id}</span>
+                  <h4 className="font-bold text-sm text-text-primary mt-1">{ord.restaurantId?.name || "Gourmet Kitchen"}</h4>
+                  <p className="text-xs text-text-muted">Placed on {new Date(ord.createdAt).toLocaleDateString()}</p>
+                </div>
+
+                <div className="flex items-center gap-4 self-end sm:self-center">
+                  <span className="font-black text-sm text-text-primary">₹{ord.pricing?.totalAmount}</span>
+                  <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-[11px] uppercase">
+                    {ord.orderStatus}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
-
-/* Small reusable components */
-
-const OverviewCard = ({ title, value }) => (
-  <div className="bg-white rounded-xl shadow-sm p-5">
-    <p className="text-sm text-slate-500">{title}</p>
-    <p className="text-2xl font-semibold text-slate-800 mt-2">{value}</p>
-  </div>
-);
-
-const InfoRow = ({ label, value, accent }) => (
-  <div className="flex justify-between">
-    <span className="text-slate-500">{label}</span>
-    <span
-      className={`font-medium ${
-        accent ? "text-emerald-600" : "text-slate-700"
-      }`}
-    >
-      {value}
-    </span>
-  </div>
-);
 
 export default UserOverview;

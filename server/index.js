@@ -63,10 +63,15 @@ app.use("/user", userRouter);
 app.use("/api/user", userRouter);
 
 // New Core Domain Routes
+app.use("/restaurants", restaurantRouter);
 app.use("/api/restaurants", restaurantRouter);
+app.use("/orders", orderRouter);
 app.use("/api/orders", orderRouter);
+app.use("/coupons", couponRouter);
 app.use("/api/coupons", couponRouter);
+app.use("/admin", adminRouter);
 app.use("/api/admin", adminRouter);
+app.use("/partner", partnerRouter);
 app.use("/api/partner", partnerRouter);
 
 app.get("/", (req, res) => {

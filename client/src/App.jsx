@@ -17,6 +17,7 @@ import OrderTracking from "./pages/OrderTracking";
 import MenuPage from "./pages/MenuPage";
 import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
+import ErrorPage from "./pages/Error";
 
 // Multi-Role Dashboards
 import OwnerDashboard from "./pages/dashboards/OwnerDashboard";
@@ -32,15 +33,15 @@ const App = () => {
 
   return (
     <Router>
-      <div className="min-h-screen flex flex-col bg-(--bg-primary) text-(--text-primary) transition-colors duration-300">
+      <div className="min-h-screen flex flex-col bg-background text-text-primary transition-colors duration-300 font-sans">
         <Toaster
           position="top-right"
           toastOptions={{
             duration: 3500,
             style: {
-              background: "var(--bg-surface)",
-              color: "var(--text-primary)",
-              border: "1px solid var(--border-color)",
+              background: "var(--color-surface)",
+              color: "var(--color-text-primary)",
+              border: "1px solid var(--color-border)",
               borderRadius: "1rem",
               fontWeight: 600,
             },
@@ -73,8 +74,9 @@ const App = () => {
             <Route path="/partner-dashboard" element={<PartnerDashboard />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
 
-            {/* Catch-all redirect */}
-            <Route path="*" element={<Navigate to="/" replace />} />
+            {/* 404 Error Page */}
+            <Route path="/404" element={<ErrorPage />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </main>
 
