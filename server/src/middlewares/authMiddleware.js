@@ -2,14 +2,14 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 export const Protect = async (req, res, next) => {
-  console.log("Cookies:", req.cookies);
-  console.log("Token:", req.cookies?.parleG);
-
   try {
-    // existing code...
     let token = req.cookies?.parleG;
 
-    if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (
+      !token &&
+      req.headers.authorization &&
+      req.headers.authorization.startsWith("Bearer")
+    ) {
       token = req.headers.authorization.split(" ")[1];
     }
 
@@ -19,7 +19,10 @@ export const Protect = async (req, res, next) => {
       return next(error);
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || "fallback_secret_key_for_dev_only");
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET || "fallback_secret_key_for_dev_only",
+    );
     if (!decoded || !decoded.id) {
       const error = new Error("Invalid Token! Please Login Again.");
       error.statusCode = 401;
@@ -36,7 +39,10 @@ export const Protect = async (req, res, next) => {
     req.user = verifiedUser;
     next();
   } catch (error) {
-    if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+    if (
+      error.name === "JsonWebTokenError" ||
+      error.name === "TokenExpiredError"
+    ) {
       error.statusCode = 401;
       error.message = "Session expired or invalid token. Please log in again.";
     }
@@ -48,7 +54,7 @@ export const AuthorizeRoles = (...allowedRoles) => {
   return (req, res, next) => {
     if (!req.user || !allowedRoles.includes(req.user.role)) {
       const error = new Error(
-        `Access Denied! Role '${req.user?.role || "guest"}' is not authorized to access this resource.`
+        `Access Denied! Role '${req.user?.role || "guest"}' is not authorized to access this resource.`,
       );
       error.statusCode = 403;
       return next(error);
