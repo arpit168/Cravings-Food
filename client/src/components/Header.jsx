@@ -69,17 +69,17 @@ const Header = () => {
         {/* Left: Logo & Location */}
         <div className="flex items-center gap-6">
           <Link to="/" className="flex items-center gap-2.5 group">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center text-white font-black text-xl shadow-md shadow-primary/25 group-hover:scale-105 transition duration-300">
+            <div className="w-10 h-10 md:text-xl lg:text-2xl  rounded-xl bg-primary flex items-center justify-center text-white font-black  shadow-md shadow-primary/25 group-hover:scale-105 transition duration-300">
               C
             </div>
-            <span className="text-2xl font-black tracking-tight text-text-primary group-hover:text-primary transition">
+            <span className="md:text-2xl lg:text-3xl text-sm   font-black tracking-tight text-text-primary group-hover:text-primary transition">
               Cravings
             </span>
           </Link>
 
           <div className="hidden lg:flex items-center gap-2 px-3.5 py-2 rounded-full bg-muted border border-border text-sm text-text-secondary">
             <MapPin size={16} className="text-primary shrink-0" />
-            <span className="font-semibold truncate max-w-[180px]">Bandra West, Mumbai</span>
+            <span className="font-semibold truncate max-w-45">Bandra West, Mumbai</span>
           </div>
         </div>
 
