@@ -2,7 +2,11 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 export const Protect = async (req, res, next) => {
+  console.log("Cookies:", req.cookies);
+  console.log("Token:", req.cookies?.parleG);
+
   try {
+    // existing code...
     let token = req.cookies?.parleG;
 
     if (!token && req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
