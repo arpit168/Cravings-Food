@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useThemeStore from "../stores/useThemeStore";
 import useCartStore from "../stores/useCartStore";
+import { IoLogInOutline } from "react-icons/io5";
+
 import {
   Sun,
   Moon,
@@ -129,7 +131,7 @@ const Header = () => {
                   alt={user?.fullName || "User"}
                   className="w-8 h-8 rounded-full object-cover border border-primary"
                 />
-                <span className="hidden sm:inline text-xs font-bold text-text-primary max-w-[100px] truncate">
+                <span className="hidden sm:inline text-xs font-bold text-text-primary max-w-25 truncate">
                   {user.fullName?.split(" ")[0] || "Profile"}
                 </span>
               </button>
@@ -166,15 +168,15 @@ const Header = () => {
             <div className="flex items-center gap-2">
               <Link
                 to="/login"
-                className="px-4 py-2 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 hover:text-primary transition"
+                className="px-2 py-2 md:hidden xl:hidden flex  rounded-xl bg-muted border border-border text-xl font-bold text-text-primary hover:border-primary/50 hover:text-primary transition"
               >
-                Sign In
+                <IoLogInOutline />
               </Link>
               <Link
                 to="/register"
                 className="hidden sm:inline-flex px-4 py-2 rounded-xl bg-primary text-white text-xs font-black shadow-md shadow-primary/25 hover:bg-primary-hover transition"
               >
-                Register
+                Sign up/in
               </Link>
             </div>
           )}
