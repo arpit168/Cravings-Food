@@ -73,7 +73,7 @@ const RestaurantDetails = () => {
       {/* RESTAURANT HEADER BANNER */}
       <div className="relative h-72 sm:h-96 overflow-hidden">
         <img src={restaurant.image} alt={restaurant.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent flex items-end">
+        <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent flex items-end">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8">
             <Link
               to="/"

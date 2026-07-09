@@ -7,7 +7,7 @@ import { ArrowLeft } from "lucide-react";
 function Error() {
   const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-6 text-center space-y-6 transition-colors duration-300">
+    <div className="min-h-screen  flex flex-col items-center justify-center p-6 text-center space-y-6 transition-colors duration-300">
       <div className="max-w-md w-full">
         <Lottie animationData={Err} loop className="w-full h-80 object-contain" />
       </div>

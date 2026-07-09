@@ -54,6 +54,7 @@ const App = () => {
         />
 
         <Header />
+        
 
         <main className="flex-1">
           <Routes>
@@ -146,9 +147,10 @@ const App = () => {
             <Route path="/404" element={<ErrorPage />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
+         
         </main>
-
-        <Footer />
+               <Footer />
+        
       </div>
     </Router>
   );
