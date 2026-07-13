@@ -16,22 +16,29 @@ export const AuthProvider = ({ children }) => {
   const [isLogin, setIsLogin] = useState(!!user);
   const [loadingAuth, setLoadingAuth] = useState(true);
 
+  const clearAuthState = () => {
+    setUser(null);
+    setIsLogin(false);
+    sessionStorage.removeItem("CravingUser");
+  };
+
   useEffect(() => {
     const verifyAuth = async () => {
       try {
         const res = await api.get("/auth/me");
         if (res.data && res.data.data) {
-          setUser(res.data.data);
+          const nextUser = res.data.data;
+          setUser(nextUser);
           setIsLogin(true);
-          sessionStorage.setItem("CravingUser", JSON.stringify(res.data.data));
+          sessionStorage.setItem("CravingUser", JSON.stringify(nextUser));
+        } else {
+          clearAuthState();
         }
       } catch (error) {
-        // Not logged in or session expired
-        if (user) {
-          setUser(null);
-          setIsLogin(false);
-          sessionStorage.removeItem("CravingUser");
+        if (error?.response?.status !== 401) {
+          console.error("Auth verification failed", error);
         }
+        clearAuthState();
       } finally {
         setLoadingAuth(false);
       }
@@ -47,9 +54,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error(error);
     } finally {
-      setUser(null);
-      setIsLogin(false);
-      sessionStorage.removeItem("CravingUser");
+      clearAuthState();
     }
   };
 

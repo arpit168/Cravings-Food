@@ -15,11 +15,14 @@ export const genToken = (user, res) => {
       }
     );
 
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("parleG", token, {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
     });
 
     return token;

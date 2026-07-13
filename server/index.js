@@ -20,6 +20,8 @@ import partnerRouter from "./src/routers/partnerRouter.js";
 
 const app = express();
 
+app.set("trust proxy", 1);
+
 // Security HTTP Headers
 app.use(
   helmet({
@@ -37,13 +39,26 @@ const limiter = rateLimit({
 });
 app.use("/api/", limiter);
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://cravings-food-by-arpit.netlify.app",
+  "https://cravings-food.onrender.com",
+];
+
 app.use(
   cors({
-    origin: [
-      "http://localhost:5173",
-      "https://cravings-food-by-arpit.netlify.app",
-    ],
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error("Origin not allowed by CORS"));
+    },
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 app.use(express.json({ limit: "10mb" }));

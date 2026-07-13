@@ -138,10 +138,13 @@ export const VerifyOtp = async (req, res, next) => {
 
 export const UserLogout = async (req, res, next) => {
   try {
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.clearCookie("parleG", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
+      path: "/",
     });
     res.status(200).json({ message: "Logged out successfully." });
   } catch (error) {

@@ -66,9 +66,10 @@ const Login = () => {
     try {
       const res = await api.post("/auth/login", formData);
       toast.success(res.data.message || "Welcome back! 🎉");
-      setUser(res.data.data);
+      const nextUser = res.data.data;
+      setUser(nextUser);
       setIsLogin(true);
-      sessionStorage.setItem("CravingUser", JSON.stringify(res.data.data));
+      sessionStorage.setItem("CravingUser", JSON.stringify(nextUser));
       if (rememberMe) {
         localStorage.setItem("rememberEmail", formData.email);
       } else {

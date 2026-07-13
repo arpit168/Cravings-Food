@@ -36,19 +36,19 @@ const Register = () => {
       icon: Utensils,
       label: "Customer",
       description: "Order from the best restaurants",
-      gradient: "from-blue-500 to-cyan-400"
+      linear: "from-blue-500 to-cyan-400"
     },
     restaurant_owner: {
       icon: Sparkles,
       label: "Restaurant Partner",
       description: "List your kitchen & grow your business",
-      gradient: "from-orange-500 to-amber-400"
+      linear: "from-orange-500 to-amber-400"
     },
     delivery_partner: {
       icon: Bike,
       label: "Delivery Rider",
       description: "Earn with every delivery",
-      gradient: "from-green-500 to-emerald-400"
+      linear: "from-green-500 to-emerald-400"
     }
   };
 
@@ -123,7 +123,7 @@ const Register = () => {
   const CurrentRoleIcon = roleFeatures[formData.role].icon;
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center px-4 py-8 bg-gradient-to-br from-background via-background to-primary/5">
+    <div className="min-h-[90vh] flex items-center justify-center px-4 py-8 bg-linear-to-br from-background via-background to-primary/5">
       <div className="max-w-2xl w-full">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -134,13 +134,13 @@ const Register = () => {
         <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-8 sm:p-12 rounded-4xl border border-white/20 dark:border-gray-700/30 shadow-2xl shadow-primary/5 transition-all duration-300">
           {/* Header */}
           <div className="text-center space-y-3 mb-8">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-primary/10 to-primary/5 border border-primary/20">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">
               <Sparkles className="w-4 h-4 text-primary" />
               <span className="text-xs font-bold text-primary uppercase tracking-wider">
                 Join Our Community
               </span>
             </div>
-            <h1 className="text-4xl font-black bg-gradient-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
+            <h1 className="text-4xl font-black bg-linear-to-r from-gray-900 to-gray-700 dark:from-white dark:to-gray-300 bg-clip-text text-transparent">
               Create Your Account
             </h1>
             <p className="text-text-secondary text-sm max-w-sm mx-auto">
@@ -287,12 +287,12 @@ const Register = () => {
                 Select Your Role
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {Object.entries(roleFeatures).map(([value, { icon: Icon, label, description, gradient }]) => (
+                {Object.entries(roleFeatures).map(([value, { icon: Icon, label, description, linear }]) => (
                   <label
                     key={value}
                     className={`relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-300 ${
                       formData.role === value
-                        ? `border-primary bg-gradient-to-br ${gradient}/10 shadow-lg shadow-primary/10 scale-[1.02]`
+                        ? `border-primary bg-linear-to-br ${linear}/10 shadow-lg shadow-primary/10 scale-[1.02]`
                         : "border-border/50 hover:border-primary/30 hover:bg-primary/5"
                     }`}
                   >
@@ -305,7 +305,7 @@ const Register = () => {
                       className="sr-only"
                     />
                     <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg`}>
+                      <div className={`p-2 rounded-xl bg-linear-to-br ${linear} text-white shadow-lg`}>
                         <Icon className="w-4 h-4" />
                       </div>
                       <div>
@@ -327,7 +327,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group w-full py-4 bg-gradient-to-r from-primary to-primary-hover text-white font-bold text-sm uppercase tracking-wider rounded-2xl hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 flex items-center justify-center gap-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group w-full py-4 bg-linear-to-r from-primary to-primary-hover text-white font-bold text-sm uppercase tracking-wider rounded-2xl hover:shadow-2xl hover:shadow-primary/25 transition-all duration-300 flex items-center justify-center gap-3 mt-6 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? (
                 <>

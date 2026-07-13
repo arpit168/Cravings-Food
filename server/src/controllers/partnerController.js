@@ -100,7 +100,8 @@ export const updatePartnerProfile = async (req, res, next) => {
       message: "KYC details submitted! Awaiting administrator approval.",
       data: partner,
     });
-  } catch (error) {
+  } catch 
+(error) {
     next(error);
   }
 };
