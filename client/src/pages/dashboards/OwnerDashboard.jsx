@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../../config/Api";
-import { useAuth } from "../../context/AuthContext";
+
 import toast from "react-hot-toast";
 import {
   UtensilsCrossed,
@@ -15,7 +15,6 @@ import {
 } from "lucide-react";
 
 const OwnerDashboard = () => {
-  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("orders");
   const [myRestaurants, setMyRestaurants] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
@@ -40,8 +39,12 @@ const OwnerDashboard = () => {
     try {
       setLoading(true);
       const [resRest, resOrd] = await Promise.all([
-        api.get("/restaurants/owner/my-restaurants").catch(() => ({ data: { data: {} } })),
-        api.get("/restaurants/owner/orders").catch(() => ({ data: { data: [] } })),
+        api
+          .get("/restaurants/owner/my-restaurants")
+          .catch(() => ({ data: { data: {} } })),
+        api
+          .get("/restaurants/owner/orders")
+          .catch(() => ({ data: { data: [] } })),
       ]);
 
       if (resRest.data && resRest.data.data) {
@@ -77,7 +80,9 @@ const OwnerDashboard = () => {
 
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
-      const res = await api.put(`/restaurants/owner/orders/${orderId}/status`, { status: newStatus });
+      const res = await api.put(`/restaurants/owner/orders/${orderId}/status`, {
+        status: newStatus,
+      });
       if (res.data && res.data.success) {
         toast.success(`Order marked as ${newStatus}!`);
         fetchOwnerData();
@@ -89,7 +94,9 @@ const OwnerDashboard = () => {
 
   const handleToggleItemAvailability = async (itemId) => {
     try {
-      const res = await api.put(`/restaurants/owner/menu/${itemId}/availability`);
+      const res = await api.put(
+        `/restaurants/owner/menu/${itemId}/availability`,
+      );
       if (res.data && res.data.success) {
         toast.success(res.data.message);
         fetchOwnerData();
@@ -106,7 +113,9 @@ const OwnerDashboard = () => {
       return;
     }
     try {
-      const res = await api.post("/restaurants/owner/payout", { amount: Number(payoutAmount) });
+      const res = await api.post("/restaurants/owner/payout", {
+        amount: Number(payoutAmount),
+      });
       if (res.data && res.data.success) {
         toast.success(res.data.message);
         setPayoutAmount("");
@@ -139,7 +148,8 @@ const OwnerDashboard = () => {
           price: "",
           category: "Recommended",
           description: "",
-          image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600",
+          image:
+            "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600",
           isVeg: true,
         });
         fetchOwnerData();
@@ -149,7 +159,10 @@ const OwnerDashboard = () => {
     }
   };
 
-  const totalEarnings = kitchenOrders.reduce((sum, ord) => sum + (ord.pricing?.totalAmount || 0), 0);
+  const totalEarnings = kitchenOrders.reduce(
+    (sum, ord) => sum + (ord.pricing?.totalAmount || 0),
+    0,
+  );
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-background transition-colors duration-300">
@@ -163,7 +176,11 @@ const OwnerDashboard = () => {
             Restaurant Owner Control Deck
           </h1>
           <p className="text-sm text-text-secondary">
-            Managing <strong className="text-primary">{myRestaurants[0]?.name || "Gourmet Kitchen"}</strong> • Real-time kitchen terminal
+            Managing{" "}
+            <strong className="text-primary">
+              {myRestaurants[0]?.name || "Gourmet Kitchen"}
+            </strong>{" "}
+            • Real-time kitchen terminal
           </p>
         </div>
 
@@ -182,7 +199,11 @@ const OwnerDashboard = () => {
             onClick={fetchOwnerData}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 transition cursor-pointer"
           >
-            <RefreshCw size={14} className={loading ? "animate-spin text-primary" : ""} /> Sync Kitchen
+            <RefreshCw
+              size={14}
+              className={loading ? "animate-spin text-primary" : ""}
+            />{" "}
+            Sync Kitchen
           </button>
         </div>
       </div>
@@ -193,24 +214,36 @@ const OwnerDashboard = () => {
           <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <DollarSign size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Total Kitchen Revenue</p>
-          <p className="text-2xl font-black text-text-primary">₹{totalEarnings}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Total Kitchen Revenue
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            ₹{totalEarnings}
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
             <ListOrdered size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Kitchen Queue</p>
-          <p className="text-2xl font-black text-text-primary">{kitchenOrders.length} Orders</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Kitchen Queue
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {kitchenOrders.length} Orders
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
             <ChefHat size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Active Menu Dishes</p>
-          <p className="text-2xl font-black text-text-primary">{menuItems.length} Dishes</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Active Menu Dishes
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {menuItems.length} Dishes
+          </p>
         </div>
       </div>
 
@@ -258,7 +291,9 @@ const OwnerDashboard = () => {
           <div className="space-y-4">
             {kitchenOrders.length === 0 ? (
               <div className="text-center py-12 bg-background rounded-3xl border border-dashed border-border p-6">
-                <p className="text-text-muted font-semibold text-sm">No live tickets in the kitchen right now. Ready for orders!</p>
+                <p className="text-text-muted font-semibold text-sm">
+                  No live tickets in the kitchen right now. Ready for orders!
+                </p>
               </div>
             ) : (
               kitchenOrders.map((ord) => (
@@ -268,13 +303,25 @@ const OwnerDashboard = () => {
                 >
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <span className="font-black text-xs text-primary">{ord.orderId || ord._id}</span>
-                      <span className="text-[11px] text-text-muted">• {new Date(ord.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                      <span className="font-black text-xs text-primary">
+                        {ord.orderId || ord._id}
+                      </span>
+                      <span className="text-[11px] text-text-muted">
+                        •{" "}
+                        {new Date(ord.createdAt).toLocaleTimeString([], {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </span>
                     </div>
                     <h3 className="font-bold text-base text-text-primary">
-                      {ord.items?.map((i) => `${i.quantity}x ${i.name}`).join(", ") || "Custom Order"}
+                      {ord.items
+                        ?.map((i) => `${i.quantity}x ${i.name}`)
+                        .join(", ") || "Custom Order"}
                     </h3>
-                    <p className="font-black text-primary">₹{ord.pricing?.totalAmount || 0}</p>
+                    <p className="font-black text-primary">
+                      ₹{ord.pricing?.totalAmount || 0}
+                    </p>
                     {ord.specialInstructions && (
                       <p className="text-xs bg-amber-500/10 text-amber-500 p-2 rounded-lg font-semibold mt-1">
                         Note: {ord.specialInstructions}
@@ -285,11 +332,12 @@ const OwnerDashboard = () => {
                   <div className="flex flex-wrap items-center gap-3 self-end sm:self-center">
                     <span
                       className={`px-3 py-1 rounded-full font-black text-xs uppercase tracking-wider ${
-                        ord.orderStatus === "Preparing" || ord.orderStatus === "Placed"
+                        ord.orderStatus === "Preparing" ||
+                        ord.orderStatus === "Placed"
                           ? "bg-primary/10 text-primary border border-primary/20"
                           : ord.orderStatus === "Ready for Pickup"
-                          ? "bg-info/10 text-info border border-info/20"
-                          : "bg-success/10 text-success border border-success/20"
+                            ? "bg-info/10 text-info border border-info/20"
+                            : "bg-success/10 text-success border border-success/20"
                       }`}
                     >
                       {ord.orderStatus}
@@ -298,13 +346,17 @@ const OwnerDashboard = () => {
                     {ord.orderStatus === "Placed" && (
                       <div className="flex gap-2">
                         <button
-                          onClick={() => handleUpdateOrderStatus(ord._id, "Preparing")}
+                          onClick={() =>
+                            handleUpdateOrderStatus(ord._id, "Preparing")
+                          }
                           className="px-4 py-2 rounded-xl bg-primary text-white font-bold text-xs hover:bg-primary-hover transition cursor-pointer"
                         >
                           Accept & Prepare
                         </button>
                         <button
-                          onClick={() => handleUpdateOrderStatus(ord._id, "Cancelled")}
+                          onClick={() =>
+                            handleUpdateOrderStatus(ord._id, "Cancelled")
+                          }
                           className="px-4 py-2 rounded-xl bg-danger/10 text-danger border border-danger/20 font-bold text-xs hover:bg-danger/20 transition cursor-pointer"
                         >
                           Reject
@@ -314,7 +366,9 @@ const OwnerDashboard = () => {
 
                     {ord.orderStatus === "Preparing" && (
                       <button
-                        onClick={() => handleUpdateOrderStatus(ord._id, "Ready for Pickup")}
+                        onClick={() =>
+                          handleUpdateOrderStatus(ord._id, "Ready for Pickup")
+                        }
                         className="px-4 py-2 rounded-xl bg-success text-white font-bold text-xs hover:bg-success/90 transition cursor-pointer"
                       >
                         Mark Ready for Pickup
@@ -330,28 +384,49 @@ const OwnerDashboard = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Menu List */}
           <div className="lg:col-span-2 bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xs">
-            <h2 className="text-lg font-black text-text-primary">Published Kitchen Dishes</h2>
+            <h2 className="text-lg font-black text-text-primary">
+              Published Kitchen Dishes
+            </h2>
             <div className="divide-y divide-border">
               {menuItems.map((item) => (
-                <div key={item._id} className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div
+                  key={item._id}
+                  className="py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4"
+                >
                   <div className="flex items-center gap-3 min-w-0">
-                    <img src={item.image} alt={item.name} className="w-14 h-14 rounded-xl object-cover shrink-0 border border-border" />
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-14 h-14 rounded-xl object-cover shrink-0 border border-border"
+                    />
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
-                        <h4 className="font-bold text-sm text-text-primary truncate">{item.name}</h4>
-                        <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
-                          item.isVeg ? "bg-success/10 text-success" : "bg-danger/10 text-danger"
-                        }`}>
+                        <h4 className="font-bold text-sm text-text-primary truncate">
+                          {item.name}
+                        </h4>
+                        <span
+                          className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                            item.isVeg
+                              ? "bg-success/10 text-success"
+                              : "bg-danger/10 text-danger"
+                          }`}
+                        >
                           {item.isVeg ? "Veg" : "Non-Veg"}
                         </span>
                       </div>
-                      <p className="font-black text-primary text-xs">₹{item.price}</p>
+                      <p className="font-black text-primary text-xs">
+                        ₹{item.price}
+                      </p>
                     </div>
                   </div>
                   <div className="flex items-center gap-3 self-end sm:self-center">
-                    <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
-                      item.isAvailable !== false ? "bg-success/10 text-success" : "bg-muted text-text-muted"
-                    }`}>
+                    <span
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
+                        item.isAvailable !== false
+                          ? "bg-success/10 text-success"
+                          : "bg-muted text-text-muted"
+                      }`}
+                    >
                       {item.isAvailable !== false ? "In Stock" : "Sold Out"}
                     </span>
                     <button
@@ -367,40 +442,55 @@ const OwnerDashboard = () => {
           </div>
 
           {/* Add New Dish Form */}
-          <form onSubmit={handleAddItem} className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xl self-start">
+          <form
+            onSubmit={handleAddItem}
+            className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-4 shadow-xl self-start"
+          >
             <h3 className="font-black text-base text-text-primary flex items-center gap-2">
               <PlusCircle className="text-primary" /> Publish New Dish
             </h3>
 
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Dish Name</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Dish Name
+              </label>
               <input
                 type="text"
                 required
                 value={newItemForm.name}
-                onChange={(e) => setNewItemForm({ ...newItemForm, name: e.target.value })}
+                onChange={(e) =>
+                  setNewItemForm({ ...newItemForm, name: e.target.value })
+                }
                 placeholder="Truffle Cheese Pizza"
                 className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition"
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Price (₹)</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Price (₹)
+              </label>
               <input
                 type="number"
                 required
                 value={newItemForm.price}
-                onChange={(e) => setNewItemForm({ ...newItemForm, price: e.target.value })}
+                onChange={(e) =>
+                  setNewItemForm({ ...newItemForm, price: e.target.value })
+                }
                 placeholder="349"
                 className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition"
               />
             </div>
 
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Category</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Category
+              </label>
               <select
                 value={newItemForm.category}
-                onChange={(e) => setNewItemForm({ ...newItemForm, category: e.target.value })}
+                onChange={(e) =>
+                  setNewItemForm({ ...newItemForm, category: e.target.value })
+                }
                 className="w-full mt-1 px-4 py-2.5 rounded-xl bg-background border border-border text-xs text-text-primary outline-none focus:border-primary transition font-bold"
               >
                 <option value="Recommended">Recommended</option>
@@ -415,10 +505,15 @@ const OwnerDashboard = () => {
                 type="checkbox"
                 id="isVeg"
                 checked={newItemForm.isVeg}
-                onChange={(e) => setNewItemForm({ ...newItemForm, isVeg: e.target.checked })}
+                onChange={(e) =>
+                  setNewItemForm({ ...newItemForm, isVeg: e.target.checked })
+                }
                 className="w-4 h-4 rounded text-success focus:ring-success"
               />
-              <label htmlFor="isVeg" className="text-xs font-bold text-text-primary cursor-pointer">
+              <label
+                htmlFor="isVeg"
+                className="text-xs font-bold text-text-primary cursor-pointer"
+              >
                 Pure Vegetarian Item
               </label>
             </div>
@@ -438,33 +533,48 @@ const OwnerDashboard = () => {
               <DollarSign className="text-success" /> Financial Payout Ledger
             </h2>
             <div className="p-6 rounded-2xl bg-primary/10 border border-primary/20 space-y-2">
-              <span className="text-xs font-bold uppercase text-primary">Available Settlement Balance</span>
+              <span className="text-xs font-bold uppercase text-primary">
+                Available Settlement Balance
+              </span>
               <p className="text-3xl sm:text-4xl font-black text-primary">
                 ₹{myRestaurants[0]?.walletBalance || 0}
               </p>
               <p className="text-xs text-text-secondary">
-                Standard platform commission is deducted automatically upon order completion.
+                Standard platform commission is deducted automatically upon
+                order completion.
               </p>
             </div>
             <div className="space-y-3 pt-2">
               <div className="flex justify-between text-sm font-semibold">
                 <span className="text-text-secondary">Commission Tier</span>
-                <span className="text-text-primary font-bold">{myRestaurants[0]?.commissionPercentage || 15}%</span>
+                <span className="text-text-primary font-bold">
+                  {myRestaurants[0]?.commissionPercentage || 15}%
+                </span>
               </div>
               <div className="flex justify-between text-sm font-semibold">
                 <span className="text-text-secondary">Settlement Cycle</span>
-                <span className="text-text-primary font-bold">24 Hours (NEFT / UPI)</span>
+                <span className="text-text-primary font-bold">
+                  24 Hours (NEFT / UPI)
+                </span>
               </div>
             </div>
           </div>
 
-          <form onSubmit={handleRequestPayout} className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl">
-            <h3 className="font-black text-lg text-text-primary">Request Fund Transfer</h3>
+          <form
+            onSubmit={handleRequestPayout}
+            className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl"
+          >
+            <h3 className="font-black text-lg text-text-primary">
+              Request Fund Transfer
+            </h3>
             <p className="text-xs text-text-secondary">
-              Transfer verified earnings directly to your registered business bank account.
+              Transfer verified earnings directly to your registered business
+              bank account.
             </p>
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Withdrawal Amount (₹)</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Withdrawal Amount (₹)
+              </label>
               <input
                 type="number"
                 required

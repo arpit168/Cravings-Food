@@ -3,7 +3,9 @@ import User from "../models/userModel.js";
 
 export const getAvailableOrders = async (req, res, next) => {
   try {
-    const orders = await Order.find({ orderStatus: { $in: ["Confirmed", "Preparing", "Ready for Pickup"] } })
+    const orders = await Order.find({
+      orderStatus: { $in: ["Confirmed", "Preparing", "Ready for Pickup"] },
+    })
       .populate("restaurantId", "name address image")
       .populate("customerId", "fullName mobileNumber")
       .sort({ createdAt: -1 });
@@ -42,7 +44,13 @@ export const acceptDeliveryOrder = async (req, res, next) => {
     }
     await order.save();
 
-    res.status(200).json({ success: true, message: "Order accepted for delivery", data: order });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: "Order accepted for delivery",
+        data: order,
+      });
   } catch (error) {
     next(error);
   }
@@ -59,8 +67,16 @@ export const updateDeliveryStatus = async (req, res, next) => {
     }
 
     if (status === "Delivered") {
-      if (order.deliveryOtp && otp && otp !== order.deliveryOtp && otp !== "1234" && otp !== "8888") {
-        const error = new Error("Invalid Delivery OTP! Please check the 4-digit verification code with the customer.");
+      if (
+        order.deliveryOtp &&
+        otp &&
+        otp !== order.deliveryOtp &&
+        otp !== "1234" &&
+        otp !== "8888"
+      ) {
+        const error = new Error(
+          "Invalid Delivery OTP! Please check the 4-digit verification code with the customer.",
+        );
         error.statusCode = 400;
         return next(error);
       }
@@ -74,7 +90,13 @@ export const updateDeliveryStatus = async (req, res, next) => {
     order.orderStatus = status;
     await order.save();
 
-    res.status(200).json({ success: true, message: `Delivery marked as ${status}`, data: order });
+    res
+      .status(200)
+      .json({
+        success: true,
+        message: `Delivery marked as ${status}`,
+        data: order,
+      });
   } catch (error) {
     next(error);
   }
@@ -82,7 +104,8 @@ export const updateDeliveryStatus = async (req, res, next) => {
 
 export const updatePartnerProfile = async (req, res, next) => {
   try {
-    const { vehicleType, vehicleNumber, drivingLicense, aadharNumber } = req.body;
+    const { vehicleType, vehicleNumber, drivingLicense, aadharNumber } =
+      req.body;
     const partner = await User.findByIdAndUpdate(
       req.user._id,
       {
@@ -92,7 +115,7 @@ export const updatePartnerProfile = async (req, res, next) => {
         aadharNumber,
         kycStatus: "Pending",
       },
-      { new: true }
+      { new: true },
     ).select("-password");
 
     res.status(200).json({
@@ -100,8 +123,7 @@ export const updatePartnerProfile = async (req, res, next) => {
       message: "KYC details submitted! Awaiting administrator approval.",
       data: partner,
     });
-  } catch 
-(error) {
+  } catch (error) {
     next(error);
   }
 };
@@ -143,4 +165,3 @@ export const withdrawPartnerWallet = async (req, res, next) => {
     next(error);
   }
 };
-

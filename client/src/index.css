@@ -22,61 +22,69 @@
 
 @layer base {
   :root {
-    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    
+    --font-family: "Inter", system-ui, -apple-system, sans-serif;
+
     /* Light Theme Tokens */
     --color-primary: #fc8019;
     --color-primary-hover: #e66e0a;
     --color-secondary: #0f172a;
     --color-secondary-hover: #1e293b;
     --color-accent: #f59e0b;
-    
+
     --color-success: #10b981;
     --color-warning: #f59e0b;
     --color-danger: #ef4444;
     --color-info: #3b82f6;
-    
+
     --color-background: #f8fafc;
     --color-surface: #ffffff;
     --color-card: #ffffff;
     --color-muted: #f1f5f9;
     --color-border: #e2e8f0;
-    
+
     --color-text-primary: #0f172a;
     --color-text-secondary: #475569;
     --color-text-muted: #94a3b8;
   }
 
   .dark {
-    /* Dark Theme Tokens */
-    --color-primary: #ff8c33;
-    --color-primary-hover: #fc8019;
-    --color-secondary: #f8fafc;
-    --color-secondary-hover: #cbd5e1;
-    --color-accent: #fbbf24;
-    
-    --color-success: #34d399;
-    --color-warning: #fbbf24;
-    --color-danger: #f87171;
-    --color-info: #60a5fa;
-    
-    --color-background: #090d16;
-    --color-surface: #131c31;
-    --color-card: #1e293b;
-    --color-muted: #1e293b;
-    --color-border: #2e3c54;
-    
-    --color-text-primary: #f8fafc;
-    --color-text-secondary: #cbd5e1;
-    --color-text-muted: #64748b;
-  }
+  /* Dark Theme Tokens */
+
+  --color-primary: #ff8c33;
+  --color-primary-hover: #f97316;
+  --color-secondary: #f8fafc;
+  --color-secondary-hover: #e2e8f0;
+  --color-accent: #fbbf24;
+
+  /* Semantic Colors */
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-danger: #f87171;
+  --color-info: #60a5fa;
+
+  /* Backgrounds */
+  --color-background: #090d16;
+  --color-surface: #111827;
+  --color-card: #1e293b;
+  --color-muted: #1e293b;
+
+  /* Borders */
+  --color-border: #334155;
+
+  /* Text */
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
+}
 }
 
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
   font-family: var(--font-family);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
   overflow-x: hidden;
   margin: 0;
   padding: 0;

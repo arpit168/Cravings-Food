@@ -3,7 +3,15 @@ import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import api from "../config/Api";
 import { useAuth } from "../context/AuthContext";
-import { Mail, Lock, ArrowRight, Sparkles, Eye, EyeOff, ShieldCheck } from "lucide-react";
+import {
+  Mail,
+  Lock,
+  ArrowRight,
+  Sparkles,
+  Eye,
+  EyeOff,
+  ShieldCheck,
+} from "lucide-react";
 
 const Login = () => {
   const { setUser, setIsLogin } = useAuth();
@@ -25,12 +33,12 @@ const Login = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error on change
     if (validateError[name]) {
-      setValidateError(prev => ({ ...prev, [name]: "" }));
+      setValidateError((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleBlur = (field) => {
-    setTouchedFields(prev => ({ ...prev, [field]: true }));
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
     setFocusedField(null);
   };
 
@@ -79,16 +87,27 @@ const Login = () => {
       navigate("/userDashboard");
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || error.message || "Invalid credentials");
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "Invalid credentials",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const getInputClassName = (fieldName) => {
-    const base = "w-full pl-11 pr-12 py-3.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-2 rounded-2xl text-text-primary text-sm transition-all duration-300 placeholder:text-text-muted/60";
-    const focus = focusedField === fieldName ? "border-primary shadow-lg shadow-primary/10 scale-[1.01]" : "border-border/50 hover:border-primary/30";
-    const error = validateError[fieldName] && touchedFields[fieldName] ? "border-danger shadow-lg shadow-danger/10" : "";
+    const base =
+      "w-full pl-11 pr-12 py-3.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-2 rounded-2xl text-text-primary text-sm transition-all duration-300 placeholder:text-text-muted/60";
+    const focus =
+      focusedField === fieldName
+        ? "border-primary shadow-lg shadow-primary/10 scale-[1.01]"
+        : "border-border/50 hover:border-primary/30";
+    const error =
+      validateError[fieldName] && touchedFields[fieldName]
+        ? "border-danger shadow-lg shadow-danger/10"
+        : "";
     return `${base} ${focus} ${error}`;
   };
 
@@ -122,12 +141,18 @@ const Login = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
             <div className="space-y-1.5">
-              <label htmlFor="email" className="text-xs font-bold uppercase text-text-muted tracking-wider flex items-center gap-2">
+              <label
+                htmlFor="email"
+                className="text-xs font-bold uppercase text-text-muted tracking-wider flex items-center gap-2"
+              >
                 <Mail className="w-3.5 h-3.5" />
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/60" size={18} />
+                <Mail
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/60"
+                  size={18}
+                />
                 <input
                   id="email"
                   required
@@ -152,19 +177,25 @@ const Login = () => {
             {/* Password */}
             <div className="space-y-1.5">
               <div className="flex justify-between items-center">
-                <label htmlFor="password" className="text-xs font-bold uppercase text-text-muted tracking-wider flex items-center gap-2">
+                <label
+                  htmlFor="password"
+                  className="text-xs font-bold uppercase text-text-muted tracking-wider flex items-center gap-2"
+                >
                   <Lock className="w-3.5 h-3.5" />
                   Password
                 </label>
-                <Link 
-                  to="/forgot-password" 
+                <Link
+                  to="/forgot-password"
                   className="text-xs font-semibold text-primary hover:text-primary-hover transition-all hover:underline underline-offset-4"
                 >
                   Forgot Password?
                 </Link>
               </div>
               <div className="relative">
-                <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/60" size={18} />
+                <Lock
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 text-text-muted/60"
+                  size={18}
+                />
                 <input
                   id="password"
                   required
@@ -270,11 +301,17 @@ const Login = () => {
             </Link>
             <p className="text-xs text-text-muted mt-4">
               By signing in, you agree to our{" "}
-              <Link to="/terms" className="hover:text-primary transition-colors underline underline-offset-2">
+              <Link
+                to="/terms"
+                className="hover:text-primary transition-colors underline underline-offset-2"
+              >
                 Terms
               </Link>{" "}
               &{" "}
-              <Link to="/privacy" className="hover:text-primary transition-colors underline underline-offset-2">
+              <Link
+                to="/privacy"
+                className="hover:text-primary transition-colors underline underline-offset-2"
+              >
                 Privacy Policy
               </Link>
             </p>

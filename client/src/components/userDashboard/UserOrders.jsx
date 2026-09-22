@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../../config/Api";
-import { ShoppingBag, Clock, CheckCircle2, ArrowRight, RefreshCw } from "lucide-react";
+import {
+  ShoppingBag,
+  Clock,
+  CheckCircle2,
+  ArrowRight,
+  RefreshCw,
+} from "lucide-react";
 
 const UserOrders = () => {
   const [activeTab, setActiveTab] = useState("all");
@@ -27,8 +33,10 @@ const UserOrders = () => {
   };
 
   const filteredOrders = orders.filter((o) => {
-    if (activeTab === "active") return o.orderStatus !== "Delivered" && o.orderStatus !== "Cancelled";
-    if (activeTab === "completed") return o.orderStatus === "Delivered" || o.orderStatus === "Cancelled";
+    if (activeTab === "active")
+      return o.orderStatus !== "Delivered" && o.orderStatus !== "Cancelled";
+    if (activeTab === "completed")
+      return o.orderStatus === "Delivered" || o.orderStatus === "Cancelled";
     return true;
   });
 
@@ -40,15 +48,22 @@ const UserOrders = () => {
           <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
             Order Archive
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">My Gourmet Orders</h1>
-          <p className="text-sm text-text-secondary">Track live deliveries and view historical culinary invoices</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            My Gourmet Orders
+          </h1>
+          <p className="text-sm text-text-secondary">
+            Track live deliveries and view historical culinary invoices
+          </p>
         </div>
 
         <button
           onClick={fetchOrders}
           className="p-3 rounded-2xl bg-muted border border-border text-text-secondary hover:text-primary transition cursor-pointer"
         >
-          <RefreshCw size={18} className={loading ? "animate-spin text-primary" : ""} />
+          <RefreshCw
+            size={18}
+            className={loading ? "animate-spin text-primary" : ""}
+          />
         </button>
       </div>
 
@@ -74,7 +89,10 @@ const UserOrders = () => {
         {loading ? (
           <div className="space-y-4 animate-pulse">
             {[1, 2, 3].map((i) => (
-              <div key={i} className="h-32 bg-surface rounded-3xl border border-border"></div>
+              <div
+                key={i}
+                className="h-32 bg-surface rounded-3xl border border-border"
+              ></div>
             ))}
           </div>
         ) : filteredOrders.length === 0 ? (
@@ -82,8 +100,12 @@ const UserOrders = () => {
             <div className="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold">
               🛍️
             </div>
-            <h3 className="text-lg font-bold text-text-primary">No orders found in this tab</h3>
-            <p className="text-xs text-text-muted">You haven't placed any orders matching this filter yet.</p>
+            <h3 className="text-lg font-bold text-text-primary">
+              No orders found in this tab
+            </h3>
+            <p className="text-xs text-text-muted">
+              You haven't placed any orders matching this filter yet.
+            </p>
             <Link
               to="/"
               className="inline-block px-6 py-2.5 rounded-xl bg-primary text-white font-bold text-xs uppercase tracking-wider shadow-md hover:bg-primary-hover transition"
@@ -99,7 +121,9 @@ const UserOrders = () => {
             >
               <div className="space-y-2 min-w-0">
                 <div className="flex items-center gap-3">
-                  <span className="font-black text-sm text-primary">#{ord.orderId || ord._id}</span>
+                  <span className="font-black text-sm text-primary">
+                    #{ord.orderId || ord._id}
+                  </span>
                   <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary font-bold text-[10px] uppercase">
                     {ord.orderStatus}
                   </span>
@@ -117,7 +141,9 @@ const UserOrders = () => {
               </div>
 
               <div className="flex flex-col sm:items-end justify-between gap-3 self-end sm:self-center w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0 border-border">
-                <span className="text-xl font-black text-text-primary">₹{ord.pricing?.totalAmount}</span>
+                <span className="text-xl font-black text-text-primary">
+                  ₹{ord.pricing?.totalAmount}
+                </span>
 
                 <Link
                   to={`/order-tracking/${ord._id}`}

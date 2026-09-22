@@ -60,9 +60,13 @@ const AdminDashboard = () => {
 
   const handleToggleUserBlock = async (userId, currentBlocked) => {
     try {
-      const res = await api.put(`/admin/users/${userId}/status`, { isBlocked: !currentBlocked });
+      const res = await api.put(`/admin/users/${userId}/status`, {
+        isBlocked: !currentBlocked,
+      });
       if (res.data && res.data.success) {
-        toast.success(`User account ${!currentBlocked ? "blocked" : "unblocked"}`);
+        toast.success(
+          `User account ${!currentBlocked ? "blocked" : "unblocked"}`,
+        );
         fetchAdminData();
       }
     } catch (error) {
@@ -72,9 +76,13 @@ const AdminDashboard = () => {
 
   const handleToggleRestaurantBlock = async (restId, currentBlocked) => {
     try {
-      const res = await api.put(`/admin/restaurant/${restId}/status`, { isBlocked: !currentBlocked });
+      const res = await api.put(`/admin/restaurant/${restId}/status`, {
+        isBlocked: !currentBlocked,
+      });
       if (res.data && res.data.success) {
-        toast.success(`Restaurant ${!currentBlocked ? "suspended" : "activated"}`);
+        toast.success(
+          `Restaurant ${!currentBlocked ? "suspended" : "activated"}`,
+        );
         fetchAdminData();
       }
     } catch (error) {
@@ -94,7 +102,9 @@ const AdminDashboard = () => {
             Platform Governance Console
           </h1>
           <p className="text-sm text-text-secondary">
-            Global Admin <strong className="text-primary">{user?.fullName}</strong> • Full system oversight & compliance
+            Global Admin{" "}
+            <strong className="text-primary">{user?.fullName}</strong> • Full
+            system oversight & compliance
           </p>
         </div>
 
@@ -102,7 +112,11 @@ const AdminDashboard = () => {
           onClick={fetchAdminData}
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-muted border border-border text-xs font-bold text-text-primary hover:border-primary/50 transition cursor-pointer"
         >
-          <RefreshCw size={14} className={loading ? "animate-spin text-primary" : ""} /> Sync Database
+          <RefreshCw
+            size={14}
+            className={loading ? "animate-spin text-primary" : ""}
+          />{" "}
+          Sync Database
         </button>
       </div>
 
@@ -112,32 +126,48 @@ const AdminDashboard = () => {
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
             <Users size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Customers</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.totalUsers || 0}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Customers
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {stats?.totalUsers || 0}
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <UtensilsCrossed size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Restaurants</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.totalRestaurants || 0}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Restaurants
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {stats?.totalRestaurants || 0}
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
             <Bike size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Delivery Partners</p>
-          <p className="text-2xl font-black text-text-primary">{stats?.totalPartners || 0}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Delivery Partners
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {stats?.totalPartners || 0}
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-warning/10 text-warning flex items-center justify-center">
             <ShieldCheck size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Platform Gross GMV</p>
-          <p className="text-2xl font-black text-text-primary">₹{stats?.totalRevenue || 0}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Platform Gross GMV
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            ₹{stats?.totalRevenue || 0}
+          </p>
         </div>
       </div>
 
@@ -178,15 +208,28 @@ const AdminDashboard = () => {
       {/* Tab Contents */}
       {activeTab === "overview" ? (
         <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-6 shadow-xs">
-          <h2 className="text-lg font-black text-text-primary">Partner Kitchen Moderation</h2>
+          <h2 className="text-lg font-black text-text-primary">
+            Partner Kitchen Moderation
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {restaurants.map((r) => (
-              <div key={r._id} className={`p-5 rounded-2xl bg-background border flex justify-between items-center gap-4 ${r.isBlocked ? "border-danger/50 opacity-75" : "border-border"}`}>
+              <div
+                key={r._id}
+                className={`p-5 rounded-2xl bg-background border flex justify-between items-center gap-4 ${r.isBlocked ? "border-danger/50 opacity-75" : "border-border"}`}
+              >
                 <div className="flex items-center gap-4 min-w-0">
-                  <img src={r.image} alt={r.name} className="w-14 h-14 rounded-xl object-cover shrink-0" />
+                  <img
+                    src={r.image}
+                    alt={r.name}
+                    className="w-14 h-14 rounded-xl object-cover shrink-0"
+                  />
                   <div className="min-w-0">
-                    <h4 className="font-bold text-sm text-text-primary truncate">{r.name}</h4>
-                    <p className="text-xs text-text-secondary">{r.cuisines?.join(", ")}</p>
+                    <h4 className="font-bold text-sm text-text-primary truncate">
+                      {r.name}
+                    </h4>
+                    <p className="text-xs text-text-secondary">
+                      {r.cuisines?.join(", ")}
+                    </p>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-[10px] font-semibold px-2 py-0.5 rounded bg-success/10 text-success inline-block">
                         {r.rating} ⭐ Verified
@@ -212,7 +255,9 @@ const AdminDashboard = () => {
                     {r.isFeatured ? "★ Featured" : "Feature"}
                   </button>
                   <button
-                    onClick={() => handleToggleRestaurantBlock(r._id, r.isBlocked)}
+                    onClick={() =>
+                      handleToggleRestaurantBlock(r._id, r.isBlocked)
+                    }
                     className={`px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
                       r.isBlocked
                         ? "bg-success text-white"
@@ -274,7 +319,14 @@ const AdminDashboard = () => {
               <tbody className="divide-y divide-border text-text-secondary font-medium">
                 {users
                   .filter((u) => roleFilter === "all" || u.role === roleFilter)
-                  .filter((u) => !userSearch || u.fullName?.toLowerCase().includes(userSearch.toLowerCase()) || u.email?.toLowerCase().includes(userSearch.toLowerCase()))
+                  .filter(
+                    (u) =>
+                      !userSearch ||
+                      u.fullName
+                        ?.toLowerCase()
+                        .includes(userSearch.toLowerCase()) ||
+                      u.email?.toLowerCase().includes(userSearch.toLowerCase()),
+                  )
                   .map((u) => (
                     <tr key={u._id} className="hover:bg-muted/50 transition">
                       <td className="p-4 font-bold text-text-primary flex items-center gap-2">
@@ -292,15 +344,21 @@ const AdminDashboard = () => {
                       <td className="p-4">{u.mobileNumber || "N/A"}</td>
                       <td className="p-4">
                         {u.isBlocked ? (
-                          <span className="text-danger font-bold flex items-center gap-1">🚫 Suspended</span>
+                          <span className="text-danger font-bold flex items-center gap-1">
+                            🚫 Suspended
+                          </span>
                         ) : (
-                          <span className="text-success font-bold flex items-center gap-1"><CheckCircle2 size={13} /> Active</span>
+                          <span className="text-success font-bold flex items-center gap-1">
+                            <CheckCircle2 size={13} /> Active
+                          </span>
                         )}
                       </td>
                       <td className="p-4 text-right">
                         {u.role !== "admin" && (
                           <button
-                            onClick={() => handleToggleUserBlock(u._id, u.isBlocked)}
+                            onClick={() =>
+                              handleToggleUserBlock(u._id, u.isBlocked)
+                            }
                             className={`px-3 py-1.5 rounded-lg text-[11px] font-bold uppercase transition cursor-pointer ${
                               u.isBlocked
                                 ? "bg-success text-white hover:bg-success/90"
@@ -321,19 +379,28 @@ const AdminDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
             <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
-              <DollarSign className="text-success" /> Global Financial Parameters
+              <DollarSign className="text-success" /> Global Financial
+              Parameters
             </h2>
             <div className="space-y-4 text-sm font-semibold divide-y divide-border">
               <div className="flex justify-between pt-2">
-                <span className="text-text-secondary">Default Platform Take-Rate</span>
+                <span className="text-text-secondary">
+                  Default Platform Take-Rate
+                </span>
                 <span className="text-primary font-black">15.0%</span>
               </div>
               <div className="flex justify-between pt-3">
-                <span className="text-text-secondary">Delivery Fleet Base Pay</span>
-                <span className="text-text-primary font-bold">₹40.00 / dropoff</span>
+                <span className="text-text-secondary">
+                  Delivery Fleet Base Pay
+                </span>
+                <span className="text-text-primary font-bold">
+                  ₹40.00 / dropoff
+                </span>
               </div>
               <div className="flex justify-between pt-3">
-                <span className="text-text-secondary">Instant Settlement Gateway</span>
+                <span className="text-text-secondary">
+                  Instant Settlement Gateway
+                </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-success/10 text-success font-black text-xs uppercase">
                   Razorpay Route Active
                 </span>
@@ -348,14 +415,18 @@ const AdminDashboard = () => {
             <div className="space-y-3">
               <div className="p-3.5 rounded-2xl bg-background border border-border flex justify-between items-center text-xs">
                 <div>
-                  <p className="font-bold text-text-primary">Database Hygiene Check</p>
+                  <p className="font-bold text-text-primary">
+                    Database Hygiene Check
+                  </p>
                   <p className="text-text-muted">Orphaned orders cleaned</p>
                 </div>
                 <span className="text-success font-black">Passed</span>
               </div>
               <div className="p-3.5 rounded-2xl bg-background border border-border flex justify-between items-center text-xs">
                 <div>
-                  <p className="font-bold text-text-primary">API JWT Rate Limiter</p>
+                  <p className="font-bold text-text-primary">
+                    API JWT Rate Limiter
+                  </p>
                   <p className="text-text-muted">No DDoS anomalies detected</p>
                 </div>
                 <span className="text-success font-black">Stable</span>

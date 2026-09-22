@@ -9,8 +9,18 @@ const UserHelpDesk = () => {
   const [loading, setLoading] = useState(false);
 
   const [tickets, setTickets] = useState([
-    { id: "SUP-1201", subject: "Payment deduction issue for order #2451", status: "In Progress", date: "Yesterday" },
-    { id: "SUP-1188", subject: "Address update request for Bandra flat", status: "Resolved", date: "10 Jan 2026" },
+    {
+      id: "SUP-1201",
+      subject: "Payment deduction issue for order #2451",
+      status: "In Progress",
+      date: "Yesterday",
+    },
+    {
+      id: "SUP-1188",
+      subject: "Address update request for Bandra flat",
+      status: "Resolved",
+      date: "10 Jan 2026",
+    },
   ]);
 
   const handleSubmit = async (e) => {
@@ -22,9 +32,23 @@ const UserHelpDesk = () => {
 
     try {
       setLoading(true);
-      await api.post("/public/new-contact", { name: "User Support", email: "user@cravings.com", message: `${subject}: ${message}` }).catch(() => {});
+      await api
+        .post("/public/new-contact", {
+          name: "User Support",
+          email: "user@cravings.com",
+          message: `${subject}: ${message}`,
+        })
+        .catch(() => {});
       toast.success("Support ticket created successfully!");
-      setTickets([{ id: `SUP-${Math.floor(1000 + Math.random() * 9000)}`, subject, status: "Open", date: "Just now" }, ...tickets]);
+      setTickets([
+        {
+          id: `SUP-${Math.floor(1000 + Math.random() * 9000)}`,
+          subject,
+          status: "Open",
+          date: "Just now",
+        },
+        ...tickets,
+      ]);
       setSubject("");
       setMessage("");
     } finally {
@@ -40,8 +64,12 @@ const UserHelpDesk = () => {
           <span className="px-3 py-1 rounded-full bg-info/10 text-info font-bold text-xs uppercase tracking-wider">
             Concierge Desk
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">24/7 Member Help Desk</h1>
-          <p className="text-sm text-text-secondary">Create support inquiries and track real-time ticket resolutions</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            24/7 Member Help Desk
+          </h1>
+          <p className="text-sm text-text-secondary">
+            Create support inquiries and track real-time ticket resolutions
+          </p>
         </div>
       </div>
 
@@ -54,7 +82,9 @@ const UserHelpDesk = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Inquiry Subject</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Inquiry Subject
+              </label>
               <input
                 type="text"
                 required
@@ -66,7 +96,9 @@ const UserHelpDesk = () => {
             </div>
 
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Detailed Description</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Detailed Description
+              </label>
               <textarea
                 rows={5}
                 required
@@ -82,14 +114,17 @@ const UserHelpDesk = () => {
               disabled={loading}
               className="px-8 py-3.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-black text-xs uppercase tracking-wider shadow-lg shadow-primary/25 transition flex items-center gap-2 cursor-pointer disabled:opacity-50"
             >
-              {loading ? "Creating Ticket..." : "Submit Support Ticket"} <Send size={15} />
+              {loading ? "Creating Ticket..." : "Submit Support Ticket"}{" "}
+              <Send size={15} />
             </button>
           </form>
         </div>
 
         {/* Support Info Sidebar */}
         <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs self-start">
-          <h2 className="text-lg font-black text-text-primary">Support Channels</h2>
+          <h2 className="text-lg font-black text-text-primary">
+            Support Channels
+          </h2>
 
           <ul className="space-y-4 text-xs font-semibold text-text-secondary">
             <li className="flex items-center gap-3">
@@ -108,29 +143,45 @@ const UserHelpDesk = () => {
 
           <div className="p-4 rounded-2xl bg-primary/10 border border-primary/20 text-xs font-semibold text-primary flex items-start gap-2.5">
             <AlertCircle size={16} className="shrink-0 mt-0.5" />
-            <span>Tip: Always include your 6-digit Order ID for priority handling by our VIP concierge team.</span>
+            <span>
+              Tip: Always include your 6-digit Order ID for priority handling by
+              our VIP concierge team.
+            </span>
           </div>
         </div>
       </div>
 
       {/* Historical Tickets List */}
       <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
-        <h2 className="text-lg font-black text-text-primary">My Active & Resolved Tickets</h2>
+        <h2 className="text-lg font-black text-text-primary">
+          My Active & Resolved Tickets
+        </h2>
 
         <div className="divide-y divide-border">
           {tickets.map((t) => (
-            <div key={t.id} className="py-4 flex justify-between items-center gap-4">
+            <div
+              key={t.id}
+              className="py-4 flex justify-between items-center gap-4"
+            >
               <div>
                 <div className="flex items-center gap-2">
-                  <span className="font-black text-xs text-primary">#{t.id}</span>
+                  <span className="font-black text-xs text-primary">
+                    #{t.id}
+                  </span>
                   <span className="text-xs text-text-muted">• {t.date}</span>
                 </div>
-                <h4 className="font-bold text-sm text-text-primary mt-1">{t.subject}</h4>
+                <h4 className="font-bold text-sm text-text-primary mt-1">
+                  {t.subject}
+                </h4>
               </div>
 
-              <span className={`px-3 py-1 rounded-full font-black text-[11px] uppercase ${
-                t.status === "Resolved" ? "bg-success/10 text-success" : "bg-warning/10 text-warning"
-              }`}>
+              <span
+                className={`px-3 py-1 rounded-full font-black text-[11px] uppercase ${
+                  t.status === "Resolved"
+                    ? "bg-success/10 text-success"
+                    : "bg-warning/10 text-warning"
+                }`}
+              >
                 {t.status}
               </span>
             </div>

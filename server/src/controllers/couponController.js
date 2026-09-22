@@ -49,7 +49,9 @@ export const validateCoupon = async (req, res, next) => {
 
     const parsedAmount = Number(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      return next(createError("Please provide a valid positive order amount", 400));
+      return next(
+        createError("Please provide a valid positive order amount", 400),
+      );
     }
 
     // 2. Format code (trim spaces and convert to uppercase)
@@ -60,10 +62,7 @@ export const validateCoupon = async (req, res, next) => {
     const coupon = await Coupon.findOne({
       code,
       isActive: true,
-      $or: [
-        { expiresAt: { $gt: now } },
-        { expiresAt: { $exists: false } },
-      ],
+      $or: [{ expiresAt: { $gt: now } }, { expiresAt: { $exists: false } }],
     });
 
     if (!coupon) {
@@ -76,16 +75,21 @@ export const validateCoupon = async (req, res, next) => {
       return next(
         createError(
           `Minimum order amount of ₹${minOrder} is required for this coupon`,
-          400
-        )
+          400,
+        ),
       );
     }
 
     // 5. Calculate discount safely (handles capped and uncapped discounts)
-    let calculatedDiscount = Math.round((parsedAmount * coupon.discountPercentage) / 100);
+    let calculatedDiscount = Math.round(
+      (parsedAmount * coupon.discountPercentage) / 100,
+    );
 
     if (coupon.maxDiscountAmount && coupon.maxDiscountAmount > 0) {
-      calculatedDiscount = Math.min(calculatedDiscount, coupon.maxDiscountAmount);
+      calculatedDiscount = Math.min(
+        calculatedDiscount,
+        coupon.maxDiscountAmount,
+      );
     }
 
     // Prevent discount from exceeding total order amount

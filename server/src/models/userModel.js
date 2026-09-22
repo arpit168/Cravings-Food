@@ -39,7 +39,8 @@ const userSchema = mongoose.Schema(
     },
     avatar: {
       type: String,
-      default: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+      default:
+        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
     },
     addresses: [addressSchema],
     wishlist: [
@@ -91,7 +92,7 @@ const userSchema = mongoose.Schema(
       default: "XXXX-XXXX-8921",
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const User = mongoose.model("User", userSchema);

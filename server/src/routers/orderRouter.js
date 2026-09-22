@@ -12,6 +12,11 @@ const router = express.Router();
 router.post("/", Protect, createOrder);
 router.get("/my-orders", Protect, getCustomerOrders);
 router.get("/:id", Protect, getOrderById);
-router.put("/:id/status", Protect, AuthorizeRoles("restaurant_owner", "delivery_partner", "admin"), updateOrderStatus);
+router.put(
+  "/:id/status",
+  Protect,
+  AuthorizeRoles("restaurant_owner", "delivery_partner", "admin"),
+  updateOrderStatus,
+);
 
 export default router;

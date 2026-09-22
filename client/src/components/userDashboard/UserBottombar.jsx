@@ -1,5 +1,11 @@
 import React from "react";
-import { LayoutDashboard, User, ShoppingBag, CreditCard, LifeBuoy } from "lucide-react";
+import {
+  LayoutDashboard,
+  User,
+  ShoppingBag,
+  CreditCard,
+  LifeBuoy,
+} from "lucide-react";
 
 const UserBottombar = ({ active, setActive }) => {
   const menuItems = [
@@ -20,11 +26,15 @@ const UserBottombar = ({ active, setActive }) => {
             key={item.key}
             onClick={() => setActive(item.key)}
             className={`flex flex-col items-center gap-1 px-3 py-2 rounded-2xl transition cursor-pointer ${
-              isSelected ? "bg-primary text-white shadow-md" : "text-text-secondary hover:text-primary"
+              isSelected
+                ? "bg-primary text-white shadow-md"
+                : "text-text-secondary hover:text-primary"
             }`}
           >
             <Icon size={18} />
-            <span className="text-[10px] font-black uppercase tracking-wider">{item.title}</span>
+            <span className="text-[10px] font-black uppercase tracking-wider">
+              {item.title}
+            </span>
           </button>
         );
       })}

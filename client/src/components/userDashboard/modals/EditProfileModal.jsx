@@ -37,7 +37,9 @@ const EditProfileModal = ({ onClose }) => {
       <div className="bg-surface w-full max-w-lg rounded-3xl border border-border shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-border">
-          <h2 className="text-xl font-black text-text-primary">Edit Account Credentials</h2>
+          <h2 className="text-xl font-black text-text-primary">
+            Edit Account Credentials
+          </h2>
           <button
             onClick={onClose}
             className="p-2 rounded-xl bg-muted text-text-secondary hover:text-danger hover:bg-danger/10 transition cursor-pointer"
@@ -49,19 +51,25 @@ const EditProfileModal = ({ onClose }) => {
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Full Name</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Full Name
+            </label>
             <input
               type="text"
               required
               name="fullName"
               value={formData.fullName}
-              onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, fullName: e.target.value })
+              }
               className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-sm text-text-primary outline-none focus:border-primary transition"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Email Address (Locked)</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Email Address (Locked)
+            </label>
             <input
               type="email"
               disabled
@@ -72,13 +80,17 @@ const EditProfileModal = ({ onClose }) => {
           </div>
 
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Mobile Number</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Mobile Number
+            </label>
             <input
               type="text"
               required
               name="mobileNumber"
               value={formData.mobileNumber}
-              onChange={(e) => setFormData({ ...formData, mobileNumber: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, mobileNumber: e.target.value })
+              }
               className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-sm text-text-primary outline-none focus:border-primary transition"
             />
           </div>

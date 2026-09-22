@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth} from "../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import useThemeStore from "../stores/useThemeStore";
 import useCartStore from "../stores/useCartStore";
 import {
@@ -45,9 +45,21 @@ const Header = () => {
   const getRoleBadge = () => {
     if (!user || user.role === "customer") return null;
     const badges = {
-      admin: { label: "Admin Panel", icon: ShieldCheck, color: "bg-info/10 text-info border-info/20" },
-      restaurant_owner: { label: "Restaurant Portal", icon: UtensilsCrossed, color: "bg-primary/10 text-primary border-primary/20" },
-      delivery_partner: { label: "Delivery App", icon: Bike, color: "bg-success/10 text-success border-success/20" },
+      admin: {
+        label: "Admin Panel",
+        icon: ShieldCheck,
+        color: "bg-info/10 text-info border-info/20",
+      },
+      restaurant_owner: {
+        label: "Restaurant Portal",
+        icon: UtensilsCrossed,
+        color: "bg-primary/10 text-primary border-primary/20",
+      },
+      delivery_partner: {
+        label: "Delivery App",
+        icon: Bike,
+        color: "bg-success/10 text-success border-success/20",
+      },
     };
     const b = badges[user.role];
     if (!b) return null;
@@ -69,7 +81,10 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 h-16 sm:h-20 flex items-center justify-between gap-2 sm:gap-4">
         {/* Left: Logo & Location */}
         <div className="flex items-center gap-2 sm:gap-4 lg:gap-6">
-          <Link to="/" className="flex items-center gap-1.5 sm:gap-2.5 group flex-shrink-0">
+          <Link
+            to="/"
+            className="flex items-center gap-1.5 sm:gap-2.5 group flex-shrink-0"
+          >
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-md shadow-primary/25 group-hover:scale-105 transition duration-300">
               C
             </div>
@@ -80,16 +95,26 @@ const Header = () => {
 
           <div className="hidden md:flex items-center gap-1.5 lg:gap-2 px-2.5 lg:px-3.5 py-1.5 lg:py-2 rounded-full bg-muted border border-border text-xs lg:text-sm text-text-secondary">
             <MapPin size={14} className="text-primary shrink-0" />
-            <span className="font-semibold truncate max-w-[120px] lg:max-w-[180px]">Bandra West, Mumbai</span>
+            <span className="font-semibold truncate max-w-[120px] lg:max-w-[180px]">
+              Bandra West, Mumbai
+            </span>
           </div>
         </div>
 
         {/* Middle: Navigation Links */}
         <nav className="hidden lg:flex items-center gap-4 xl:gap-8 text-sm font-bold text-text-secondary">
-          <Link to="/" className="hover:text-primary transition">Explore</Link>
-          <Link to="/menu" className="hover:text-primary transition">Cuisines</Link>
-          <Link to="/about" className="hover:text-primary transition">Our Story</Link>
-          <Link to="/contact" className="hover:text-primary transition">Support Desk</Link>
+          <Link to="/" className="hover:text-primary transition">
+            Explore
+          </Link>
+          <Link to="/menu" className="hover:text-primary transition">
+            Cuisines
+          </Link>
+          <Link to="/about" className="hover:text-primary transition">
+            Our Story
+          </Link>
+          <Link to="/contact" className="hover:text-primary transition">
+            Support Desk
+          </Link>
         </nav>
 
         {/* Right Actions */}
@@ -102,7 +127,11 @@ const Header = () => {
             aria-label="Toggle Theme"
             className="p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-muted border border-border text-text-secondary hover:text-primary hover:border-primary/50 transition cursor-pointer"
           >
-            {theme === "dark" ? <Sun size={16} className="sm:w-[18px] sm:h-[18px] text-accent" /> : <Moon size={16} className="sm:w-[18px] sm:h-[18px]" />}
+            {theme === "dark" ? (
+              <Sun size={16} className="sm:w-[18px] sm:h-[18px] text-accent" />
+            ) : (
+              <Moon size={16} className="sm:w-[18px] sm:h-[18px]" />
+            )}
           </button>
 
           {/* Cart Icon */}
@@ -113,7 +142,7 @@ const Header = () => {
             <ShoppingBag size={16} className="sm:w-[18px] sm:h-[18px]" />
             {totalItems > 0 && (
               <span className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] sm:min-w-5 sm:h-5 px-1 rounded-full bg-primary text-white text-[10px] sm:text-[11px] font-black flex items-center justify-center shadow-sm">
-                {totalItems > 99 ? '99+' : totalItems}
+                {totalItems > 99 ? "99+" : totalItems}
               </span>
             )}
           </Link>
@@ -126,7 +155,10 @@ const Header = () => {
                 className="flex items-center gap-1.5 sm:gap-2.5 pl-1.5 sm:pl-2 pr-2 sm:pr-3 py-1 sm:py-1.5 rounded-full bg-muted border border-border hover:border-primary/50 transition cursor-pointer"
               >
                 <img
-                  src={user?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"}
+                  src={
+                    user?.avatar ||
+                    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100"
+                  }
                   alt={user?.fullName || "User"}
                   className="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-primary"
                 />
@@ -138,8 +170,12 @@ const Header = () => {
               {profileDropdown && (
                 <div className="absolute right-0 mt-3 w-48 sm:w-56 bg-surface rounded-2xl border border-border shadow-xl p-2 space-y-1 z-50">
                   <div className="px-3 py-2 border-b border-border">
-                    <p className="text-xs font-bold text-text-primary truncate">{user.fullName}</p>
-                    <p className="text-[11px] font-semibold text-text-muted capitalize">{user.role}</p>
+                    <p className="text-xs font-bold text-text-primary truncate">
+                      {user.fullName}
+                    </p>
+                    <p className="text-[11px] font-semibold text-text-muted capitalize">
+                      {user.role}
+                    </p>
                   </div>
 
                   <Link
@@ -185,7 +221,11 @@ const Header = () => {
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 sm:p-2.5 rounded-lg sm:rounded-xl bg-muted text-text-secondary hover:text-primary transition"
           >
-            {mobileMenuOpen ? <X size={18} className="sm:w-[20px] sm:h-[20px]" /> : <Menu size={18} className="sm:w-[20px] sm:h-[20px]" />}
+            {mobileMenuOpen ? (
+              <X size={18} className="sm:w-[20px] sm:h-[20px]" />
+            ) : (
+              <Menu size={18} className="sm:w-[20px] sm:h-[20px]" />
+            )}
           </button>
         </div>
       </div>
@@ -201,25 +241,39 @@ const Header = () => {
 
           {/* Mobile Navigation */}
           <nav className="flex flex-col gap-2 sm:gap-3 text-sm sm:text-base font-bold text-text-primary">
-            <Link to="/" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition">
+            <Link
+              to="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition"
+            >
               Explore Cravings
             </Link>
-            <Link to="/menu" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition">
+            <Link
+              to="/menu"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition"
+            >
               All Cuisines
             </Link>
-            <Link to="/about" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition">
+            <Link
+              to="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition"
+            >
               Our Story
             </Link>
-            <Link to="/contact" onClick={() => setMobileMenuOpen(false)} className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition">
+            <Link
+              to="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="px-3 py-2 hover:text-primary hover:bg-muted rounded-lg transition"
+            >
               Support Desk
             </Link>
           </nav>
 
           {/* Mobile Role Badge */}
           {user && user.role !== "customer" && (
-            <div className="pt-2 border-t border-border">
-              {getRoleBadge()}
-            </div>
+            <div className="pt-2 border-t border-border">{getRoleBadge()}</div>
           )}
         </div>
       )}

@@ -12,7 +12,9 @@ export const UserRegister = async (req, res, next) => {
       return next(error);
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
+    const existingUser = await User.findOne({
+      email: email.toLowerCase().trim(),
+    });
     if (existingUser) {
       const error = new Error("An account with this email already exists.");
       error.statusCode = 409;
@@ -22,7 +24,12 @@ export const UserRegister = async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(password, salt);
 
-    const validRoles = ["customer", "restaurant_owner", "delivery_partner", "admin"];
+    const validRoles = [
+      "customer",
+      "restaurant_owner",
+      "delivery_partner",
+      "admin",
+    ];
     const userRole = validRoles.includes(role) ? role : "customer";
 
     const newUser = await User.create({
@@ -58,7 +65,9 @@ export const UserLogin = async (req, res, next) => {
       return next(error);
     }
 
-    const existingUser = await User.findOne({ email: email.toLowerCase().trim() });
+    const existingUser = await User.findOne({
+      email: email.toLowerCase().trim(),
+    });
     if (!existingUser) {
       const error = new Error("Invalid email or password.");
       error.statusCode = 401;
@@ -66,7 +75,9 @@ export const UserLogin = async (req, res, next) => {
     }
 
     if (existingUser.isBlocked) {
-      const error = new Error("Your account has been suspended by an Administrator. Contact support@cravings.com.");
+      const error = new Error(
+        "Your account has been suspended by an Administrator. Contact support@cravings.com.",
+      );
       error.statusCode = 403;
       return next(error);
     }
@@ -109,7 +120,9 @@ export const VerifyOtp = async (req, res, next) => {
       return next(error);
     }
 
-    const existingUser = await User.findOne({ mobileNumber: mobileNumber.trim() });
+    const existingUser = await User.findOne({
+      mobileNumber: mobileNumber.trim(),
+    });
     if (!existingUser) {
       const error = new Error("No account registered with this mobile number.");
       error.statusCode = 404;
@@ -159,4 +172,3 @@ export const GetMe = async (req, res, next) => {
     next(error);
   }
 };
-

@@ -1,17 +1,17 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { 
-  ShieldCheck, 
-  Flame, 
-  Heart, 
-  Award, 
+import {
+  ShieldCheck,
+  Flame,
+  Heart,
+  Award,
   ArrowRight,
   Clock,
   Truck,
   Leaf,
   Star,
   Users,
-  ChefHat
+  ChefHat,
 } from "lucide-react";
 
 const AboutPage = () => {
@@ -26,38 +26,44 @@ const AboutPage = () => {
     {
       icon: <ShieldCheck className="w-6 h-6" />,
       title: "Curated Excellence",
-      description: "Every partner restaurant is vetted by culinary experts for hygiene, authentic ingredients, and flavor consistency.",
-      color: "primary"
+      description:
+        "Every partner restaurant is vetted by culinary experts for hygiene, authentic ingredients, and flavor consistency.",
+      color: "primary",
     },
     {
       icon: <Truck className="w-6 h-6" />,
       title: "Thermal GPS Tracking",
-      description: "Our riders use insulated thermal chambers and AI routing algorithms to deliver food crisp and steaming hot.",
-      color: "info"
+      description:
+        "Our riders use insulated thermal chambers and AI routing algorithms to deliver food crisp and steaming hot.",
+      color: "info",
     },
     {
       icon: <Leaf className="w-6 h-6" />,
       title: "Eco-Conscious Packaging",
-      description: "100% biodegradable and reusable food storage boxes designed to protect both your health and our planet.",
-      color: "success"
+      description:
+        "100% biodegradable and reusable food storage boxes designed to protect both your health and our planet.",
+      color: "success",
     },
     {
       icon: <ChefHat className="w-6 h-6" />,
       title: "Expert Chefs Network",
-      description: "Work with Michelin-trained chefs and local culinary artisans who bring global flavors to your doorstep.",
-      color: "warning"
+      description:
+        "Work with Michelin-trained chefs and local culinary artisans who bring global flavors to your doorstep.",
+      color: "warning",
     },
     {
       icon: <Clock className="w-6 h-6" />,
       title: "Real-Time Updates",
-      description: "Track your order from kitchen to doorstep with live GPS updates and estimated delivery times.",
-      color: "info"
+      description:
+        "Track your order from kitchen to doorstep with live GPS updates and estimated delivery times.",
+      color: "info",
     },
     {
       icon: <Heart className="w-6 h-6" />,
       title: "Community First",
-      description: "We support local communities by partnering with small businesses and offering fair commission rates.",
-      color: "danger"
+      description:
+        "We support local communities by partnering with small businesses and offering fair commission rates.",
+      color: "danger",
     },
   ];
 
@@ -65,20 +71,23 @@ const AboutPage = () => {
     {
       name: "Sarah Johnson",
       role: "Food Blogger",
-      content: "Cravings has completely transformed how I experience food delivery. The quality is consistently exceptional!",
-      rating: 5
+      content:
+        "Cravings has completely transformed how I experience food delivery. The quality is consistently exceptional!",
+      rating: 5,
     },
     {
       name: "Michael Chen",
       role: "Restaurant Owner",
-      content: "Partnering with Cravings was the best decision for our business. They truly care about quality and community.",
-      rating: 5
+      content:
+        "Partnering with Cravings was the best decision for our business. They truly care about quality and community.",
+      rating: 5,
     },
     {
       name: "Emma Rodriguez",
       role: "Regular Customer",
-      content: "The thermal packaging is a game-changer. My food always arrives hot and fresh, just like dining in!",
-      rating: 5
+      content:
+        "The thermal packaging is a game-changer. My food always arrives hot and fresh, just like dining in!",
+      rating: 5,
     },
   ];
 
@@ -92,18 +101,18 @@ const AboutPage = () => {
               <Award className="w-4 h-4" />
               <span>Est. 2026</span>
             </div>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight text-text-primary leading-tight">
               Redefining Food Delivery with{" "}
               <span className="bg-linear-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                 Passion & Precision
               </span>
             </h1>
-            
+
             <p className="text-text-secondary text-base sm:text-lg lg:text-xl leading-relaxed max-w-2xl mx-auto">
-              Founded in 2026, Cravings connects food connoisseurs with elite local chefs, 
-              artisanal bakeries, and authentic kitchens through ultra-fast logistics and 
-              zero temperature loss packaging.
+              Founded in 2026, Cravings connects food connoisseurs with elite
+              local chefs, artisanal bakeries, and authentic kitchens through
+              ultra-fast logistics and zero temperature loss packaging.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -152,7 +161,8 @@ const AboutPage = () => {
             Delivering More Than Just Food
           </h2>
           <p className="text-text-secondary max-w-2xl mx-auto">
-            We're passionate about creating exceptional food experiences from order to delivery
+            We're passionate about creating exceptional food experiences from
+            order to delivery
           </p>
         </div>
 
@@ -162,7 +172,9 @@ const AboutPage = () => {
               key={index}
               className="group relative bg-surface p-8 rounded-3xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
             >
-              <div className={`w-14 h-14 rounded-2xl bg-${feature.color}/10 text-${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+              <div
+                className={`w-14 h-14 rounded-2xl bg-${feature.color}/10 text-${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+              >
                 {feature.icon}
               </div>
               <h3 className="font-bold text-lg text-text-primary mb-2">
@@ -199,7 +211,10 @@ const AboutPage = () => {
               >
                 <div className="flex gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    <Star
+                      key={i}
+                      className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                    />
                   ))}
                 </div>
                 <p className="text-text-primary text-sm leading-relaxed mb-4">
@@ -209,9 +224,7 @@ const AboutPage = () => {
                   <p className="font-bold text-text-primary text-sm">
                     {testimonial.name}
                   </p>
-                  <p className="text-xs text-text-muted">
-                    {testimonial.role}
-                  </p>
+                  <p className="text-xs text-text-muted">{testimonial.role}</p>
                 </div>
               </div>
             ))}
@@ -225,13 +238,14 @@ const AboutPage = () => {
           {/* Background decoration */}
           <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
-          
+
           <div className="relative z-10">
             <h2 className="text-3xl md:text-4xl font-black">
               Ready to Experience the Difference?
             </h2>
             <p className="text-white/90 max-w-2xl mx-auto">
-              Join thousands of satisfied customers who have made Cravings their go-to food delivery platform.
+              Join thousands of satisfied customers who have made Cravings their
+              go-to food delivery platform.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
               <Link

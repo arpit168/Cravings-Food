@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 dotenv.config();
-import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import connectDB from "../config/db.js";
 
@@ -34,7 +33,8 @@ const importData = async () => {
         mobileNumber: "9876543210",
         password: hashPassword,
         role: "admin",
-        avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
+        avatar:
+          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80",
         walletBalance: 5000,
       },
       {
@@ -43,7 +43,8 @@ const importData = async () => {
         mobileNumber: "9876543211",
         password: hashPassword,
         role: "restaurant_owner",
-        avatar: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&auto=format&fit=crop&q=80",
+        avatar:
+          "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=400&auto=format&fit=crop&q=80",
         walletBalance: 2500,
       },
       {
@@ -52,7 +53,8 @@ const importData = async () => {
         mobileNumber: "9876543212",
         password: hashPassword,
         role: "delivery_partner",
-        avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&auto=format&fit=crop&q=80",
+        avatar:
+          "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&auto=format&fit=crop&q=80",
         isOnline: true,
         walletBalance: 1200,
       },
@@ -62,7 +64,8 @@ const importData = async () => {
         mobileNumber: "9876543213",
         password: hashPassword,
         role: "customer",
-        avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
+        avatar:
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80",
         walletBalance: 1500,
         loyaltyPoints: 320,
         addresses: [
@@ -100,9 +103,15 @@ const importData = async () => {
         totalReviews: 450,
         deliveryTime: "20-25 min",
         costForTwo: 600,
-        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Hill Road, Bandra West", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1550547660-d9450f859349?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Hill Road, Bandra West",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: false,
         isFeatured: true,
         offers: ["Flat ₹100 OFF above ₹499", "Free Delivery on Bestsellers"],
@@ -115,9 +124,15 @@ const importData = async () => {
         totalReviews: 890,
         deliveryTime: "25-30 min",
         costForTwo: 500,
-        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1633940275881-22448408cf5e?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Veera Desai Road, Andheri West", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1633940275881-22448408cf5e?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Veera Desai Road, Andheri West",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: false,
         isFeatured: true,
         offers: ["20% OFF up to ₹120", "Buy 1 Get 1 on Kebab Platter"],
@@ -130,9 +145,15 @@ const importData = async () => {
         totalReviews: 310,
         deliveryTime: "30-35 min",
         costForTwo: 800,
-        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1579751626657-72bc17010498?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Phoenix Palladium, Lower Parel", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1579751626657-72bc17010498?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Phoenix Palladium, Lower Parel",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: false,
         isFeatured: true,
         offers: ["Free Garlic Bread on orders above ₹699"],
@@ -145,9 +166,15 @@ const importData = async () => {
         totalReviews: 620,
         deliveryTime: "15-20 min",
         costForTwo: 300,
-        image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Matunga East Circle", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Matunga East Circle",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: true,
         isFeatured: false,
         offers: ["15% OFF on Breakfast Combos"],
@@ -160,9 +187,15 @@ const importData = async () => {
         totalReviews: 280,
         deliveryTime: "35-40 min",
         costForTwo: 700,
-        image: "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Hiranandani Gardens, Powai", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1512054502232-10a0a035d672?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Hiranandani Gardens, Powai",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: false,
         isFeatured: false,
         offers: ["Flat 15% OFF on Dimsums"],
@@ -175,9 +208,15 @@ const importData = async () => {
         totalReviews: 780,
         deliveryTime: "15-20 min",
         costForTwo: 350,
-        image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80",
-        bannerImage: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop&q=80",
-        address: { street: "Juhu Tara Road", city: "Mumbai", state: "Maharashtra" },
+        image:
+          "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=800&auto=format&fit=crop&q=80",
+        bannerImage:
+          "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=1200&auto=format&fit=crop&q=80",
+        address: {
+          street: "Juhu Tara Road",
+          city: "Mumbai",
+          state: "Maharashtra",
+        },
         isPureVeg: true,
         isFeatured: true,
         offers: ["Flat ₹50 OFF on orders above ₹249"],
@@ -190,126 +229,150 @@ const importData = async () => {
       {
         restaurantId: restaurants[0]._id,
         name: "Ultimate Truffle Cheeseburger",
-        description: "Double juicy patty with caramelized onions, aged cheddar, and house truffle aioli on a toasted brioche bun.",
+        description:
+          "Double juicy patty with caramelized onions, aged cheddar, and house truffle aioli on a toasted brioche bun.",
         price: 349,
         category: "Recommended",
         isVeg: false,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[0]._id,
         name: "Crispy Peri Peri Chicken Burger",
-        description: "Crunchy fried chicken thigh coated in spicy African peri-peri glaze with jalapenos and coleslaw.",
+        description:
+          "Crunchy fried chicken thigh coated in spicy African peri-peri glaze with jalapenos and coleslaw.",
         price: 289,
         category: "Burgers",
         isVeg: false,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1610440042657-612c34d95e9f?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[0]._id,
         name: "Smoked Cottage Cheese Patty Burger",
-        description: "Grilled paneer patty marinated in smoky BBQ herbs with crisp lettuce and chipotle mayo.",
+        description:
+          "Grilled paneer patty marinated in smoky BBQ herbs with crisp lettuce and chipotle mayo.",
         price: 259,
         category: "Burgers",
         isVeg: true,
         isBestseller: false,
-        image: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[0]._id,
         name: "Loaded Cheesy Bacon Fries",
-        description: "Golden shoestring fries smothered in melted cheddar cheese sauce and crispy bacon crumbles.",
+        description:
+          "Golden shoestring fries smothered in melted cheddar cheese sauce and crispy bacon crumbles.",
         price: 199,
         category: "Starters",
         isVeg: false,
         isBestseller: false,
-        image: "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1585109649139-366815a0d713?w=600&auto=format&fit=crop&q=80",
       },
       // Meghana Foods Biryani
       {
         restaurantId: restaurants[1]._id,
         name: "Meghana Special Chicken Boneless Biryani",
-        description: "Fragrant long-grain basmati rice layered with spicy boneless chicken kebabs cooked in rich aromatic spices.",
+        description:
+          "Fragrant long-grain basmati rice layered with spicy boneless chicken kebabs cooked in rich aromatic spices.",
         price: 380,
         category: "Recommended",
         isVeg: false,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[1]._id,
         name: "Royal Mutton Dum Biryani",
-        description: "Slow-cooked tender mutton marinated overnight in saffron spices and dum cooked with aromatic rice.",
+        description:
+          "Slow-cooked tender mutton marinated overnight in saffron spices and dum cooked with aromatic rice.",
         price: 450,
         category: "Biryani",
         isVeg: false,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1633940275881-22448408cf5e?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1633940275881-22448408cf5e?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[1]._id,
         name: "Hyderabadi Paneer 65 Biryani",
-        description: "Spiced paneer 65 chunks tossed in curry leaves served over flavorful dum biryani rice.",
+        description:
+          "Spiced paneer 65 chunks tossed in curry leaves served over flavorful dum biryani rice.",
         price: 310,
         category: "Biryani",
         isVeg: true,
         isBestseller: false,
-        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
       },
       // La Pizzeria
       {
         restaurantId: restaurants[2]._id,
         name: "Margherita Di Bufala Pizza",
-        description: "Wood-fired crust topped with San Marzano tomato sauce, fresh creamy buffalo mozzarella, and basil leaves.",
+        description:
+          "Wood-fired crust topped with San Marzano tomato sauce, fresh creamy buffalo mozzarella, and basil leaves.",
         price: 420,
         category: "Recommended",
         isVeg: true,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[2]._id,
         name: "Pepperoni & Spicy Honey Pizza",
-        description: "Crispy Italian pepperoni cups drizzled with hot chili-infused honey on authentic sourdough base.",
+        description:
+          "Crispy Italian pepperoni cups drizzled with hot chili-infused honey on authentic sourdough base.",
         price: 520,
         category: "Pizza",
         isVeg: false,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop&q=80",
       },
       // Saravana Bhavan
       {
         restaurantId: restaurants[3]._id,
         name: "Ghee Roast Masala Dosa",
-        description: "Paper-thin golden dosa roasted in pure cow ghee stuffed with spiced potato masala, served with 3 chutneys & sambar.",
+        description:
+          "Paper-thin golden dosa roasted in pure cow ghee stuffed with spiced potato masala, served with 3 chutneys & sambar.",
         price: 180,
         category: "Recommended",
         isVeg: true,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=600&auto=format&fit=crop&q=80",
       },
       {
         restaurantId: restaurants[3]._id,
         name: "Medu Vada Sambar Dip (4 Pcs)",
-        description: "Crispy lentil fritters soaked in steaming hot spiced South Indian sambar with coconut chutney.",
+        description:
+          "Crispy lentil fritters soaked in steaming hot spiced South Indian sambar with coconut chutney.",
         price: 130,
         category: "Starters",
         isVeg: true,
         isBestseller: false,
-        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=600&auto=format&fit=crop&q=80",
       },
       // Belgium Waffle
       {
         restaurantId: restaurants[5]._id,
         name: "Nutella Ferrero Rocher Waffle",
-        description: "Crispy warm Belgian waffle pocket spread generously with imported Nutella and crushed Ferrero Rocher chocolates.",
+        description:
+          "Crispy warm Belgian waffle pocket spread generously with imported Nutella and crushed Ferrero Rocher chocolates.",
         price: 210,
         category: "Recommended",
         isVeg: true,
         isBestseller: true,
-        image: "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600&auto=format&fit=crop&q=80",
+        image:
+          "https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=600&auto=format&fit=crop&q=80",
       },
     ]);
 
@@ -318,7 +381,8 @@ const importData = async () => {
       {
         code: "WELCOME50",
         title: "50% OFF on your first order",
-        description: "Get 50% discount up to ₹150 on your first Cravings order above ₹299.",
+        description:
+          "Get 50% discount up to ₹150 on your first Cravings order above ₹299.",
         discountPercentage: 50,
         maxDiscountAmount: 150,
         minOrderAmount: 299,
@@ -349,7 +413,9 @@ const importData = async () => {
       deliveryPartnerId: partner._id,
       items: [
         {
-          menuItemId: (await MenuItem.findOne({ name: "Ultimate Truffle Cheeseburger" }))._id,
+          menuItemId: (
+            await MenuItem.findOne({ name: "Ultimate Truffle Cheeseburger" })
+          )._id,
           name: "Ultimate Truffle Cheeseburger",
           price: 349,
           quantity: 2,
