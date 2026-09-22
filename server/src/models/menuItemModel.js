@@ -65,7 +65,7 @@ const menuItemSchema = new mongoose.Schema(
       default: 45,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const MenuItem = mongoose.model("MenuItem", menuItemSchema);

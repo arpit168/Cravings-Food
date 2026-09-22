@@ -2,13 +2,23 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import api from "../config/Api";
 import useCartStore from "../stores/useCartStore";
-import { Star, Clock, MapPin, Plus, Minus, ShoppingBag, ArrowLeft, ShieldCheck, Flame, Leaf } from "lucide-react";
+import {
+  Star,
+  Clock,
+  MapPin,
+  Plus,
+  Minus,
+  ShoppingBag,
+  ArrowLeft,
+  ShieldCheck,
+  Flame,
+  Leaf,
+} from "lucide-react";
 
 const RestaurantDetails = () => {
   const { id } = useParams();
   const [restaurant, setRestaurant] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
-  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [vegOnly, setVegOnly] = useState(false);
@@ -18,6 +28,7 @@ const RestaurantDetails = () => {
 
   useEffect(() => {
     fetchRestaurantDetails();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchRestaurantDetails = async () => {
@@ -27,7 +38,7 @@ const RestaurantDetails = () => {
       if (res.data && res.data.data) {
         setRestaurant(res.data.data.restaurant);
         setMenuItems(res.data.data.menuItems || []);
-        setReviews(res.data.data.reviews || []);
+        // reviews logic removed
       }
     } catch (error) {
       console.error("Error fetching details:", error);
@@ -42,7 +53,10 @@ const RestaurantDetails = () => {
         <div className="h-64 bg-surface rounded-3xl border border-border"></div>
         <div className="space-y-4">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-32 bg-surface rounded-2xl border border-border"></div>
+            <div
+              key={i}
+              className="h-32 bg-surface rounded-2xl border border-border"
+            ></div>
           ))}
         </div>
       </div>
@@ -52,18 +66,27 @@ const RestaurantDetails = () => {
   if (!restaurant) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4 bg-background">
-        <h2 className="text-2xl font-bold text-text-primary">Restaurant not found</h2>
-        <Link to="/" className="inline-block px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm transition">
+        <h2 className="text-2xl font-bold text-text-primary">
+          Restaurant not found
+        </h2>
+        <Link
+          to="/"
+          className="inline-block px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm transition"
+        >
           Back to Home
         </Link>
       </div>
     );
   }
 
-  const categories = ["All", ...new Set(menuItems.map((item) => item.category))];
+  const categories = [
+    "All",
+    ...new Set(menuItems.map((item) => item.category)),
+  ];
 
   const filteredItems = menuItems.filter((item) => {
-    if (selectedCategory !== "All" && item.category !== selectedCategory) return false;
+    if (selectedCategory !== "All" && item.category !== selectedCategory)
+      return false;
     if (vegOnly && !item.isVeg) return false;
     return true;
   });
@@ -72,7 +95,11 @@ const RestaurantDetails = () => {
     <div className="min-h-screen pb-32 bg-background transition-colors duration-300">
       {/* RESTAURANT HEADER BANNER */}
       <div className="relative h-72 sm:h-96 overflow-hidden">
-        <img src={restaurant.image} alt={restaurant.name} className="w-full h-full object-cover" />
+        <img
+          src={restaurant.image}
+          alt={restaurant.name}
+          className="w-full h-full object-cover"
+        />
         <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent flex items-end">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 w-full pb-8">
             <Link
@@ -102,11 +129,16 @@ const RestaurantDetails = () => {
               <div className="flex items-center gap-4">
                 <div className="bg-surface p-3.5 rounded-2xl border border-border flex items-center gap-3 shadow-md">
                   <div className="w-10 h-10 rounded-xl bg-success text-white flex items-center justify-center font-black text-base shadow-xs">
-                    {restaurant.rating} <Star size={12} className="fill-white ml-0.5" />
+                    {restaurant.rating}{" "}
+                    <Star size={12} className="fill-white ml-0.5" />
                   </div>
                   <div>
-                    <p className="text-xs font-bold text-text-muted uppercase">Verified Rating</p>
-                    <p className="text-xs font-black text-text-primary">500+ Orders Served</p>
+                    <p className="text-xs font-bold text-text-muted uppercase">
+                      Verified Rating
+                    </p>
+                    <p className="text-xs font-black text-text-primary">
+                      500+ Orders Served
+                    </p>
                   </div>
                 </div>
 
@@ -114,7 +146,9 @@ const RestaurantDetails = () => {
                   <p className="text-xs font-bold text-text-muted uppercase flex items-center gap-1">
                     <Clock size={12} className="text-primary" /> Delivery Time
                   </p>
-                  <p className="text-sm font-black text-text-primary">{restaurant.deliveryTime} mins</p>
+                  <p className="text-sm font-black text-text-primary">
+                    {restaurant.deliveryTime} mins
+                  </p>
                 </div>
               </div>
             </div>
@@ -160,14 +194,20 @@ const RestaurantDetails = () => {
       {/* MENU LISTINGS */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
-          <Flame className="text-primary fill-primary" /> Signature Menu Items ({filteredItems.length})
+          <Flame className="text-primary fill-primary" /> Signature Menu Items (
+          {filteredItems.length})
         </h2>
 
         {filteredItems.length === 0 ? (
           <div className="text-center py-16 bg-surface rounded-3xl border border-border p-8 space-y-3">
-            <p className="font-bold text-base text-text-primary">No dishes found in this filter</p>
+            <p className="font-bold text-base text-text-primary">
+              No dishes found in this filter
+            </p>
             <button
-              onClick={() => { setSelectedCategory("All"); setVegOnly(false); }}
+              onClick={() => {
+                setSelectedCategory("All");
+                setVegOnly(false);
+              }}
               className="px-5 py-2 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-hover transition"
             >
               Show All Menu Items
@@ -186,10 +226,16 @@ const RestaurantDetails = () => {
                 >
                   <div className="space-y-1.5 flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
-                        item.isVeg ? "border-success text-success" : "border-danger text-danger"
-                      }`}>
-                        <span className={`w-1.5 h-1.5 rounded-full ${item.isVeg ? "bg-success" : "bg-danger"}`}></span>
+                      <span
+                        className={`w-3.5 h-3.5 rounded-sm border flex items-center justify-center shrink-0 ${
+                          item.isVeg
+                            ? "border-success text-success"
+                            : "border-danger text-danger"
+                        }`}
+                      >
+                        <span
+                          className={`w-1.5 h-1.5 rounded-full ${item.isVeg ? "bg-success" : "bg-danger"}`}
+                        ></span>
                       </span>
 
                       {item.isBestseller && (
@@ -199,10 +245,15 @@ const RestaurantDetails = () => {
                       )}
                     </div>
 
-                    <h3 className="font-bold text-base text-text-primary truncate">{item.name}</h3>
-                    <p className="font-black text-primary text-base">₹{item.price}</p>
+                    <h3 className="font-bold text-base text-text-primary truncate">
+                      {item.name}
+                    </h3>
+                    <p className="font-black text-primary text-base">
+                      ₹{item.price}
+                    </p>
                     <p className="text-xs text-text-muted line-clamp-2 leading-relaxed">
-                      {item.description || "Freshly cooked with authentic Indian gourmet ingredients and signature spices."}
+                      {item.description ||
+                        "Freshly cooked with authentic Indian gourmet ingredients and signature spices."}
                     </p>
                   </div>
 
@@ -223,11 +274,17 @@ const RestaurantDetails = () => {
                         </button>
                       ) : (
                         <div className="flex items-center gap-3 px-3 py-1.5 rounded-xl bg-primary text-white font-black text-xs shadow-md">
-                          <button onClick={() => updateQuantity(item._id, qty - 1)} className="hover:opacity-80">
+                          <button
+                            onClick={() => updateQuantity(item._id, qty - 1)}
+                            className="hover:opacity-80"
+                          >
                             <Minus size={14} />
                           </button>
                           <span>{qty}</span>
-                          <button onClick={() => updateQuantity(item._id, qty + 1)} className="hover:opacity-80">
+                          <button
+                            onClick={() => updateQuantity(item._id, qty + 1)}
+                            className="hover:opacity-80"
+                          >
                             <Plus size={14} />
                           </button>
                         </div>
@@ -250,8 +307,12 @@ const RestaurantDetails = () => {
                 <ShoppingBag size={20} />
               </div>
               <div>
-                <p className="font-black text-base">{totalItems} {totalItems === 1 ? "item" : "items"} added</p>
-                <p className="text-xs text-white/90">Extra charges may apply • Total ₹{totalAmount}</p>
+                <p className="font-black text-base">
+                  {totalItems} {totalItems === 1 ? "item" : "items"} added
+                </p>
+                <p className="text-xs text-white/90">
+                  Extra charges may apply • Total ₹{totalAmount}
+                </p>
               </div>
             </div>
 

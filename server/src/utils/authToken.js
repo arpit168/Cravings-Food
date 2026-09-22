@@ -12,7 +12,7 @@ export const genToken = (user, res) => {
       process.env.JWT_SECRET || "fallback_secret_key_for_dev_only",
       {
         expiresIn: "7d",
-      }
+      },
     );
 
     const isProduction = process.env.NODE_ENV === "production";

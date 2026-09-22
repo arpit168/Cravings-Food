@@ -35,7 +35,9 @@ export const getAllRestaurants = async (req, res, next) => {
     else sortOption.isFeatured = -1;
 
     const restaurants = await Restaurant.find(query).sort(sortOption);
-    res.status(200).json({ success: true, count: restaurants.length, data: restaurants });
+    res
+      .status(200)
+      .json({ success: true, count: restaurants.length, data: restaurants });
   } catch (error) {
     next(error);
   }
@@ -50,8 +52,13 @@ export const getRestaurantById = async (req, res, next) => {
       return next(error);
     }
 
-    const menuItems = await MenuItem.find({ restaurantId: restaurant._id, isAvailable: true });
-    const reviews = await Review.find({ restaurantId: restaurant._id }).sort({ createdAt: -1 }).limit(10);
+    const menuItems = await MenuItem.find({
+      restaurantId: restaurant._id,
+      isAvailable: true,
+    });
+    const reviews = await Review.find({ restaurantId: restaurant._id })
+      .sort({ createdAt: -1 })
+      .limit(10);
 
     res.status(200).json({
       success: true,
@@ -72,7 +79,13 @@ export const createRestaurant = async (req, res, next) => {
       ...req.body,
       ownerId: req.user._id,
     });
-    res.status(201).json({ success: true, message: "Restaurant created", data: newRestaurant });
+    res
+      .status(201)
+      .json({
+        success: true,
+        message: "Restaurant created",
+        data: newRestaurant,
+      });
   } catch (error) {
     next(error);
   }
@@ -81,7 +94,9 @@ export const createRestaurant = async (req, res, next) => {
 export const addMenuItem = async (req, res, next) => {
   try {
     const newItem = await MenuItem.create(req.body);
-    res.status(201).json({ success: true, message: "Menu item added", data: newItem });
+    res
+      .status(201)
+      .json({ success: true, message: "Menu item added", data: newItem });
   } catch (error) {
     next(error);
   }
@@ -91,7 +106,9 @@ export const getOwnerRestaurants = async (req, res, next) => {
   try {
     const restaurants = await Restaurant.find({ ownerId: req.user._id });
     const restaurantIds = restaurants.map((r) => r._id);
-    const menuItems = await MenuItem.find({ restaurantId: { $in: restaurantIds } });
+    const menuItems = await MenuItem.find({
+      restaurantId: { $in: restaurantIds },
+    });
 
     res.status(200).json({
       success: true,
@@ -138,7 +155,7 @@ export const updateOwnerOrderStatus = async (req, res, next) => {
     const order = await Order.findByIdAndUpdate(
       orderId,
       { orderStatus: status },
-      { new: true }
+      { new: true },
     );
 
     if (!order) {
@@ -183,7 +200,7 @@ export const updateStoreTiming = async (req, res, next) => {
     const restaurant = await Restaurant.findOneAndUpdate(
       { ownerId: req.user._id },
       { openTime, closeTime },
-      { new: true }
+      { new: true },
     );
     res.status(200).json({
       success: true,
@@ -236,5 +253,3 @@ export const requestOwnerPayout = async (req, res, next) => {
     next(error);
   }
 };
-
-

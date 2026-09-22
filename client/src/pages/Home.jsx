@@ -1,7 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../config/Api";
-import { Search, Star, Clock, Flame, ShieldCheck, Sparkles, Filter, Leaf, ArrowRight, TrendingUp } from "lucide-react";
+import {
+  Search,
+  Star,
+  Clock,
+  Flame,
+  ShieldCheck,
+  Sparkles,
+  Filter,
+  Leaf,
+  ArrowRight,
+  TrendingUp,
+} from "lucide-react";
 
 const Home = () => {
   const [restaurants, setRestaurants] = useState([]);
@@ -22,6 +33,7 @@ const Home = () => {
 
   useEffect(() => {
     fetchRestaurants();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchTerm, activeFilter, selectedCuisine]);
 
   const fetchRestaurants = async () => {
@@ -29,7 +41,8 @@ const Home = () => {
       setLoading(true);
       let query = `?`;
       if (searchTerm) query += `search=${encodeURIComponent(searchTerm)}&`;
-      if (selectedCuisine !== "All") query += `cuisine=${encodeURIComponent(selectedCuisine)}&`;
+      if (selectedCuisine !== "All")
+        query += `cuisine=${encodeURIComponent(selectedCuisine)}&`;
       if (activeFilter === "PureVeg") query += `isPureVeg=true&`;
       if (activeFilter === "TopRated") query += `rating=4.5&`;
       if (activeFilter === "Fastest") query += `sortBy=deliveryTime&`;
@@ -62,7 +75,9 @@ const Home = () => {
           </h1>
 
           <p className="max-w-2xl mx-auto text-text-secondary text-base sm:text-lg font-medium leading-relaxed">
-            Order from Bandra’s top-rated kitchens, iconic bakeries, and gourmet cloud kitchens. Real-time GPS tracking and thermal packaging guaranteed.
+            Order from Bandra’s top-rated kitchens, iconic bakeries, and gourmet
+            cloud kitchens. Real-time GPS tracking and thermal packaging
+            guaranteed.
           </p>
 
           {/* SEARCH BAR */}
@@ -91,7 +106,8 @@ const Home = () => {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-bold text-text-primary flex items-center gap-2">
-            <Flame className="text-primary fill-primary" size={20} /> What's on your mind?
+            <Flame className="text-primary fill-primary" size={20} /> What's on
+            your mind?
           </h2>
         </div>
 
@@ -144,7 +160,9 @@ const Home = () => {
         </div>
 
         <span className="text-xs font-bold text-text-muted">
-          Showing <strong className="text-text-primary">{restaurants.length}</strong> partner kitchens
+          Showing{" "}
+          <strong className="text-text-primary">{restaurants.length}</strong>{" "}
+          partner kitchens
         </span>
       </section>
 
@@ -153,7 +171,10 @@ const Home = () => {
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="animate-pulse bg-surface rounded-3xl border border-border h-80"></div>
+              <div
+                key={i}
+                className="animate-pulse bg-surface rounded-3xl border border-border h-80"
+              ></div>
             ))}
           </div>
         ) : restaurants.length === 0 ? (
@@ -161,9 +182,12 @@ const Home = () => {
             <div className="w-16 h-16 bg-primary/10 text-primary rounded-2xl flex items-center justify-center mx-auto text-2xl font-bold">
               🍽️
             </div>
-            <h3 className="text-xl font-bold text-text-primary">No restaurants found matching criteria</h3>
+            <h3 className="text-xl font-bold text-text-primary">
+              No restaurants found matching criteria
+            </h3>
             <p className="text-sm text-text-muted max-w-md mx-auto">
-              Try resetting your search query or switching cuisine categories to view available kitchens.
+              Try resetting your search query or switching cuisine categories to
+              view available kitchens.
             </p>
             <button
               onClick={() => {
@@ -220,12 +244,14 @@ const Home = () => {
                         {resItem.name}
                       </h3>
                       <span className="px-2 py-1 rounded-lg bg-success text-white text-xs font-black flex items-center gap-1 shrink-0 shadow-xs">
-                        {resItem.rating} <Star size={10} className="fill-white" />
+                        {resItem.rating}{" "}
+                        <Star size={10} className="fill-white" />
                       </span>
                     </div>
 
                     <p className="text-xs font-semibold text-text-muted truncate">
-                      {resItem.cuisines?.join(" • ") || "North Indian • Biryani"}
+                      {resItem.cuisines?.join(" • ") ||
+                        "North Indian • Biryani"}
                     </p>
                   </div>
                 </div>
@@ -233,7 +259,8 @@ const Home = () => {
                 {/* Footer */}
                 <div className="px-5 py-3.5 bg-muted/60 border-t border-border flex items-center justify-between text-xs font-bold text-text-secondary">
                   <span className="flex items-center gap-1.5">
-                    <Clock size={14} className="text-primary" /> {resItem.deliveryTime || 25} mins
+                    <Clock size={14} className="text-primary" />{" "}
+                    {resItem.deliveryTime || 25} mins
                   </span>
                   <span className="text-primary group-hover:translate-x-1 transition flex items-center gap-1">
                     Order Now <ArrowRight size={14} />

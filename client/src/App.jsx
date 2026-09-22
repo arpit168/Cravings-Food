@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import useThemeStore from "./stores/useThemeStore";
 
@@ -34,6 +39,7 @@ const App = () => {
 
   useEffect(() => {
     initTheme();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -54,7 +60,6 @@ const App = () => {
         />
 
         <Header />
-        
 
         <main className="flex-1">
           <Routes>
@@ -147,10 +152,8 @@ const App = () => {
             <Route path="/404" element={<ErrorPage />} />
             <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
-         
         </main>
-               <Footer />
-        
+        <Footer />
       </div>
     </Router>
   );

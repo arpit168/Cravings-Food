@@ -10,7 +10,7 @@ import useWindowSize from "../../hooks/useWindowSize";
 
 const UserDashboard = () => {
   const [active, setActive] = useState(
-    JSON.parse(localStorage.getItem("UserDashboard-active")) || "overview"
+    JSON.parse(localStorage.getItem("UserDashboard-active")) || "overview",
   );
   const [isCollapsed, setIsCollapsed] = useState(false);
   const size = useWindowSize();

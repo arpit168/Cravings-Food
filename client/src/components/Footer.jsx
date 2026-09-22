@@ -1,6 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { UtensilsCrossed, ShieldCheck, Heart, Share2, Globe, MessageCircle, MapPin, Phone, Mail } from "lucide-react";
+import {
+  UtensilsCrossed,
+  ShieldCheck,
+  Heart,
+  Share2,
+  Globe,
+  MessageCircle,
+  MapPin,
+  Phone,
+  Mail,
+} from "lucide-react";
 
 const Footer = () => {
   return (
@@ -17,16 +27,30 @@ const Footer = () => {
             </span>
           </Link>
           <p className="text-sm text-text-muted max-w-sm leading-relaxed">
-            Experience world-class culinary masterpieces delivered straight to your doorstep with real-time tracking, zero temperature loss, and unmatched care.
+            Experience world-class culinary masterpieces delivered straight to
+            your doorstep with real-time tracking, zero temperature loss, and
+            unmatched care.
           </p>
           <div className="flex items-center gap-3 pt-2">
-            <a href="#" className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition" title="Global Community">
+            <a
+              href="#"
+              className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition"
+              title="Global Community"
+            >
               <Globe size={18} />
             </a>
-            <a href="#" className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition" title="Share Cravings">
+            <a
+              href="#"
+              className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition"
+              title="Share Cravings"
+            >
               <Share2 size={18} />
             </a>
-            <a href="#" className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition" title="Customer Chat">
+            <a
+              href="#"
+              className="w-9 h-9 rounded-xl bg-muted border border-border flex items-center justify-center text-text-secondary hover:text-primary hover:border-primary/50 transition"
+              title="Customer Chat"
+            >
               <MessageCircle size={18} />
             </a>
           </div>
@@ -34,28 +58,70 @@ const Footer = () => {
 
         {/* Quick Links */}
         <div className="space-y-4">
-          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">Explore</h4>
+          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">
+            Explore
+          </h4>
           <ul className="space-y-2.5 text-sm font-medium text-text-secondary">
-            <li><Link to="/" className="hover:text-primary transition">Restaurants Near Me</Link></li>
-            <li><Link to="/menu" className="hover:text-primary transition">Bestseller Dishes</Link></li>
-            <li><Link to="/about" className="hover:text-primary transition">Our Philosophy</Link></li>
-            <li><Link to="/contact" className="hover:text-primary transition">24/7 Help Center</Link></li>
+            <li>
+              <Link to="/" className="hover:text-primary transition">
+                Restaurants Near Me
+              </Link>
+            </li>
+            <li>
+              <Link to="/menu" className="hover:text-primary transition">
+                Bestseller Dishes
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-primary transition">
+                Our Philosophy
+              </Link>
+            </li>
+            <li>
+              <Link to="/contact" className="hover:text-primary transition">
+                24/7 Help Center
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Multi-Role Portals */}
         <div className="space-y-4">
-          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">Partner Portals</h4>
+          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">
+            Partner Portals
+          </h4>
           <ul className="space-y-2.5 text-sm font-medium text-text-secondary">
-            <li><Link to="/register" className="hover:text-primary transition flex items-center gap-1.5"><UtensilsCrossed size={14} className="text-primary"/> Register Restaurant</Link></li>
-            <li><Link to="/register" className="hover:text-info transition flex items-center gap-1.5"><ShieldCheck size={14} className="text-info"/> Become Delivery Driver</Link></li>
-            <li><Link to="/login" className="hover:text-accent transition">Admin Login</Link></li>
+            <li>
+              <Link
+                to="/register"
+                className="hover:text-primary transition flex items-center gap-1.5"
+              >
+                <UtensilsCrossed size={14} className="text-primary" /> Register
+                Restaurant
+              </Link>
+            </li>
+            <li>
+              <Link
+                to="/register"
+                className="hover:text-info transition flex items-center gap-1.5"
+              >
+                <ShieldCheck size={14} className="text-info" /> Become Delivery
+                Driver
+              </Link>
+            </li>
+            <li>
+              <Link to="/login" className="hover:text-accent transition">
+                Admin Login
+              </Link>
+            </li>
           </ul>
         </div>
 
         {/* Contact Info */}
         <div className="space-y-4">
-          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">Contact Us</h4>
+          <h4 className="font-bold text-sm uppercase tracking-wider text-text-primary">
+            Contact Us
+          </h4>
           <ul className="space-y-3 text-sm text-text-secondary">
             <li className="flex items-start gap-2.5">
               <MapPin size={16} className="text-primary shrink-0 mt-0.5" />
@@ -74,9 +140,14 @@ const Footer = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-text-muted">
-        <p>© {new Date().getFullYear()} Cravings Inc. Built with passion for food lovers.</p>
+        <p>
+          © {new Date().getFullYear()} Cravings Inc. Built with passion for food
+          lovers.
+        </p>
         <p className="flex items-center gap-1">
-          Crafted with <Heart size={14} className="text-danger fill-danger animate-pulse" /> by Arpit Gupta
+          Crafted with{" "}
+          <Heart size={14} className="text-danger fill-danger animate-pulse" />{" "}
+          by Arpit Gupta
         </p>
       </div>
     </footer>

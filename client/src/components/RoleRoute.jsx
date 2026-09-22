@@ -12,7 +12,9 @@ const RoleRoute = ({ children, allowedRoles = [] }) => {
       <div className="min-h-[70vh] flex flex-col items-center justify-center bg-background text-text-primary">
         <div className="p-4 rounded-2xl bg-surface border border-border shadow-md flex items-center gap-3 animate-pulse">
           <Loader2 className="w-6 h-6 text-primary animate-spin" />
-          <span className="text-sm font-semibold text-text-secondary">Checking role access permissions...</span>
+          <span className="text-sm font-semibold text-text-secondary">
+            Checking role access permissions...
+          </span>
         </div>
       </div>
     );
@@ -26,7 +28,8 @@ const RoleRoute = ({ children, allowedRoles = [] }) => {
     // Determine target fallback redirect based on actual role
     let fallbackPath = "/userDashboard";
     if (user.role === "restaurant_owner") fallbackPath = "/owner-dashboard";
-    else if (user.role === "delivery_partner") fallbackPath = "/partner-dashboard";
+    else if (user.role === "delivery_partner")
+      fallbackPath = "/partner-dashboard";
     else if (user.role === "admin") fallbackPath = "/admin-dashboard";
 
     return (
@@ -35,9 +38,16 @@ const RoleRoute = ({ children, allowedRoles = [] }) => {
           <div className="w-14 h-14 rounded-2xl bg-danger/10 text-danger mx-auto flex items-center justify-center">
             <ShieldAlert size={32} />
           </div>
-          <h2 className="text-xl font-bold text-text-primary">Access Restriction Denied</h2>
+          <h2 className="text-xl font-bold text-text-primary">
+            Access Restriction Denied
+          </h2>
           <p className="text-sm text-text-secondary">
-            Your current role (<span className="font-semibold text-primary">{user.role || "guest"}</span>) does not have authorization to view this secure management console.
+            Your current role (
+            <span className="font-semibold text-primary">
+              {user.role || "guest"}
+            </span>
+            ) does not have authorization to view this secure management
+            console.
           </p>
           <div className="pt-2">
             <a

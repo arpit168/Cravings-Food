@@ -89,7 +89,7 @@ const restaurantSchema = new mongoose.Schema(
       },
     ],
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 const Restaurant = mongoose.model("Restaurant", restaurantSchema);

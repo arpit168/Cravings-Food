@@ -2,17 +2,17 @@ import React, { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../config/Api";
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  Lock, 
-  ArrowRight, 
+import {
+  User,
+  Mail,
+  Phone,
+  Lock,
+  ArrowRight,
   CheckCircle2,
   Sparkles,
   Shield,
   Utensils,
-  Bike
+  Bike,
 } from "lucide-react";
 
 const Register = () => {
@@ -36,20 +36,20 @@ const Register = () => {
       icon: Utensils,
       label: "Customer",
       description: "Order from the best restaurants",
-      linear: "from-blue-500 to-cyan-400"
+      linear: "from-blue-500 to-cyan-400",
     },
     restaurant_owner: {
       icon: Sparkles,
       label: "Restaurant Partner",
       description: "List your kitchen & grow your business",
-      linear: "from-orange-500 to-amber-400"
+      linear: "from-orange-500 to-amber-400",
     },
     delivery_partner: {
       icon: Bike,
       label: "Delivery Rider",
       description: "Earn with every delivery",
-      linear: "from-green-500 to-emerald-400"
-    }
+      linear: "from-green-500 to-emerald-400",
+    },
   };
 
   const handleChange = (e) => {
@@ -57,12 +57,12 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear error on change
     if (validationError[name]) {
-      setValidationError(prev => ({ ...prev, [name]: "" }));
+      setValidationError((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const handleBlur = (field) => {
-    setTouchedFields(prev => ({ ...prev, [field]: true }));
+    setTouchedFields((prev) => ({ ...prev, [field]: true }));
     setFocusedField(null);
   };
 
@@ -107,16 +107,27 @@ const Register = () => {
       navigate("/login");
     } catch (error) {
       console.error(error);
-      toast.error(error?.response?.data?.message || error.message || "Registration failed");
+      toast.error(
+        error?.response?.data?.message ||
+          error.message ||
+          "Registration failed",
+      );
     } finally {
       setIsLoading(false);
     }
   };
 
   const getInputClassName = (fieldName) => {
-    const base = "w-full pl-11 pr-4 py-3.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-2 rounded-2xl text-text-primary text-sm transition-all duration-300 placeholder:text-text-muted/60";
-    const focus = focusedField === fieldName ? "border-primary shadow-lg shadow-primary/10 scale-[1.01]" : "border-border/50 hover:border-primary/30";
-    const error = validationError[fieldName] && touchedFields[fieldName] ? "border-danger shadow-lg shadow-danger/10" : "";
+    const base =
+      "w-full pl-11 pr-4 py-3.5 bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border-2 rounded-2xl text-text-primary text-sm transition-all duration-300 placeholder:text-text-muted/60";
+    const focus =
+      focusedField === fieldName
+        ? "border-primary shadow-lg shadow-primary/10 scale-[1.01]"
+        : "border-border/50 hover:border-primary/30";
+    const error =
+      validationError[fieldName] && touchedFields[fieldName]
+        ? "border-danger shadow-lg shadow-danger/10"
+        : "";
     return `${base} ${focus} ${error}`;
   };
 
@@ -242,7 +253,6 @@ const Register = () => {
                     className={getInputClassName("password")}
                   />
                   <button
-                    type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3.5 top-1/2 -translate-y-1/2 text-text-muted hover:text-primary transition-colors"
                   >
@@ -272,11 +282,12 @@ const Register = () => {
                   placeholder="Confirm your password"
                   className={getInputClassName("confirmPassword")}
                 />
-                {validationError.confirmPassword && touchedFields.confirmPassword && (
-                  <p className="text-xs text-danger animate-slideDown">
-                    {validationError.confirmPassword}
-                  </p>
-                )}
+                {validationError.confirmPassword &&
+                  touchedFields.confirmPassword && (
+                    <p className="text-xs text-danger animate-slideDown">
+                      {validationError.confirmPassword}
+                    </p>
+                  )}
               </div>
             </div>
 
@@ -287,39 +298,47 @@ const Register = () => {
                 Select Your Role
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {Object.entries(roleFeatures).map(([value, { icon: Icon, label, description, linear }]) => (
-                  <label
-                    key={value}
-                    className={`relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-300 ${
-                      formData.role === value
-                        ? `border-primary bg-linear-to-br ${linear}/10 shadow-lg shadow-primary/10 scale-[1.02]`
-                        : "border-border/50 hover:border-primary/30 hover:bg-primary/5"
-                    }`}
-                  >
-                    <input
-                      type="radio"
-                      name="role"
-                      value={value}
-                      checked={formData.role === value}
-                      onChange={handleChange}
-                      className="sr-only"
-                    />
-                    <div className="flex items-center gap-3">
-                      <div className={`p-2 rounded-xl bg-linear-to-br ${linear} text-white shadow-lg`}>
-                        <Icon className="w-4 h-4" />
+                {Object.entries(roleFeatures).map(
+                  ([value, { icon: Icon, label, description, linear }]) => (
+                    <label
+                      key={value}
+                      className={`relative cursor-pointer rounded-2xl border-2 p-4 transition-all duration-300 ${
+                        formData.role === value
+                          ? `border-primary bg-linear-to-br ${linear}/10 shadow-lg shadow-primary/10 scale-[1.02]`
+                          : "border-border/50 hover:border-primary/30 hover:bg-primary/5"
+                      }`}
+                    >
+                      <input
+                        type="radio"
+                        name="role"
+                        value={value}
+                        checked={formData.role === value}
+                        onChange={handleChange}
+                        className="sr-only"
+                      />
+                      <div className="flex items-center gap-3">
+                        <div
+                          className={`p-2 rounded-xl bg-linear-to-br ${linear} text-white shadow-lg`}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-text-primary">
+                            {label}
+                          </p>
+                          <p className="text-[10px] text-text-muted">
+                            {description}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-xs font-bold text-text-primary">{label}</p>
-                        <p className="text-[10px] text-text-muted">{description}</p>
-                      </div>
-                    </div>
-                    {formData.role === value && (
-                      <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-lg">
-                        <CheckCircle2 className="w-3 h-3 text-white" />
-                      </div>
-                    )}
-                  </label>
-                ))}
+                      {formData.role === value && (
+                        <div className="absolute -top-1 -right-1 w-5 h-5 bg-primary rounded-full flex items-center justify-center shadow-lg">
+                          <CheckCircle2 className="w-3 h-3 text-white" />
+                        </div>
+                      )}
+                    </label>
+                  ),
+                )}
               </div>
             </div>
 
@@ -356,11 +375,17 @@ const Register = () => {
             </p>
             <p className="text-xs text-text-muted mt-3">
               By registering, you agree to our{" "}
-              <Link to="/terms" className="hover:text-primary transition-colors underline underline-offset-2">
+              <Link
+                to="/terms"
+                className="hover:text-primary transition-colors underline underline-offset-2"
+              >
                 Terms of Service
               </Link>{" "}
               and{" "}
-              <Link to="/privacy" className="hover:text-primary transition-colors underline underline-offset-2">
+              <Link
+                to="/privacy"
+                className="hover:text-primary transition-colors underline underline-offset-2"
+              >
                 Privacy Policy
               </Link>
             </p>

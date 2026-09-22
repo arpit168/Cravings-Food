@@ -27,18 +27,25 @@ const ForgotPassword = () => {
           >
             <ArrowLeft size={14} /> Back to Login
           </Link>
-          <h1 className="text-2xl font-black text-text-primary">Reset Password</h1>
+          <h1 className="text-2xl font-black text-text-primary">
+            Reset Password
+          </h1>
           <p className="text-sm text-text-muted mt-1">
-            Enter your email address and we'll send you instructions to reset your password.
+            Enter your email address and we'll send you instructions to reset
+            your password.
           </p>
         </div>
 
         {submitted ? (
           <div className="p-6 rounded-2xl bg-success/10 border border-success/20 text-center space-y-3">
             <CheckCircle2 className="w-12 h-12 text-success mx-auto" />
-            <h3 className="font-bold text-base text-success">Check your inbox</h3>
+            <h3 className="font-bold text-base text-success">
+              Check your inbox
+            </h3>
             <p className="text-xs text-text-muted">
-              We sent a recovery link to <strong className="text-text-primary">{email}</strong>. Please follow the instructions in the email.
+              We sent a recovery link to{" "}
+              <strong className="text-text-primary">{email}</strong>. Please
+              follow the instructions in the email.
             </p>
             <Link
               to="/login"
@@ -50,9 +57,14 @@ const ForgotPassword = () => {
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Email Address</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Email Address
+              </label>
               <div className="relative mt-1">
-                <Mail className="absolute left-3.5 top-3.5 text-text-muted" size={18} />
+                <Mail
+                  className="absolute left-3.5 top-3.5 text-text-muted"
+                  size={18}
+                />
                 <input
                   type="email"
                   required

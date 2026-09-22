@@ -15,8 +15,12 @@ const UserProfile = () => {
           <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-wider">
             Account Management
           </span>
-          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">My Profile & Preferences</h1>
-          <p className="text-sm text-text-secondary">View and customize your personal contact credentials</p>
+          <h1 className="text-2xl sm:text-4xl font-black text-text-primary mt-2">
+            My Profile & Preferences
+          </h1>
+          <p className="text-sm text-text-secondary">
+            View and customize your personal contact credentials
+          </p>
         </div>
 
         <button
@@ -35,19 +39,27 @@ const UserProfile = () => {
           </div>
 
           <div className="space-y-1">
-            <h2 className="text-xl font-black text-text-primary">{user?.fullName}</h2>
-            <p className="text-xs font-semibold text-text-muted">{user?.email}</p>
+            <h2 className="text-xl font-black text-text-primary">
+              {user?.fullName}
+            </h2>
+            <p className="text-xs font-semibold text-text-muted">
+              {user?.email}
+            </p>
           </div>
 
           <div className="w-full pt-4 border-t border-border flex items-center justify-between text-xs font-bold text-text-secondary">
             <span>Account Role</span>
-            <span className="px-2.5 py-1 rounded-md bg-muted text-primary uppercase font-black">{user?.role}</span>
+            <span className="px-2.5 py-1 rounded-md bg-muted text-primary uppercase font-black">
+              {user?.role}
+            </span>
           </div>
         </div>
 
         {/* Profile Form / Details */}
         <div className="lg:col-span-2 bg-surface rounded-3xl border border-border p-8 space-y-6 shadow-xs">
-          <h2 className="text-lg font-black text-text-primary border-b border-border pb-4">Personal Information</h2>
+          <h2 className="text-lg font-black text-text-primary border-b border-border pb-4">
+            Personal Information
+          </h2>
 
           <div className="space-y-6">
             <div className="space-y-1.5">

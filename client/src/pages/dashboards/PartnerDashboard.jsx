@@ -59,7 +59,10 @@ const PartnerDashboard = () => {
 
   const handleUpdateDeliveryStatus = async (orderId, newStatus, otp = null) => {
     try {
-      const res = await api.put(`/partner/${orderId}/status`, { status: newStatus, otp });
+      const res = await api.put(`/partner/${orderId}/status`, {
+        status: newStatus,
+        otp,
+      });
       if (res.data && res.data.success) {
         toast.success(`Order marked as ${newStatus}!`);
         setOtpModalOrder(null);
@@ -67,7 +70,9 @@ const PartnerDashboard = () => {
         fetchPartnerData();
       }
     } catch (error) {
-      toast.error(error?.response?.data?.message || "Error updating delivery status");
+      toast.error(
+        error?.response?.data?.message || "Error updating delivery status",
+      );
     }
   };
 
@@ -89,7 +94,9 @@ const PartnerDashboard = () => {
       toast.error("Enter a valid withdrawal amount");
       return;
     }
-    toast.success(`Withdrawal request of ₹${withdrawAmount} submitted! Funds will arrive within 2 business hours.`);
+    toast.success(
+      `Withdrawal request of ₹${withdrawAmount} submitted! Funds will arrive within 2 business hours.`,
+    );
     setWithdrawAmount("");
   };
 
@@ -105,7 +112,8 @@ const PartnerDashboard = () => {
             Delivery Fleet Terminal
           </h1>
           <p className="text-sm text-text-secondary">
-            Rider <strong className="text-primary">{user?.fullName}</strong> • Active Zone: Bandra West GPS
+            Rider <strong className="text-primary">{user?.fullName}</strong> •
+            Active Zone: Bandra West GPS
           </p>
         </div>
 
@@ -125,7 +133,10 @@ const PartnerDashboard = () => {
             onClick={fetchPartnerData}
             className="p-2.5 rounded-xl bg-muted border border-border text-text-secondary hover:text-primary transition cursor-pointer"
           >
-            <RefreshCw size={16} className={loading ? "animate-spin text-primary" : ""} />
+            <RefreshCw
+              size={16}
+              className={loading ? "animate-spin text-primary" : ""}
+            />
           </button>
         </div>
       </div>
@@ -136,24 +147,39 @@ const PartnerDashboard = () => {
           <div className="w-10 h-10 rounded-xl bg-success/10 text-success flex items-center justify-center">
             <DollarSign size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Completed Earnings</p>
-          <p className="text-2xl font-black text-text-primary">₹{(user?.walletBalance || 0) + myDeliveries.filter(d => d.orderStatus === "Delivered").length * 40}</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Completed Earnings
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            ₹
+            {(user?.walletBalance || 0) +
+              myDeliveries.filter((d) => d.orderStatus === "Delivered").length *
+                40}
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
             <Bike size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Available Broadcasts</p>
-          <p className="text-2xl font-black text-text-primary">{availableOrders.length} Orders</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Available Broadcasts
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {availableOrders.length} Orders
+          </p>
         </div>
 
         <div className="bg-surface p-6 rounded-3xl border border-border space-y-2 shadow-xs">
           <div className="w-10 h-10 rounded-xl bg-info/10 text-info flex items-center justify-center">
             <CheckCircle2 size={20} />
           </div>
-          <p className="text-xs font-bold uppercase text-text-muted">Active Deliveries</p>
-          <p className="text-2xl font-black text-text-primary">{myDeliveries.length} Ongoing</p>
+          <p className="text-xs font-bold uppercase text-text-muted">
+            Active Deliveries
+          </p>
+          <p className="text-2xl font-black text-text-primary">
+            {myDeliveries.length} Ongoing
+          </p>
         </div>
       </div>
 
@@ -187,22 +213,35 @@ const PartnerDashboard = () => {
           {/* Available Orders */}
           <div className="space-y-4">
             <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
-              <Navigation className="text-primary" /> Live Pickup Requests ({availableOrders.length})
+              <Navigation className="text-primary" /> Live Pickup Requests (
+              {availableOrders.length})
             </h2>
 
             {availableOrders.length === 0 ? (
               <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
-                <p className="font-bold text-text-primary">No nearby orders currently waiting for rider</p>
-                <p className="text-xs text-text-muted">Stay online in peak areas (Linking Road, Pali Hill) to receive broadcast dispatches.</p>
+                <p className="font-bold text-text-primary">
+                  No nearby orders currently waiting for rider
+                </p>
+                <p className="text-xs text-text-muted">
+                  Stay online in peak areas (Linking Road, Pali Hill) to receive
+                  broadcast dispatches.
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {availableOrders.map((ord) => (
-                  <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                  <div
+                    key={ord._id}
+                    className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs"
+                  >
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="font-black text-xs text-primary">#{ord.orderId || ord._id}</span>
-                        <h4 className="font-bold text-base text-text-primary mt-1">{ord.restaurantId?.name || "Kitchen"}</h4>
+                        <span className="font-black text-xs text-primary">
+                          #{ord.orderId || ord._id}
+                        </span>
+                        <h4 className="font-bold text-base text-text-primary mt-1">
+                          {ord.restaurantId?.name || "Kitchen"}
+                        </h4>
                       </div>
                       <span className="px-3 py-1 rounded-lg bg-success/10 text-success font-black text-sm">
                         Earn ₹80
@@ -211,10 +250,14 @@ const PartnerDashboard = () => {
 
                     <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
                       <p className="flex items-center gap-2">
-                        <MapPin size={14} className="text-primary" /> Pickup: {ord.restaurantId?.name} ({ord.restaurantId?.address?.street || "Bandra West"})
+                        <MapPin size={14} className="text-primary" /> Pickup:{" "}
+                        {ord.restaurantId?.name} (
+                        {ord.restaurantId?.address?.street || "Bandra West"})
                       </p>
                       <p className="flex items-center gap-2">
-                        <CheckCircle2 size={14} className="text-success" /> Dropoff: {ord.deliveryAddress?.street}, {ord.deliveryAddress?.city || "Mumbai"}
+                        <CheckCircle2 size={14} className="text-success" />{" "}
+                        Dropoff: {ord.deliveryAddress?.street},{" "}
+                        {ord.deliveryAddress?.city || "Mumbai"}
                       </p>
                     </div>
 
@@ -233,22 +276,35 @@ const PartnerDashboard = () => {
           {/* My Deliveries */}
           <div className="space-y-4">
             <h2 className="text-lg font-black text-text-primary flex items-center gap-2">
-              <Bike className="text-success" /> My Assigned Deliveries ({myDeliveries.length})
+              <Bike className="text-success" /> My Assigned Deliveries (
+              {myDeliveries.length})
             </h2>
 
             {myDeliveries.length === 0 ? (
               <div className="bg-surface p-8 rounded-3xl border border-border text-center space-y-2">
-                <p className="font-bold text-text-primary">You have no active deliveries</p>
-                <p className="text-xs text-text-muted">Accept incoming pickup requests from the left column to begin navigation.</p>
+                <p className="font-bold text-text-primary">
+                  You have no active deliveries
+                </p>
+                <p className="text-xs text-text-muted">
+                  Accept incoming pickup requests from the left column to begin
+                  navigation.
+                </p>
               </div>
             ) : (
               <div className="space-y-4">
                 {myDeliveries.map((ord) => (
-                  <div key={ord._id} className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs">
+                  <div
+                    key={ord._id}
+                    className="bg-surface p-6 rounded-3xl border border-border space-y-4 shadow-xs"
+                  >
                     <div className="flex justify-between items-start">
                       <div>
-                        <span className="font-black text-xs text-success">Active Run</span>
-                        <h4 className="font-bold text-base text-text-primary mt-1">Order #{ord.orderId || ord._id}</h4>
+                        <span className="font-black text-xs text-success">
+                          Active Run
+                        </span>
+                        <h4 className="font-bold text-base text-text-primary mt-1">
+                          Order #{ord.orderId || ord._id}
+                        </h4>
                       </div>
                       <span className="px-3 py-1 rounded-full bg-info/10 text-info font-bold text-xs uppercase">
                         {ord.orderStatus}
@@ -257,17 +313,25 @@ const PartnerDashboard = () => {
 
                     <div className="space-y-1.5 text-xs font-semibold text-text-secondary bg-muted p-3.5 rounded-2xl border border-border">
                       <p className="flex items-center gap-2">
-                        <MapPin size={14} className="text-primary" /> Dropoff: {ord.deliveryAddress?.street}, {ord.deliveryAddress?.city}
+                        <MapPin size={14} className="text-primary" /> Dropoff:{" "}
+                        {ord.deliveryAddress?.street},{" "}
+                        {ord.deliveryAddress?.city}
                       </p>
                       <p className="flex items-center gap-2">
-                        <Clock size={14} className="text-info" /> Total Bill: ₹{ord.pricing?.totalAmount} ({ord.paymentMethod})
+                        <Clock size={14} className="text-info" /> Total Bill: ₹
+                        {ord.pricing?.totalAmount} ({ord.paymentMethod})
                       </p>
                     </div>
 
                     <div className="flex gap-3">
                       {ord.orderStatus !== "Out for Delivery" && (
                         <button
-                          onClick={() => handleUpdateDeliveryStatus(ord._id, "Out for Delivery")}
+                          onClick={() =>
+                            handleUpdateDeliveryStatus(
+                              ord._id,
+                              "Out for Delivery",
+                            )
+                          }
                           className="flex-1 py-3 rounded-xl bg-info text-white font-black text-xs uppercase tracking-wider transition hover:opacity-90 cursor-pointer"
                         >
                           Picked Up
@@ -292,19 +356,26 @@ const PartnerDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div className="bg-surface p-8 rounded-3xl border border-border space-y-6 shadow-xs">
             <h2 className="text-xl font-black text-text-primary flex items-center gap-2">
-              <ShieldCheck className="text-primary" /> Rider KYC & Vehicle Profile
+              <ShieldCheck className="text-primary" /> Rider KYC & Vehicle
+              Profile
             </h2>
             <div className="space-y-4 text-sm font-semibold divide-y divide-border">
               <div className="flex justify-between pt-2">
                 <span className="text-text-secondary">Vehicle Type</span>
-                <span className="text-text-primary font-bold uppercase">{user?.vehicleType || "Electric Scooter"}</span>
+                <span className="text-text-primary font-bold uppercase">
+                  {user?.vehicleType || "Electric Scooter"}
+                </span>
               </div>
               <div className="flex justify-between pt-3">
                 <span className="text-text-secondary">Registration Number</span>
-                <span className="text-text-primary font-bold font-mono">{user?.vehicleNumber || "MH-02-EQ-8812"}</span>
+                <span className="text-text-primary font-bold font-mono">
+                  {user?.vehicleNumber || "MH-02-EQ-8812"}
+                </span>
               </div>
               <div className="flex justify-between pt-3">
-                <span className="text-text-secondary">KYC Verification Status</span>
+                <span className="text-text-secondary">
+                  KYC Verification Status
+                </span>
                 <span className="px-2.5 py-0.5 rounded-full bg-success/10 text-success font-black text-xs uppercase">
                   {user?.kycStatus || "Verified"}
                 </span>
@@ -312,15 +383,25 @@ const PartnerDashboard = () => {
             </div>
           </div>
 
-          <form onSubmit={handleWithdraw} className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl">
+          <form
+            onSubmit={handleWithdraw}
+            className="bg-surface p-8 rounded-3xl border border-border space-y-4 shadow-xl"
+          >
             <h3 className="font-black text-lg text-text-primary flex items-center gap-2">
-              <DollarSign className="text-success" /> Instant Earnings Withdrawal
+              <DollarSign className="text-success" /> Instant Earnings
+              Withdrawal
             </h3>
             <p className="text-xs text-text-secondary">
-              Available balance: <strong className="text-primary">₹{user?.walletBalance || 1240}</strong>. Transfer earnings to your verified bank account via UPI/IMPS.
+              Available balance:{" "}
+              <strong className="text-primary">
+                ₹{user?.walletBalance || 1240}
+              </strong>
+              . Transfer earnings to your verified bank account via UPI/IMPS.
             </p>
             <div>
-              <label className="text-xs font-bold uppercase text-text-muted">Withdrawal Amount (₹)</label>
+              <label className="text-xs font-bold uppercase text-text-muted">
+                Withdrawal Amount (₹)
+              </label>
               <input
                 type="number"
                 required
@@ -350,9 +431,13 @@ const PartnerDashboard = () => {
               <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary mx-auto flex items-center justify-center font-black text-xl">
                 🔒
               </div>
-              <h3 className="text-xl font-black text-text-primary">Verify Customer Delivery PIN</h3>
+              <h3 className="text-xl font-black text-text-primary">
+                Verify Customer Delivery PIN
+              </h3>
               <p className="text-xs text-text-secondary">
-                Ask the customer for their 4-digit verification code to confirm package handover for Order #{otpModalOrder.orderId || otpModalOrder._id}.
+                Ask the customer for their 4-digit verification code to confirm
+                package handover for Order #
+                {otpModalOrder.orderId || otpModalOrder._id}.
               </p>
             </div>
 
@@ -378,7 +463,13 @@ const PartnerDashboard = () => {
                 Cancel
               </button>
               <button
-                onClick={() => handleUpdateDeliveryStatus(otpModalOrder._id, "Delivered", enteredOtp)}
+                onClick={() =>
+                  handleUpdateDeliveryStatus(
+                    otpModalOrder._id,
+                    "Delivered",
+                    enteredOtp,
+                  )
+                }
                 className="flex-1 py-3 rounded-xl bg-primary text-white font-black text-xs uppercase tracking-wider cursor-pointer hover:bg-primary-hover shadow-lg shadow-primary/20"
               >
                 Confirm Delivery

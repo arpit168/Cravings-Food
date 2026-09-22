@@ -9,7 +9,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const saved = sessionStorage.getItem("CravingUser");
       return saved ? JSON.parse(saved) : null;
-    } catch (e) {
+    } catch (error) {
+      console.error(error);
       return null;
     }
   });
@@ -68,7 +69,14 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const value = { user, setUser: updateUserState, isLogin, setIsLogin, loadingAuth, logout };
+  const value = {
+    user,
+    setUser: updateUserState,
+    isLogin,
+    setIsLogin,
+    loadingAuth,
+    logout,
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

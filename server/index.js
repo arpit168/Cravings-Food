@@ -26,7 +26,7 @@ app.set("trust proxy", 1);
 app.use(
   helmet({
     crossOriginResourcePolicy: false,
-  })
+  }),
 );
 
 // Rate Limiter against DDoS / Brute force
@@ -35,7 +35,10 @@ const limiter = rateLimit({
   max: 1000, // Limit each IP to 1000 requests per windowMs
   standardHeaders: true,
   legacyHeaders: false,
-  message: { message: "Too many requests from this IP, please try again after 15 minutes." },
+  message: {
+    message:
+      "Too many requests from this IP, please try again after 15 minutes.",
+  },
 });
 app.use("/api/", limiter);
 
@@ -59,7 +62,7 @@ app.use(
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
@@ -94,10 +97,10 @@ app.get("/", (req, res) => {
 });
 
 // Centralized Error Handling Middleware
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   const ErrorMessage = err.message || "Internal Server Error";
   const StatusCode = err.statusCode || 500;
-  
+
   if (process.env.NODE_ENV !== "test") {
     console.error(`[Error] ${StatusCode}: ${ErrorMessage}`);
   }

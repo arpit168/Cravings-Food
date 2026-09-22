@@ -6,7 +6,9 @@ export const UserUpdate = async (req, res, next) => {
     const currentUser = req.user;
 
     if (!fullName || !email || !mobileNumber) {
-      const error = new Error("Full name, email, and mobile number are required.");
+      const error = new Error(
+        "Full name, email, and mobile number are required.",
+      );
       error.statusCode = 400;
       return next(error);
     }
@@ -23,7 +25,7 @@ export const UserUpdate = async (req, res, next) => {
     const updatedUser = await User.findByIdAndUpdate(
       currentUser._id,
       { $set: updateFields },
-      { new: true, runValidators: true }
+      { new: true, runValidators: true },
     ).select("-password");
 
     if (!updatedUser) {
@@ -98,7 +100,7 @@ export const DeleteUserAddress = async (req, res, next) => {
     }
 
     user.addresses = user.addresses.filter(
-      (addr) => addr._id.toString() !== addressId
+      (addr) => addr._id.toString() !== addressId,
     );
 
     await user.save();

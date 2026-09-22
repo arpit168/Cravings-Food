@@ -24,6 +24,7 @@ const OrderTracking = () => {
     fetchOrderDetails();
     const interval = setInterval(fetchOrderDetails, 8000); // Polling every 8s
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchOrderDetails = async () => {
@@ -51,8 +52,13 @@ const OrderTracking = () => {
   if (!order) {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center space-y-4 bg-background">
-        <h2 className="text-2xl font-bold text-text-primary">Order not found</h2>
-        <Link to="/" className="inline-block px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm transition">
+        <h2 className="text-2xl font-bold text-text-primary">
+          Order not found
+        </h2>
+        <Link
+          to="/"
+          className="inline-block px-6 py-2.5 rounded-xl bg-primary hover:bg-primary-hover text-white font-bold text-sm transition"
+        >
           Return Home
         </Link>
       </div>
@@ -60,11 +66,36 @@ const OrderTracking = () => {
   }
 
   const steps = [
-    { status: "Placed", label: "Order Received", icon: ShoppingBag, desc: "Order placed & verified" },
-    { status: "Preparing", label: "Kitchen Cooking", icon: UtensilsCrossed, desc: "Chef preparing food" },
-    { status: "Ready for Pickup", label: "Packed & Hot", icon: Sparkles, desc: "Waiting for rider" },
-    { status: "Out for Delivery", label: "Rider En Route", icon: Bike, desc: "Heading to your door" },
-    { status: "Delivered", label: "Enjoy Your Meal!", icon: CheckCircle2, desc: "Successfully delivered" },
+    {
+      status: "Placed",
+      label: "Order Received",
+      icon: ShoppingBag,
+      desc: "Order placed & verified",
+    },
+    {
+      status: "Preparing",
+      label: "Kitchen Cooking",
+      icon: UtensilsCrossed,
+      desc: "Chef preparing food",
+    },
+    {
+      status: "Ready for Pickup",
+      label: "Packed & Hot",
+      icon: Sparkles,
+      desc: "Waiting for rider",
+    },
+    {
+      status: "Out for Delivery",
+      label: "Rider En Route",
+      icon: Bike,
+      desc: "Heading to your door",
+    },
+    {
+      status: "Delivered",
+      label: "Enjoy Your Meal!",
+      icon: CheckCircle2,
+      desc: "Successfully delivered",
+    },
   ];
 
   const currentStepIdx = steps.findIndex((s) => s.status === order.orderStatus);
@@ -73,14 +104,21 @@ const OrderTracking = () => {
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-background transition-colors duration-300">
       <div className="flex items-center justify-between border-b border-border pb-6">
         <div>
-          <Link to="/" className="inline-flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-primary mb-2 transition">
+          <Link
+            to="/"
+            className="inline-flex items-center gap-1.5 text-xs font-bold text-text-muted hover:text-primary mb-2 transition"
+          >
             <ArrowLeft size={14} /> Back to Directory
           </Link>
           <h1 className="text-2xl sm:text-4xl font-black text-text-primary flex items-center gap-3">
             Order #{order.orderId}
           </h1>
           <p className="text-xs text-text-secondary mt-1">
-            Placed on {new Date(order.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            Placed on{" "}
+            {new Date(order.createdAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
           </p>
         </div>
 
@@ -95,13 +133,15 @@ const OrderTracking = () => {
       {/* RADAR MAP SIMULATION */}
       <div className="relative h-64 sm:h-80 rounded-3xl overflow-hidden bg-secondary text-white p-6 sm:p-8 flex flex-col justify-between shadow-xl">
         <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#fc8019_1px,transparent_1px)] [background-size:16px_16px]"></div>
-        
+
         <div className="relative z-10 flex justify-between items-start">
           <div>
             <span className="px-3 py-1 rounded-full bg-white/20 backdrop-blur-md text-xs font-bold uppercase tracking-wider">
               Live Radar Telemetry
             </span>
-            <h3 className="text-xl font-black mt-2">Estimated Arrival: 18 Minutes</h3>
+            <h3 className="text-xl font-black mt-2">
+              Estimated Arrival: 18 Minutes
+            </h3>
           </div>
           <button
             onClick={fetchOrderDetails}
@@ -123,11 +163,13 @@ const OrderTracking = () => {
 
         <div className="relative z-10 flex justify-between items-center text-xs font-semibold bg-surface/90 backdrop-blur-md text-text-primary p-3.5 rounded-2xl border border-border">
           <span className="flex items-center gap-2">
-            <MapPin size={15} className="text-primary" /> {order.restaurantId?.name}
+            <MapPin size={15} className="text-primary" />{" "}
+            {order.restaurantId?.name}
           </span>
           <span className="font-bold">➔</span>
           <span className="flex items-center gap-2 truncate max-w-[200px]">
-            <CheckCircle2 size={15} className="text-success" /> {order.deliveryAddress?.street}
+            <CheckCircle2 size={15} className="text-success" />{" "}
+            {order.deliveryAddress?.street}
           </span>
         </div>
       </div>
@@ -138,18 +180,29 @@ const OrderTracking = () => {
           <span className="px-3 py-1 rounded-full bg-primary text-white text-[11px] font-black uppercase tracking-wider">
             Secure Delivery Verification
           </span>
-          <h3 className="text-lg font-black text-text-primary mt-1">Provide this PIN to your delivery rider</h3>
-          <p className="text-xs text-text-secondary">The rider will verify this 4-digit code upon arrival before releasing your food package.</p>
+          <h3 className="text-lg font-black text-text-primary mt-1">
+            Provide this PIN to your delivery rider
+          </h3>
+          <p className="text-xs text-text-secondary">
+            The rider will verify this 4-digit code upon arrival before
+            releasing your food package.
+          </p>
         </div>
         <div className="bg-surface px-6 py-3 rounded-2xl border border-primary/40 shadow-inner flex items-center gap-2">
-          <span className="text-xs font-bold text-text-muted uppercase">PIN Code:</span>
-          <span className="text-2xl sm:text-3xl font-black tracking-widest text-primary font-mono">{order.deliveryOtp || "1234"}</span>
+          <span className="text-xs font-bold text-text-muted uppercase">
+            PIN Code:
+          </span>
+          <span className="text-2xl sm:text-3xl font-black tracking-widest text-primary font-mono">
+            {order.deliveryOtp || "1234"}
+          </span>
         </div>
       </div>
 
       {/* STEPPER */}
       <div className="bg-surface p-6 sm:p-8 rounded-3xl border border-border space-y-6 shadow-xs">
-        <h2 className="text-lg font-black text-text-primary">Order Progress Tracker</h2>
+        <h2 className="text-lg font-black text-text-primary">
+          Order Progress Tracker
+        </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-5 gap-4">
           {steps.map((st, idx) => {
@@ -158,20 +211,25 @@ const OrderTracking = () => {
             const isCurrent = idx === currentStepIdx;
 
             return (
-              <div key={st.status} className="relative flex sm:flex-col items-center gap-3 text-center">
+              <div
+                key={st.status}
+                className="relative flex sm:flex-col items-center gap-3 text-center"
+              >
                 <div
                   className={`w-12 h-12 rounded-2xl flex items-center justify-center transition ${
                     isCurrent
                       ? "bg-primary text-white shadow-lg shadow-primary/30 scale-110"
                       : isDone
-                      ? "bg-success text-white"
-                      : "bg-muted text-text-muted"
+                        ? "bg-success text-white"
+                        : "bg-muted text-text-muted"
                   }`}
                 >
                   <Icon size={20} />
                 </div>
                 <div className="text-left sm:text-center min-w-0">
-                  <h4 className={`text-xs font-bold ${isDone ? "text-text-primary" : "text-text-muted"}`}>
+                  <h4
+                    className={`text-xs font-bold ${isDone ? "text-text-primary" : "text-text-muted"}`}
+                  >
                     {st.label}
                   </h4>
                   <p className="text-[11px] text-text-muted">{st.desc}</p>
@@ -193,18 +251,24 @@ const OrderTracking = () => {
               <div key={idx} className="py-3 flex justify-between items-start">
                 <div className="space-y-0.5">
                   <span className="font-bold text-text-primary block">
-                    {item.quantity}x {item.name || item.menuItem?.name || "Gourmet Dish"}
+                    {item.quantity}x{" "}
+                    {item.name || item.menuItem?.name || "Gourmet Dish"}
                   </span>
                   {item.selectedVariant?.name && (
-                    <span className="text-xs text-primary font-semibold block">• Variant: {item.selectedVariant.name}</span>
+                    <span className="text-xs text-primary font-semibold block">
+                      • Variant: {item.selectedVariant.name}
+                    </span>
                   )}
                   {item.selectedAddOns?.length > 0 && (
                     <span className="text-[11px] text-text-muted block">
-                      + Add-ons: {item.selectedAddOns.map((a) => a.name).join(", ")}
+                      + Add-ons:{" "}
+                      {item.selectedAddOns.map((a) => a.name).join(", ")}
                     </span>
                   )}
                 </div>
-                <span className="font-black text-text-primary">₹{item.price * item.quantity}</span>
+                <span className="font-black text-text-primary">
+                  ₹{item.price * item.quantity}
+                </span>
               </div>
             ))}
           </div>
@@ -217,11 +281,15 @@ const OrderTracking = () => {
           <div className="space-y-2.5 text-xs font-semibold text-text-secondary">
             <div className="flex justify-between">
               <span>Payment Mode</span>
-              <span className="font-bold text-text-primary uppercase">{order.paymentMethod}</span>
+              <span className="font-bold text-text-primary uppercase">
+                {order.paymentMethod}
+              </span>
             </div>
             <div className="flex justify-between">
               <span>Total Paid</span>
-              <span className="text-lg font-black text-primary">₹{order.pricing?.totalAmount}</span>
+              <span className="text-lg font-black text-primary">
+                ₹{order.pricing?.totalAmount}
+              </span>
             </div>
           </div>
         </div>

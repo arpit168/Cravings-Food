@@ -4,7 +4,11 @@ import toast from "react-hot-toast";
 import { Mail, Phone, MapPin, Send, MessageSquare } from "lucide-react";
 
 const ContactPage = () => {
-  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -13,10 +17,14 @@ const ContactPage = () => {
       setLoading(true);
       const res = await api.post("/public/new-contact", formData);
       if (res.data && res.data.success) {
-        toast.success(res.data.message || "Thank you! Our support team will reach out within 2 hours.");
+        toast.success(
+          res.data.message ||
+            "Thank you! Our support team will reach out within 2 hours.",
+        );
         setFormData({ name: "", email: "", message: "" });
       }
     } catch (error) {
+      console.error(error);
       toast.error("Error sending message. Please try again.");
     } finally {
       setLoading(false);
@@ -26,9 +34,12 @@ const ContactPage = () => {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 space-y-12 bg-background transition-colors duration-300">
       <div className="text-center space-y-3 max-w-2xl mx-auto">
-        <h1 className="text-3xl sm:text-5xl font-black text-text-primary">24/7 Priority Support</h1>
+        <h1 className="text-3xl sm:text-5xl font-black text-text-primary">
+          24/7 Priority Support
+        </h1>
         <p className="text-text-muted text-sm sm:text-base">
-          Have a question about your order, partner onboarding, or billing? Our dedicated concierge team is here to assist you.
+          Have a question about your order, partner onboarding, or billing? Our
+          dedicated concierge team is here to assist you.
         </p>
       </div>
 
@@ -40,8 +51,12 @@ const ContactPage = () => {
               <Phone size={22} />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase text-text-muted">Instant Hotline</p>
-              <p className="font-bold text-lg text-text-primary">+91 98765 43210</p>
+              <p className="text-xs font-bold uppercase text-text-muted">
+                Instant Hotline
+              </p>
+              <p className="font-bold text-lg text-text-primary">
+                +91 98765 43210
+              </p>
             </div>
           </div>
 
@@ -50,8 +65,12 @@ const ContactPage = () => {
               <Mail size={22} />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase text-text-muted">Email Desk</p>
-              <p className="font-bold text-lg text-text-primary">support@cravings.com</p>
+              <p className="text-xs font-bold uppercase text-text-muted">
+                Email Desk
+              </p>
+              <p className="font-bold text-lg text-text-primary">
+                support@cravings.com
+              </p>
             </div>
           </div>
 
@@ -60,8 +79,12 @@ const ContactPage = () => {
               <MapPin size={22} />
             </div>
             <div>
-              <p className="text-xs font-bold uppercase text-text-muted">Headquarters</p>
-              <p className="font-bold text-sm text-text-primary">Sunshine Towers, Linking Road, Bandra West, Mumbai 400050</p>
+              <p className="text-xs font-bold uppercase text-text-muted">
+                Headquarters
+              </p>
+              <p className="font-bold text-sm text-text-primary">
+                Sunshine Towers, Linking Road, Bandra West, Mumbai 400050
+              </p>
             </div>
           </div>
         </div>
@@ -76,36 +99,48 @@ const ContactPage = () => {
           </h2>
 
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Your Name</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Your Name
+            </label>
             <input
               type="text"
               required
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               placeholder="Rohan Sharma"
               className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-text-primary text-sm outline-none focus:border-primary transition"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Your Email</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Your Email
+            </label>
             <input
               type="email"
               required
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               placeholder="rohan@example.com"
               className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-text-primary text-sm outline-none focus:border-primary transition"
             />
           </div>
 
           <div>
-            <label className="text-xs font-bold uppercase text-text-muted">Message</label>
+            <label className="text-xs font-bold uppercase text-text-muted">
+              Message
+            </label>
             <textarea
               rows={4}
               required
               value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, message: e.target.value })
+              }
               placeholder="How can we help you today?"
               className="w-full mt-1 px-4 py-3 rounded-xl bg-background border border-border text-text-primary text-sm outline-none focus:border-primary transition"
             />

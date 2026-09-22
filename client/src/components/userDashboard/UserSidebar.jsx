@@ -1,5 +1,11 @@
 import React from "react";
-import { LayoutDashboard, User, ShoppingBag, CreditCard, LifeBuoy } from "lucide-react";
+import {
+  LayoutDashboard,
+  User,
+  ShoppingBag,
+  CreditCard,
+  LifeBuoy,
+} from "lucide-react";
 
 const UserSideBar = ({ active, setActive }) => {
   const menuItems = [
@@ -17,7 +23,9 @@ const UserSideBar = ({ active, setActive }) => {
           <span className="px-3 py-1 rounded-full bg-primary/10 text-primary font-bold text-[10px] uppercase tracking-wider">
             User Portal
           </span>
-          <h2 className="text-xl font-black text-text-primary mt-2">Gourmet Profile</h2>
+          <h2 className="text-xl font-black text-text-primary mt-2">
+            Gourmet Profile
+          </h2>
         </div>
 
         <nav className="space-y-2">
