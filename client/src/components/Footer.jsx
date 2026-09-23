@@ -133,13 +133,13 @@ const Footer = () => {
             </li>
             <li className="flex items-center gap-2.5">
               <Mail size={16} className="text-primary shrink-0" />
-              <span>support@cravings.com</span>
+              <span className="break-all">support@cravings.com</span>
             </li>
           </ul>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-text-muted">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-border flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-medium text-text-muted text-center sm:text-left">
         <p>
           © {new Date().getFullYear()} Cravings Inc. Built with passion for food
           lovers.

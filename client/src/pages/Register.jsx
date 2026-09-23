@@ -134,7 +134,7 @@ const Register = () => {
   const CurrentRoleIcon = roleFeatures[formData.role].icon;
 
   return (
-    <div className="min-h-[90vh] flex items-center justify-center px-4 py-8 bg-linear-to-br from-background via-background to-primary/5">
+    <div className="min-h-[90vh] flex items-center justify-center px-4 py-8 bg-linear-to-br from-background via-background to-primary/5 overflow-x-hidden">
       <div className="max-w-2xl w-full">
         {/* Decorative background elements */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -142,7 +142,7 @@ const Register = () => {
           <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-primary/5 rounded-full blur-3xl" />
         </div>
 
-        <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-8 sm:p-12 rounded-4xl border border-white/20 dark:border-gray-700/30 shadow-2xl shadow-primary/5 transition-all duration-300">
+        <div className="relative bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl p-6 sm:p-12 rounded-4xl border border-white/20 dark:border-gray-700/30 shadow-2xl shadow-primary/5 transition-all duration-300">
           {/* Header */}
           <div className="text-center space-y-3 mb-8">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-linear-to-r from-primary/10 to-primary/5 border border-primary/20">

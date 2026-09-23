@@ -111,7 +111,7 @@ const RestaurantDetails = () => {
 
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
               <div className="space-y-2">
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <h1 className="text-3xl sm:text-5xl font-black text-text-primary tracking-tight">
                     {restaurant.name}
                   </h1>
@@ -310,7 +310,7 @@ const RestaurantDetails = () => {
                 <p className="font-black text-base">
                   {totalItems} {totalItems === 1 ? "item" : "items"} added
                 </p>
-                <p className="text-xs text-white/90">
+                <p className="text-[10px] sm:text-xs text-white/90 hidden xs:block">
                   Extra charges may apply • Total ₹{totalAmount}
                 </p>
               </div>
@@ -318,7 +318,7 @@ const RestaurantDetails = () => {
 
             <Link
               to="/checkout"
-              className="px-6 py-3 rounded-xl bg-white text-primary font-black text-xs sm:text-sm uppercase tracking-wider shadow-md hover:bg-muted transition"
+              className="px-4 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-white text-primary font-black text-[10px] sm:text-xs uppercase tracking-wider shadow-md hover:bg-muted transition text-center shrink-0"
             >
               Proceed to Cart →
             </Link>
