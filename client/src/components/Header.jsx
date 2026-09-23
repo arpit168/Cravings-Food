@@ -88,7 +88,7 @@ const Header = () => {
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-primary flex items-center justify-center text-white font-black text-lg sm:text-xl shadow-md shadow-primary/25 group-hover:scale-105 transition duration-300">
               C
             </div>
-            <span className="text-lg sm:text-xl lg:text-2xl font-black tracking-tight text-text-primary group-hover:text-primary transition">
+            <span className="hidden xs:inline-block text-lg sm:text-xl lg:text-2xl font-black tracking-tight text-text-primary group-hover:text-primary transition">
               Cravings
             </span>
           </Link>
@@ -232,7 +232,7 @@ const Header = () => {
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-surface border-b border-border p-4 sm:p-5 space-y-4 shadow-xl">
+        <div className="lg:hidden bg-surface border-b border-border p-4 sm:p-5 space-y-4 shadow-xl max-h-[calc(100vh-4rem)] overflow-y-auto overflow-x-hidden">
           {/* Location for mobile */}
           <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl bg-muted border border-border text-xs sm:text-sm text-text-secondary">
             <MapPin size={14} className="text-primary shrink-0" />

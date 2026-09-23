@@ -197,9 +197,9 @@ const CartCheckout = () => {
               {items.map((item) => (
                 <div
                   key={item._id}
-                  className="py-4 flex items-center justify-between gap-4"
+                  className="py-4 flex flex-col xs:flex-row items-start xs:items-center justify-between gap-3 xs:gap-4"
                 >
-                  <div className="flex items-center gap-3 min-w-0">
+                  <div className="flex items-center gap-3 min-w-0 w-full xs:w-auto">
                     <img
                       src={item.image}
                       alt={item.name}
@@ -215,7 +215,7 @@ const CartCheckout = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-4 shrink-0">
+                  <div className="flex items-center justify-between xs:justify-end gap-4 w-full xs:w-auto shrink-0 mt-2 xs:mt-0">
                     <div className="flex items-center gap-2 px-2.5 py-1 rounded-xl bg-muted border border-border">
                       <button
                         onClick={() =>

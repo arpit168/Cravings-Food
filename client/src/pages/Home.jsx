@@ -67,7 +67,7 @@ const Home = () => {
             <Sparkles size={14} /> Lightning Fast 20-Min Delivery in Bandra
           </div>
 
-          <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-tight text-text-primary">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight text-text-primary">
             Craving Premium Food? <br />
             <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
               Delivered Hot & Fresh.
@@ -89,11 +89,11 @@ const Home = () => {
                 placeholder="Search for burgers, authentic biryani, pizza or restaurant name..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-14 pr-32 py-4 bg-transparent text-text-primary placeholder:text-text-muted outline-none font-semibold text-sm sm:text-base"
+                className="w-full pl-10 sm:pl-14 pr-24 sm:pr-32 py-4 bg-transparent text-text-primary placeholder:text-text-muted outline-none font-semibold text-xs sm:text-base"
               />
               <button
                 onClick={fetchRestaurants}
-                className="absolute right-2 px-6 py-2.5 bg-primary hover:bg-primary-hover text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl transition shadow-md cursor-pointer"
+                className="absolute right-1 sm:right-2 px-4 sm:px-6 py-2 sm:py-2.5 bg-primary hover:bg-primary-hover text-white font-black text-xs sm:text-sm uppercase tracking-wider rounded-xl transition shadow-md cursor-pointer"
               >
                 Search
               </button>
@@ -135,7 +135,7 @@ const Home = () => {
       {/* QUICK FILTERS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5 mr-2">
+          <span className="text-xs font-bold text-text-muted uppercase tracking-wider flex items-center gap-1.5 mr-2 w-full sm:w-auto mb-1 sm:mb-0">
             <Filter size={14} /> Quick Filters:
           </span>
 
