@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
-import api from "../../../config/Api";
+import api from "@/lib/api";
 import toast from "react-hot-toast";
 import { X, Check } from "lucide-react";
 

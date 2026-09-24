@@ -2,12 +2,14 @@
   "name": "server",
   "version": "1.0.0",
   "description": "This is Craving's Backend",
-  "main": "index.js",
+  "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "seed": "node src/seeders/seeder.js",
+    "dev": "tsx watch index.ts",
+    "start": "tsx index.ts",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "seed": "tsx src/seeders/seeder.ts",
     "lint": "eslint .",
     "format": "prettier --write ."
   },
@@ -28,9 +30,21 @@
     "morgan": "^1.10.1"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/mongoose": "^5.11.96",
+    "@types/morgan": "^1.9.10",
+    "@types/node": "^26.6.2",
     "eslint": "^10.11.0",
     "knip": "^6.37.0",
     "nodemon": "^3.1.11",
-    "prettier": "^3.9.8"
+    "prettier": "^3.9.8",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
   }
 }
